@@ -37,7 +37,7 @@ export async function generateQR(
     };
 
     // Generate base QR as data URL
-    const qrDataUrl = await QRCodeLib.toDataURL(data, qrOptions);
+    const qrDataUrl: string = await QRCodeLib.toDataURL(data, qrOptions) as string;
 
     // Step 2: Load QR image and create canvas
     const qrImage = await loadImage(qrDataUrl);
