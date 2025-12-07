@@ -6,11 +6,12 @@ import QRCode from "@/models/QRCode";
 
 export async function GET(
     request: Request,
-    { params }: { params: Promise<{ qrId: string }> }
+    { params }: { params: Promise<{ qrId: string }> | { qrId: string } }
 ) {
     try {
         await dbConnect();
-        const { qrId } = await params;
+        const resolvedParams = params instanceof Promise ? await params : params;
+        const { qrId } = resolvedParams;
 
         if (!mongoose.Types.ObjectId.isValid(qrId)) {
             return NextResponse.json(

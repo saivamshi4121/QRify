@@ -6,8 +6,10 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
 export async function PATCH(
     request: Request,
-    { params }: { params: { qrId: string } }
+    { params }: { params: Promise<{ qrId: string }> | { qrId: string } }
 ) {
+    const resolvedParams = params instanceof Promise ? await params : params;
+    const { qrId } = resolvedParams;
     try {
         const session = await getServerSession(authOptions);
         if (!session || !session.user) {
@@ -25,7 +27,7 @@ export async function PATCH(
         // Only update if _id matches AND userId matches session
         const updatedQR = await QRCode.findOneAndUpdate(
             {
-                _id: params.qrId,
+                _id: qrId,
                 userId: session.user.id  // <--- The Critical Lock
             },
             { originalData: newOriginalData },
