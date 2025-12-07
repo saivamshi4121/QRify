@@ -4,22 +4,35 @@ import { UAParser } from "ua-parser-js";
 // Lazy load geoip-lite to handle missing data files gracefully
 let geoip: any = null;
 let geoipAvailable = false;
+let geoipInitialized = false;
 
-try {
-    geoip = require("geoip-lite");
-    // Test if geoip-lite is actually working (data files exist)
+// Initialize geoip-lite only when needed (lazy loading)
+function initializeGeoip() {
+    if (geoipInitialized) return;
+    geoipInitialized = true;
+    
     try {
-        geoip.lookup("8.8.8.8"); // Test lookup
-        geoipAvailable = true;
-    } catch (testError) {
-        // Data files missing - disable geoip
+        geoip = require("geoip-lite");
+        // Test if geoip-lite is actually working (data files exist)
+        try {
+            geoip.lookup("8.8.8.8"); // Test lookup
+            geoipAvailable = true;
+        } catch (testError) {
+            // Data files missing - disable geoip
+            geoipAvailable = false;
+            // Only log in development to avoid build warnings
+            if (process.env.NODE_ENV === "development") {
+                console.warn("geoip-lite data files not found, geo location features will be disabled");
+            }
+        }
+    } catch (error) {
+        // Module not available - disable geoip
         geoipAvailable = false;
-        console.warn("geoip-lite data files not found, geo location features will be disabled");
+        // Only log in development to avoid build warnings
+        if (process.env.NODE_ENV === "development") {
+            console.warn("geoip-lite not available, geo location features will be disabled:", error);
+        }
     }
-} catch (error) {
-    // Module not available - disable geoip
-    geoipAvailable = false;
-    console.warn("geoip-lite not available, geo location features will be disabled:", error);
 }
 
 // Helper to get client info from headers
@@ -35,6 +48,9 @@ export function getClientInfo(headers: any) {
     // NEVER crash the app if geoip fails
     let geo: any = null;
     try {
+        // Initialize geoip only when needed (lazy loading)
+        initializeGeoip();
+        
         if (geoipAvailable && geoip) {
             geo = geoip.lookup(ip);
             // Validate geo result

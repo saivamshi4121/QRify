@@ -4,9 +4,16 @@ import Stripe from "stripe";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { PRICING_PLANS, PlanType } from "@/lib/pricing";
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-    apiVersion: "2025-11-17.clover", // Latest Stripe API version
-});
+// Lazy initialization of Stripe to avoid build-time errors
+function getStripe() {
+    const stripeKey = process.env.STRIPE_SECRET_KEY;
+    if (!stripeKey) {
+        throw new Error("STRIPE_SECRET_KEY is not configured");
+    }
+    return new Stripe(stripeKey, {
+        apiVersion: "2025-11-17.clover", // Latest Stripe API version
+    });
+}
 
 export async function POST(request: Request) {
     try {
@@ -30,6 +37,9 @@ export async function POST(request: Request) {
         }
 
         const planConfig = PRICING_PLANS[plan];
+
+        // Initialize Stripe (lazy)
+        const stripe = getStripe();
 
         // For Stripe, we create a Checkout Session
         const checkoutSession = await stripe.checkout.sessions.create({
