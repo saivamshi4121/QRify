@@ -1,6 +1,6 @@
 # Website Integration Guide
 
-SmartQR provides multiple ways to embed your QR codes on any website. Choose the method that best fits your needs.
+QRify provides multiple ways to embed your QR codes on any website. Choose the method that best fits your needs.
 
 ---
 

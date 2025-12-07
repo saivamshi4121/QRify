@@ -1,5 +1,5 @@
 /**
- * SmartQR Embed Script
+ * QRify Embed Script
  * 
  * Usage:
  * <div id="smartqr-embed-{shortUrl}"></div>
@@ -21,14 +21,14 @@
     const baseUrl = script.src.replace('/embed.js', '') || window.location.origin;
 
     if (!shortUrl) {
-        console.error('SmartQR: data-shorturl attribute is required');
+        console.error('QRify: data-shorturl attribute is required');
         return;
     }
 
     // Find the container element
     const container = document.querySelector(selector);
     if (!container) {
-        console.error(`SmartQR: Container element "${selector}" not found`);
+        console.error(`QRify: Container element "${selector}" not found`);
         return;
     }
 
@@ -54,7 +54,7 @@
             container.appendChild(img);
         })
         .catch(error => {
-            console.error('SmartQR: Failed to load QR code', error);
+            console.error('QRify: Failed to load QR code', error);
             container.innerHTML = `<p style="color: #ef4444;">Failed to load QR code</p>`;
         });
 })();

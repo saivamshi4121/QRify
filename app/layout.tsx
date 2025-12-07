@@ -6,7 +6,7 @@ import { Providers } from "@/components/Providers";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Smart QR Code Generator SaaS",
+  title: "QRify - QR Code Generator SaaS",
   description: "Generate, Track, and Manage Dynamic QR Codes",
 };
 

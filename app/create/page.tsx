@@ -229,7 +229,7 @@ export default function PublicCreateQRPage() {
                 <div className="mx-auto max-w-7xl flex items-center justify-between">
                     <Link href="/" className="flex items-center gap-2 font-bold text-xl text-indigo-600">
                         <QrCode className="h-6 w-6" />
-                        <span>SmartQR</span>
+                        <span>QRify</span>
                     </Link>
                 </div>
             </nav>

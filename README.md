@@ -1,4 +1,4 @@
-# SmartQR SaaS
+# QRify SaaS
 
 A comprehensive QR code generation and management platform built with Next.js, MongoDB, and Cloudinary.
 

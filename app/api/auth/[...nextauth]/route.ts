@@ -102,7 +102,7 @@ export const authOptions: NextAuthOptions = {
             },
         }),
         CredentialsProvider({
-            name: "SmartQR Login",
+            name: "QRify Login",
             credentials: {
                 email: { label: "Email", type: "email", placeholder: "email@example.com" },
                 password: { label: "Password", type: "password" },

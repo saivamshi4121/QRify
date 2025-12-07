@@ -19,7 +19,7 @@ export default function LandingPage() {
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
           <div className="flex items-center gap-2 font-bold text-xl text-indigo-600">
             <QrCode className="h-6 w-6" />
-            <span>SmartQR</span>
+            <span>QRify</span>
           </div>
           <div className="hidden md:flex items-center gap-8 text-sm font-medium text-slate-600">
             <a href="#features" className="hover:text-indigo-600 transition-colors">Features</a>
@@ -275,7 +275,7 @@ export default function LandingPage() {
         <div className="mx-auto max-w-7xl flex flex-col md:flex-row justify-between items-center gap-6">
           <div className="flex items-center gap-2 font-bold text-xl text-slate-900">
             <QrCode className="h-6 w-6 text-indigo-600" />
-            <span>SmartQR</span>
+            <span>QRify</span>
           </div>
           <div className="flex gap-6 text-sm text-slate-500">
             <a href="#" className="hover:text-slate-900">Privacy Policy</a>
@@ -283,7 +283,7 @@ export default function LandingPage() {
             <a href="#" className="hover:text-slate-900">Contact Support</a>
           </div>
           <div className="text-sm text-slate-400">
-            &copy; {new Date().getFullYear()} SmartQR SaaS. All rights reserved.
+            &copy; {new Date().getFullYear()} QRify SaaS. All rights reserved.
           </div>
         </div>
       </footer>

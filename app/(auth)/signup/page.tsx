@@ -72,7 +72,7 @@ export default function SignupPage() {
                 <div className="text-center">
                     <Link href="/" className="inline-flex items-center gap-2 font-bold text-2xl text-indigo-600 mb-6">
                         <QrCode className="h-8 w-8" />
-                        <span>SmartQR</span>
+                        <span>QRify</span>
                     </Link>
                     <h2 className="text-2xl font-bold tracking-tight text-slate-900">Get started today</h2>
                     <p className="mt-2 text-sm text-slate-500">Create a new account for free</p>
