@@ -131,6 +131,7 @@ export const authOptions: NextAuthOptions = {
                     email: user.email,
                     role: user.role,
                     subscriptionPlan: user.subscriptionPlan,
+                    provider: user.provider || "email",
                 };
             },
         }),
@@ -167,12 +168,14 @@ export const authOptions: NextAuthOptions = {
                         token.id = dbUser._id.toString();
                         token.role = dbUser.role;
                         token.subscriptionPlan = dbUser.subscriptionPlan;
+                        token.provider = dbUser.provider || "google";
                     }
                 } else {
                     // For Credentials, authorize() already mapped it correctly
                     token.id = user.id;
                     token.role = user.role || "user";
                     token.subscriptionPlan = user.subscriptionPlan || "free";
+                    token.provider = (user as any).provider || "email";
                 }
             }
 
@@ -189,6 +192,7 @@ export const authOptions: NextAuthOptions = {
                 session.user.id = token.id as string;
                 session.user.role = token.role as string;
                 session.user.subscriptionPlan = token.subscriptionPlan as string;
+                session.user.provider = token.provider as string;
             }
             return session;
         },
