@@ -1,12 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { signIn, useSession } from "next-auth/react";
 import { QrCode, Mail, Lock, Loader2 } from "lucide-react";
 
-export default function LoginPage() {
+function LoginForm() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const { status } = useSession();
@@ -145,5 +145,20 @@ export default function LoginPage() {
                 </p>
             </div>
         </div>
+    );
+}
+
+export default function LoginPage() {
+    return (
+        <Suspense fallback={
+            <div className="flex min-h-screen items-center justify-center bg-slate-50">
+                <div className="text-center">
+                    <QrCode className="h-8 w-8 mx-auto mb-4 text-indigo-600 animate-pulse" />
+                    <p className="text-slate-500">Loading...</p>
+                </div>
+            </div>
+        }>
+            <LoginForm />
+        </Suspense>
     );
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Loader2, RefreshCw, Lock, X, ArrowUp } from "lucide-react";
@@ -9,7 +9,7 @@ import { SectionCard } from "@/app/(dashboard)/_components/SectionCard";
 import Link from "next/link";
 import { QrCode } from "lucide-react";
 
-export default function PublicCreateQRPage() {
+function CreateQRForm() {
     const { data: session, status } = useSession(); // status: 'authenticated' | 'loading' | 'unauthenticated'
     const router = useRouter();
     const searchParams = useSearchParams();
@@ -459,5 +459,20 @@ export default function PublicCreateQRPage() {
                 </div>
             </div>
         </div>
+    );
+}
+
+export default function PublicCreateQRPage() {
+    return (
+        <Suspense fallback={
+            <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+                <div className="text-center">
+                    <QrCode className="h-8 w-8 mx-auto mb-4 text-indigo-600 animate-pulse" />
+                    <p className="text-slate-500">Loading...</p>
+                </div>
+            </div>
+        }>
+            <CreateQRForm />
+        </Suspense>
     );
 }

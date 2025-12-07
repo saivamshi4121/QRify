@@ -3,12 +3,14 @@ import { v2 as cloudinary } from "cloudinary";
 import { generateShortCode } from "@/lib/generateShortCode";
 import { generateQR } from "@/lib/qrGenerator";
 
-// Configure Cloudinary
-cloudinary.config({
-    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-    api_key: process.env.CLOUDINARY_API_KEY,
-    api_secret: process.env.CLOUDINARY_API_SECRET,
-});
+// Lazy Cloudinary configuration to avoid build-time errors
+function configureCloudinary() {
+    cloudinary.config({
+        cloud_name: process.env.CLOUDINARY_CLOUD_NAME || "",
+        api_key: process.env.CLOUDINARY_API_KEY || "",
+        api_secret: process.env.CLOUDINARY_API_SECRET || "",
+    });
+}
 
 // Configure In-Memory Rate Limiting
 const ipRateLimit = new Map<string, { count: number; lastReset: number }>();
@@ -66,6 +68,7 @@ export async function POST(request: Request) {
         });
 
         // 4. Upload to Cloudinary (Transient)
+        configureCloudinary();
         const uploadResponse = await new Promise<any>((resolve, reject) => {
             const uploadStream = cloudinary.uploader.upload_stream(
                 {

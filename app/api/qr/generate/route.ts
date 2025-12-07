@@ -8,12 +8,14 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { generateQR } from "@/lib/qrGenerator";
 
-// Configure Cloudinary
-cloudinary.config({
-    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-    api_key: process.env.CLOUDINARY_API_KEY,
-    api_secret: process.env.CLOUDINARY_API_SECRET,
-});
+// Lazy Cloudinary configuration to avoid build-time errors
+function configureCloudinary() {
+    cloudinary.config({
+        cloud_name: process.env.CLOUDINARY_CLOUD_NAME || "",
+        api_key: process.env.CLOUDINARY_API_KEY || "",
+        api_secret: process.env.CLOUDINARY_API_SECRET || "",
+    });
+}
 
 export async function POST(request: Request) {
     try {
@@ -76,6 +78,7 @@ export async function POST(request: Request) {
         });
 
         // 5. Upload to Cloudinary
+        configureCloudinary();
         const uploadResponse = await new Promise<any>((resolve, reject) => {
             const uploadStream = cloudinary.uploader.upload_stream(
                 {

@@ -4,10 +4,20 @@ import Razorpay from "razorpay";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { PRICING_PLANS, PlanType } from "@/lib/pricing";
 
-const razorpay = new Razorpay({
-    key_id: process.env.RAZORPAY_KEY_ID!,
-    key_secret: process.env.RAZORPAY_KEY_SECRET!,
-});
+// Lazy Razorpay initialization to avoid build-time errors
+function getRazorpay() {
+    const keyId = process.env.RAZORPAY_KEY_ID;
+    const keySecret = process.env.RAZORPAY_KEY_SECRET;
+    
+    if (!keyId || !keySecret) {
+        throw new Error("Razorpay credentials are not configured");
+    }
+    
+    return new Razorpay({
+        key_id: keyId,
+        key_secret: keySecret,
+    });
+}
 
 export async function POST(request: Request) {
     try {
@@ -32,6 +42,9 @@ export async function POST(request: Request) {
 
         const planConfig = PRICING_PLANS[plan];
         const amountInPaise = planConfig.price * 100;
+
+        // Initialize Razorpay (lazy)
+        const razorpay = getRazorpay();
 
         const options = {
             amount: amountInPaise,
