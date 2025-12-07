@@ -69,7 +69,11 @@ export default function SmartQR({ shortUrl, className = "", width, height }: Sma
             src={qr.qrImageUrl}
             alt={qr.qrName || "QR Code"}
             className={className}
-            style={{ width, height, maxWidth: "100%", height: "auto" }}
+            style={{ 
+                ...(width && { width }), 
+                height: height || "auto",
+                maxWidth: "100%"
+            }}
         />
     );
 }
