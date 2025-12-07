@@ -205,8 +205,6 @@ export const authOptions: NextAuthOptions = {
         strategy: "jwt",
     },
     secret: process.env.NEXTAUTH_SECRET,
-    // Normalize URL to use localhost instead of private IP for Google OAuth compatibility
-    url: getNormalizedCallbackUrl() || process.env.NEXTAUTH_URL,
 };
 
 const handler = NextAuth(authOptions);
