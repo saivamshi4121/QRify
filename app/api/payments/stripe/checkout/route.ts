@@ -5,7 +5,7 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { PRICING_PLANS, PlanType } from "@/lib/pricing";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-    apiVersion: "2024-12-18.acacia", // Use latest API version or keep simple as "2023-10-16"
+    apiVersion: "2025-11-17.clover", // Latest Stripe API version
 });
 
 export async function POST(request: Request) {
