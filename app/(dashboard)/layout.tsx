@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 "use client";
 
 import { useState } from "react";
@@ -29,6 +31,13 @@ export default function DashboardLayout({
 }: {
     children: React.ReactNode;
 }) {
+    const handleLogout = async () => {
+        await signOut({
+            callbackUrl: "/login",
+            redirect: true,
+        });
+    };
+
     const { data: session } = useSession();
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const pathname = usePathname();
@@ -98,7 +107,7 @@ export default function DashboardLayout({
                         </div>
                     </div>
                     <button
-                        onClick={() => signOut({ callbackUrl: "/login" })}
+                        onClick={handleLogout}
                         className="mt-4 flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-slate-400 hover:text-white transition-colors"
                     >
                         <LogOut className="h-4 w-4" />

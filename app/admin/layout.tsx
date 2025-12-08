@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 "use client";
 
 import { useEffect } from "react";
@@ -11,6 +13,13 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     const pathname = usePathname();
     const router = useRouter();
     const { data: session, status } = useSession();
+
+    const handleLogout = async () => {
+        await signOut({
+            callbackUrl: "/login",
+            redirect: true,
+        });
+    };
 
     // Redirect to admin login if not admin (skip for login page)
     useEffect(() => {
@@ -88,7 +97,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                         <LayoutDashboard className="h-4 w-4" /> Exit to App
                     </Link>
                     <button
-                        onClick={() => signOut()}
+                        onClick={handleLogout}
                         className="flex w-full items-center gap-3 px-3 py-2 text-slate-400 hover:text-white transition-colors text-sm font-medium"
                     >
                         <LogOut className="h-4 w-4" /> Sign Out

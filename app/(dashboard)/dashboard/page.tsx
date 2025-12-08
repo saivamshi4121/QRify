@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { Activity, QrCode, CheckCircle, XCircle, TrendingUp, Loader2 } from "lucide-react";
 import {
     AreaChart,
@@ -31,13 +32,20 @@ interface DashboardData {
 }
 
 export default function DashboardPage() {
-    const { data: session } = useSession();
+    const router = useRouter();
+    const { data: session, status } = useSession();
     const [data, setData] = useState<DashboardData | null>(null);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+        if (status === "unauthenticated") {
+            router.replace("/login");
+        }
+    }, [status, router]);
+
+    useEffect(() => {
         async function fetchData() {
-            if (!session?.user?.id) return;
+            if (!session?.user?.id || status !== "authenticated") return;
             try {
                 // Use real session usage
                 const res = await fetch(`/api/dashboard/overview?userId=${session.user.id}`);
@@ -58,10 +66,10 @@ export default function DashboardPage() {
             }
         }
 
-        if (session?.user?.id) {
+        if (session?.user?.id && status === "authenticated") {
             fetchData();
         }
-    }, [session?.user?.id]);
+    }, [session?.user?.id, status]);
 
     if (loading) {
         return (
