@@ -52,7 +52,7 @@ Add these environment variables in Vercel Dashboard → Settings → Environment
 ```
 MONGODB_URI=mongodb+srv://...
 NEXTAUTH_URL=https://your-domain.vercel.app
-NEXTAUTH_SECRET=your-secret-key
+NEXTAUTH_SECRET=your-secret-key  # Generate with: openssl rand -base64 32
 NEXT_PUBLIC_APP_URL=https://your-domain.vercel.app
 GOOGLE_CLIENT_ID=your-google-client-id
 GOOGLE_CLIENT_SECRET=your-google-client-secret
@@ -61,6 +61,11 @@ CLOUDINARY_API_KEY=your-api-key
 CLOUDINARY_API_SECRET=your-api-secret
 NODE_ENV=production
 ```
+
+**⚠️ Critical for Authentication:**
+- `NEXTAUTH_SECRET` must be at least 32 characters (generate: `openssl rand -base64 32`)
+- `NEXTAUTH_URL` must match your Vercel domain exactly (no trailing slash, use `https://`)
+- Both are **required** - missing or incorrect values will cause 401 errors
 
 #### Optional Variables (if using payments)
 
@@ -181,6 +186,49 @@ Click **"Deploy"** and wait for the build to complete.
 1. Verify redirect URIs match exactly
 2. Check `NEXTAUTH_URL` matches your domain
 3. Ensure Google OAuth credentials are correct
+
+### 401 Unauthorized Errors
+
+If you're seeing `401 (Unauthorized)` errors in the browser console:
+
+1. **Check NEXTAUTH_SECRET is set:**
+   ```bash
+   # Generate a new secret if needed
+   openssl rand -base64 32
+   ```
+   - Add it to Vercel environment variables as `NEXTAUTH_SECRET`
+   - **Critical:** Redeploy after adding/updating this variable
+
+2. **Verify NEXTAUTH_URL matches your domain exactly:**
+   - Must be: `https://your-domain.vercel.app` (no trailing slash)
+   - Check in Vercel Dashboard → Settings → Environment Variables
+   - Must match the domain where your app is deployed
+
+3. **Check browser console for specific API route:**
+   - Open DevTools → Network tab
+   - Find the failed request (status 401)
+   - Note which API endpoint is failing (e.g., `/api/qrs`, `/api/dashboard/overview`)
+
+4. **Verify user is logged in:**
+   - Check if session exists: Visit `/api/auth/session` in browser
+   - Should return user data if logged in, `{}` if not
+   - If not logged in, try logging in again
+
+5. **Clear browser cookies and cache:**
+   - Clear all cookies for your domain
+   - Try in incognito/private mode
+   - This helps rule out cookie-related issues
+
+6. **Check Vercel Function Logs:**
+   - Go to Vercel Dashboard → Your Project → Functions
+   - Check logs for the failing API route
+   - Look for authentication errors or missing environment variables
+
+7. **Common fixes:**
+   - Redeploy after setting environment variables
+   - Ensure `NEXTAUTH_URL` uses `https://` (not `http://`)
+   - Verify `NEXTAUTH_SECRET` is at least 32 characters
+   - Check that cookies are enabled in browser settings
 
 ---
 
