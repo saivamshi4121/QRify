@@ -33,7 +33,12 @@ export function generateMetadata(config: SEOConfig): Metadata {
   const canonicalUrl = canonical ? `${siteUrl}${canonical}` : fullUrl;
 
   // Map "product" to "website" for OpenGraph (Next.js only supports "website" | "article")
-  const openGraphType: "website" | "article" = type === "product" ? "website" : (type === "article" ? "article" : "website");
+  let openGraphType: "website" | "article" = "website";
+  if (type === "article") {
+    openGraphType = "article";
+  } else if (type === "product") {
+    openGraphType = "website";
+  }
 
   return {
     title: fullTitle,
@@ -66,7 +71,7 @@ export function generateMetadata(config: SEOConfig): Metadata {
       canonical: canonicalUrl,
     },
     openGraph: {
-      type: openGraphType,
+      type: openGraphType as "website" | "article",
       url: fullUrl,
       title: fullTitle,
       description,
