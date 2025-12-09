@@ -1,5 +1,7 @@
 import { Metadata } from "next";
 
+type OpenGraphType = "website" | "article";
+
 export interface SEOConfig {
   title: string;
   description: string;
@@ -33,12 +35,7 @@ export function generateMetadata(config: SEOConfig): Metadata {
   const canonicalUrl = canonical ? `${siteUrl}${canonical}` : fullUrl;
 
   // Map "product" to "website" for OpenGraph (Next.js only supports "website" | "article")
-  let openGraphType: "website" | "article" = "website";
-  if (type === "article") {
-    openGraphType = "article";
-  } else if (type === "product") {
-    openGraphType = "website";
-  }
+  const openGraphType: OpenGraphType = type === "article" ? "article" : "website";
 
   return {
     title: fullTitle,
@@ -71,7 +68,7 @@ export function generateMetadata(config: SEOConfig): Metadata {
       canonical: canonicalUrl,
     },
     openGraph: {
-      type: openGraphType as "website" | "article",
+      type: openGraphType,
       url: fullUrl,
       title: fullTitle,
       description,
