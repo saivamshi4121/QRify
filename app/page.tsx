@@ -10,6 +10,28 @@ import {
   ArrowRight,
   Menu,
 } from "lucide-react";
+import { generateMetadata as genMeta, generateStructuredData } from "@/lib/seo";
+import type { Metadata } from "next";
+import Script from "next/script";
+
+export const metadata: Metadata = genMeta({
+  title: "QRify - Smart QR Code Generator SaaS",
+  description: "Create, track, and manage dynamic QR codes with advanced analytics. Custom branding, real-time tracking, and bulk generation for businesses. Free plan available.",
+  keywords: [
+    "QR code generator",
+    "dynamic QR codes",
+    "QR code analytics",
+    "custom QR codes",
+    "QR code management",
+    "business QR codes",
+    "QR code tracking",
+    "QR code SaaS",
+    "India QR codes",
+    "QR code API",
+  ],
+  url: "/",
+  type: "website",
+});
 
 export default function LandingPage() {
   return (
