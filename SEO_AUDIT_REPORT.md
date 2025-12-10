@@ -553,3 +553,4 @@ Your QRify SaaS platform is now **fully optimized for SEO** with:
 ---
 
 *For questions or support, refer to the implementation files or Google's SEO documentation.*
+

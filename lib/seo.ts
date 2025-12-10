@@ -183,3 +183,4 @@ export const defaultKeywords = [
   "India QR codes",
   "QR code API",
 ];
+
