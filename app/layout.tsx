@@ -7,24 +7,29 @@ import Script from "next/script";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export const metadata: Metadata = genMeta({
-  title: "QRify - Smart QR Code Generator SaaS",
-  description: "Create, track, and manage dynamic QR codes with advanced analytics. Custom branding, real-time tracking, and bulk generation for businesses. Free plan available.",
-  keywords: [
-    "QR code generator",
-    "dynamic QR codes",
-    "QR code analytics",
-    "custom QR codes",
-    "QR code management",
-    "business QR codes",
-    "QR code tracking",
-    "QR code SaaS",
-    "India QR codes",
-    "QR code API",
-  ],
-  url: "/",
-  type: "website",
-});
+export const metadata: Metadata = {
+  ...genMeta({
+    title: "QRify - Smart QR Code Generator SaaS",
+    description: "Create, track, and manage dynamic QR codes with advanced analytics. Custom branding, real-time tracking, and bulk generation for businesses. Free plan available.",
+    keywords: [
+      "QR code generator",
+      "dynamic QR codes",
+      "QR code analytics",
+      "custom QR codes",
+      "QR code management",
+      "business QR codes",
+      "QR code tracking",
+      "QR code SaaS",
+      "India QR codes",
+      "QR code API",
+    ],
+    url: "/",
+    type: "website",
+  }),
+  verification: {
+    google: "U6pzhL-mhhEQJR3ch2urTIkwKufFDdXe5r9Sh99aKXk",
+  },
+};
 
 export default function RootLayout({
   children,
