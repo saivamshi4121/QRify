@@ -57,22 +57,25 @@ export default function RootLayout({
         />
 
         {/* Google Analytics 4 */}
-        {process.env.NEXT_PUBLIC_GA4_ID && (
-          <>
-            <Script
-              src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA4_ID}`}
-              strategy="afterInteractive"
-            />
-            <Script id="ga4" strategy="afterInteractive">
-              {`
-                window.dataLayer = window.dataLayer || [];
-                function gtag(){dataLayer.push(arguments);}
-                gtag('js', new Date());
-                gtag('config', '${process.env.NEXT_PUBLIC_GA4_ID}');
-              `}
-            </Script>
-          </>
-        )}
+        {(() => {
+          const ga4Id = process.env.NEXT_PUBLIC_GA4_ID || "G-SPYNB8PH4C";
+          return (
+            <>
+              <Script
+                src={`https://www.googletagmanager.com/gtag/js?id=${ga4Id}`}
+                strategy="afterInteractive"
+              />
+              <Script id="ga4" strategy="afterInteractive">
+                {`
+                  window.dataLayer = window.dataLayer || [];
+                  function gtag(){dataLayer.push(arguments);}
+                  gtag('js', new Date());
+                  gtag('config', '${ga4Id}');
+                `}
+              </Script>
+            </>
+          );
+        })()}
 
         {/* Google Tag Manager */}
         {process.env.NEXT_PUBLIC_GTM_ID && (
