@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
+import Image from "next/image";
 import { Loader2 } from "lucide-react";
 
 interface QRData {
@@ -57,11 +58,15 @@ export default function EmbedQRPage() {
     return (
         <div className="flex items-center justify-center min-h-screen bg-white p-4">
             <div className="text-center">
-                <img 
+                <Image 
                     src={qr.qrImageUrl} 
-                    alt={qr.qrName} 
+                    alt={qr.qrName || "QR Code"} 
+                    width={400}
+                    height={400}
                     className="mx-auto max-w-full h-auto"
                     style={{ maxWidth: "400px" }}
+                    loading="lazy"
+                    unoptimized={!qr.qrImageUrl.includes("cloudinary.com")}
                 />
             </div>
         </div>

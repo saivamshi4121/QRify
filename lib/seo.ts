@@ -92,7 +92,7 @@ export function generateMetadata(config: SEOConfig): Metadata {
     },
     metadataBase: new URL(siteUrl),
     verification: {
-      google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,
+      google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || "U6pzhL-mhhEQJR3ch2urTIkwKufFDdXe5r9Sh99aKXk",
       yandex: process.env.NEXT_PUBLIC_YANDEX_VERIFICATION,
       yahoo: process.env.NEXT_PUBLIC_YAHOO_VERIFICATION,
     },

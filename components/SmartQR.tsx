@@ -10,6 +10,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import { Loader2 } from "lucide-react";
 
 interface SmartQRProps {
@@ -65,15 +66,18 @@ export default function SmartQR({ shortUrl, className = "", width, height }: Sma
     }
 
     return (
-        <img
+        <Image
             src={qr.qrImageUrl}
             alt={qr.qrName || "QR Code"}
+            width={width || 400}
+            height={height || 400}
             className={className}
             style={{ 
-                ...(width && { width }), 
-                height: height || "auto",
-                maxWidth: "100%"
+                maxWidth: "100%",
+                height: "auto"
             }}
+            loading="lazy"
+            unoptimized={!qr.qrImageUrl.includes("cloudinary.com")}
         />
     );
 }

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { useSession } from "next-auth/react";
 import {
     MoreVertical,
@@ -155,7 +156,15 @@ function ViewQRModal({ isOpen, onClose, qr }: any) {
                     {activeTab === "preview" ? (
                         <div className="flex flex-col items-center gap-4">
                             <div className="p-2 border border-slate-200 rounded-lg bg-white shadow-sm">
-                                <img src={qr.qrImageUrl} alt={qr.qrName} className="w-48 h-48 object-contain" />
+                                <Image 
+                                    src={qr.qrImageUrl} 
+                                    alt={qr.qrName || "QR Code"} 
+                                    width={192}
+                                    height={192}
+                                    className="w-48 h-48 object-contain"
+                                    loading="lazy"
+                                    unoptimized={!qr.qrImageUrl.includes("cloudinary.com")}
+                                />
                             </div>
                             <a href={qr.qrImageUrl} download="qr-code.png" className="text-sm font-medium text-indigo-600 hover:underline">
                                 Download High Res
@@ -367,10 +376,14 @@ export default function MyQRsPage() {
                                                     className="h-12 w-12 shrink-0 rounded border border-slate-200 bg-white p-1 cursor-pointer hover:border-indigo-300"
                                                     onClick={() => openViewModal(qr)}
                                                 >
-                                                    <img
+                                                    <Image
                                                         src={qr.qrImageUrl}
-                                                        alt={qr.qrName}
+                                                        alt={qr.qrName || "QR Code"}
+                                                        width={48}
+                                                        height={48}
                                                         className="h-full w-full object-contain"
+                                                        loading="lazy"
+                                                        unoptimized={!qr.qrImageUrl.includes("cloudinary.com")}
                                                     />
                                                 </div>
                                                 <div>
