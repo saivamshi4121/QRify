@@ -100,6 +100,11 @@ const nextConfig: NextConfig = {
     ];
   },
 
+  // Note: Google Search Console verification file
+  // File: public/google320492c4f545fea3.html
+  // Accessible at: https://qrify-alpha.vercel.app/google320492c4f545fea3.html
+  // This file is served directly from /public and is NOT blocked by middleware or routes
+
   // Experimental features for performance
   // Note: optimizeCss requires 'critters' package
   // Disabled for now to avoid build errors
