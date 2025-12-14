@@ -1,6 +1,6 @@
 # Website Integration Guide
 
-QRify provides multiple ways to embed your QR codes on any website. Choose the method that best fits your needs.
+Qrezo provides multiple ways to embed your QR codes on any website. Choose the method that best fits your needs.
 
 ---
 

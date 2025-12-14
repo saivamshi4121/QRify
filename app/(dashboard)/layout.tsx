@@ -60,7 +60,7 @@ export default function DashboardLayout({
                 <div className="flex h-16 items-center border-b border-slate-800 px-6">
                     <div className="flex items-center gap-2 font-bold text-xl text-white">
                         <QrCode className="h-6 w-6 text-indigo-400" />
-                        <span>QRify</span>
+                        <span>Qrezo</span>
                     </div>
                     <button
                         className="ml-auto lg:hidden"

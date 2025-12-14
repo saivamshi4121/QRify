@@ -1,6 +1,6 @@
 # Vercel Deployment Guide
 
-Complete guide for deploying QRify SaaS to Vercel.
+Complete guide for deploying Qrezo SaaS to Vercel.
 
 ---
 
@@ -26,7 +26,7 @@ git init
 git add .
 
 # Commit
-git commit -m "Initial commit: QRify SaaS ready for deployment"
+git commit -m "Initial commit: Qrezo SaaS ready for deployment"
 
 # Add your remote (replace with your repo URL)
 git remote add origin https://github.com/yourusername/smart-qr-saas.git
@@ -285,5 +285,5 @@ Before going live:
 
 ---
 
-**Ready to deploy? Follow the steps above and your QRify SaaS will be live! 🚀**
+**Ready to deploy? Follow the steps above and your Qrezo SaaS will be live! 🚀**
 

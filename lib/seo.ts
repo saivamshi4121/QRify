@@ -15,7 +15,7 @@ export interface SEOConfig {
 
 const defaultImage = "/og-image.png"; // You'll need to create this
 const siteUrl = process.env.NEXT_PUBLIC_APP_URL || process.env.NEXTAUTH_URL || "https://qrify.app";
-const siteName = "QRify - Smart QR Code Generator SaaS";
+const siteName = "Qrezo - Smart QR Code Generator SaaS";
 
 export function generateMetadata(config: SEOConfig): Metadata {
   const {
@@ -41,9 +41,9 @@ export function generateMetadata(config: SEOConfig): Metadata {
     title: fullTitle,
     description,
     keywords: keywords.length > 0 ? keywords.join(", ") : undefined,
-    authors: [{ name: "QRify" }],
-    creator: "QRify",
-    publisher: "QRify",
+    authors: [{ name: "Qrezo" }],
+    creator: "Qrezo",
+    publisher: "Qrezo",
     robots: noindex
       ? {
           index: false,
@@ -88,7 +88,7 @@ export function generateMetadata(config: SEOConfig): Metadata {
       title: fullTitle,
       description,
       images: [imageUrl],
-      creator: "@qrify", // Update with your Twitter handle
+      creator: "@qrezo", // Update with your Twitter handle
     },
     metadataBase: new URL(siteUrl),
     verification: {
@@ -119,7 +119,7 @@ export function generateStructuredData(type: "Website" | "Organization" | "Produ
         },
         publisher: {
           "@type": "Organization",
-          name: "QRify",
+          name: "Qrezo",
           url: siteUrl,
         },
       };
@@ -127,18 +127,18 @@ export function generateStructuredData(type: "Website" | "Organization" | "Produ
     case "Organization":
       return {
         ...baseSchema,
-        name: "QRify",
+        name: "Qrezo",
         url: siteUrl,
         logo: `${siteUrl}/logo.png`,
         sameAs: [
           // Add your social media links here
-          // "https://twitter.com/qrify",
-          // "https://linkedin.com/company/qrify",
+          // "https://twitter.com/qrezo",
+          // "https://linkedin.com/company/qrezo",
         ],
         contactPoint: {
           "@type": "ContactPoint",
           contactType: "Customer Service",
-          email: "support@qrify.app", // Update with your email
+          email: "support@qrezo.app", // Update with your email
         },
       };
 
@@ -149,7 +149,7 @@ export function generateStructuredData(type: "Website" | "Organization" | "Produ
         description: data?.description || "Create, track, and manage dynamic QR codes",
         brand: {
           "@type": "Brand",
-          name: "QRify",
+          name: "Qrezo",
         },
         offers: {
           "@type": "Offer",
@@ -183,4 +183,6 @@ export const defaultKeywords = [
   "India QR codes",
   "QR code API",
 ];
+
+
 

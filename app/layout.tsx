@@ -9,7 +9,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   ...genMeta({
-    title: "QRify - Smart QR Code Generator SaaS",
+    title: "Qrezo - Smart QR Code Generator SaaS",
     description: "Create, track, and manage dynamic QR codes with advanced analytics. Custom branding, real-time tracking, and bulk generation for businesses. Free plan available.",
     keywords: [
       "QR code generator",

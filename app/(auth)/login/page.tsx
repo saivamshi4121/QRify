@@ -59,7 +59,7 @@ function LoginForm() {
                 <div className="text-center">
                     <Link href="/" className="inline-flex items-center gap-2 font-bold text-2xl text-indigo-600 mb-6">
                         <QrCode className="h-8 w-8" />
-                        <span>QRify</span>
+                        <span>Qrezo</span>
                     </Link>
                     <h2 className="text-2xl font-bold tracking-tight text-slate-900">Welcome back</h2>
                     <p className="mt-2 text-sm text-slate-500">Sign in to your account to continue</p>

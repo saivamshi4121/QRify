@@ -68,7 +68,7 @@ export default function PricingPage() {
                 key: data.keyId,
                 amount: data.amount,
                 currency: data.currency,
-                name: "QRify SaaS",
+                name: "Qrezo SaaS",
                 description: `Upgrade to ${PRICING_PLANS[planKey as keyof typeof PRICING_PLANS].name}`,
                 order_id: data.orderId,
                 handler: async function (response: any) {

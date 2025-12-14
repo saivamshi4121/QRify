@@ -169,3 +169,5 @@ db.users.findOne({ email: "your-email@example.com" }, { role: 1 })
 - Check for typos, case sensitivity, or extra spaces
 - Use the exact email from the database
 
+
+

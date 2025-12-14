@@ -102,7 +102,7 @@ export const authOptions: NextAuthOptions = {
             },
         }),
         CredentialsProvider({
-            name: "QRify Login",
+            name: "Qrezo Login",
             credentials: {
                 email: { label: "Email", type: "email", placeholder: "email@example.com" },
                 password: { label: "Password", type: "password" },
