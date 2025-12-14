@@ -48,6 +48,7 @@ const QRCodeSchema = new Schema(
         scanCount: {
             type: Number,
             default: 0,
+            index: true,
         },
         // Design Fields
         foregroundColor: { type: String, default: "#000000" },

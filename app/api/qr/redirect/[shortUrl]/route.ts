@@ -10,6 +10,7 @@ export async function GET(
     { params }: { params: Promise<{ shortUrl: string }> | { shortUrl: string } }
 ) {
     try {
+        // STEP 1: Connect to MongoDB
         await dbConnect();
 
         // Handle both Promise and direct params (Next.js 15+ compatibility)
@@ -21,34 +22,37 @@ export async function GET(
             shortUrl = decodeURIComponent(shortUrl).trim();
         }
 
-        // Debug: Log the shortUrl we're looking for
-        console.log(`[QR Redirect] Looking for shortUrl: "${shortUrl}"`);
-        console.log(`[QR Redirect] Request URL: ${request.url}`);
-
-        // 1. Find the QR Code STRICTLY by shortUrl
-        // This is the only "Public Key" needed. We do not check userId here because
-        // scanning is a public action.
-        const qr = await QRCode.findOne({ shortUrl });
-
-        // Debug: Log if QR was found
-        if (!qr) {
-            console.error(`[QR Redirect] QR not found for shortUrl: "${shortUrl}"`);
-            // Also check if there are any QRs in the database
-            const totalQRs = await QRCode.countDocuments();
-            console.log(`[QR Redirect] Total QRs in database: ${totalQRs}`);
-            // List a few shortUrls for debugging
-            const sampleQRs = await QRCode.find().select("shortUrl").limit(5).lean();
-            console.log(`[QR Redirect] Sample shortUrls in DB:`, sampleQRs.map(q => q.shortUrl));
-        } else {
-            console.log(`[QR Redirect] QR found! ID: ${qr._id}, originalData: ${qr.originalData}`);
+        // STEP 2: Prevent Preview QR from affecting scan counts
+        // Preview QR codes should NOT increment scanCount
+        if (shortUrl && shortUrl.startsWith("preview-")) {
+            // Find preview QR for redirect only (no scan tracking)
+            const previewQr = await QRCode.findOne({ shortUrl });
+            if (previewQr && previewQr.isActive && previewQr.originalData) {
+                let destination = previewQr.originalData;
+                // Sanitize protocol for preview
+                if (previewQr.qrType === "url" || !previewQr.qrType) {
+                    if (!destination.match(/^https?:\/\//i) && !destination.startsWith("mailto:") && !destination.startsWith("tel:")) {
+                        destination = `https://${destination}`;
+                    }
+                }
+                return NextResponse.redirect(destination, { status: 302 });
+            }
+            return new NextResponse("Preview QR Code Not Found", { status: 404 });
         }
 
+        // Debug: Log the shortUrl we're looking for
+        console.log(`[QR Redirect] Looking for shortUrl: "${shortUrl}"`);
+
+        // STEP 3: Fetch QR by shortUrl
+        const qr = await QRCode.findOne({ shortUrl });
+
+        // STEP 4: Validate QR exists
         if (!qr) {
-            // Using a simple 404 text response. In production, could be a branded 404 page.
+            console.error(`[QR Redirect] QR not found for shortUrl: "${shortUrl}"`);
             return new NextResponse("QR Code Not Found", { status: 404 });
         }
 
-        // 2. Handle Legacy QR Codes (old QRs without shortUrl or originalData)
+        // Validate QR has required fields
         if (!qr.shortUrl || !qr.originalData || qr.originalData.trim() === "") {
             console.error(`[QR Redirect] Invalid legacy QR detected. QR ID: ${qr._id}, shortUrl: ${shortUrl}`);
             return NextResponse.json(
@@ -57,23 +61,32 @@ export async function GET(
             );
         }
 
-        // 3. Check Valid/Active Status
+        // STEP 5: Validate QR isActive === true
         if (!qr.isActive) {
             return new NextResponse("This QR Code has been deactivated by the owner.", { status: 403 });
         }
 
-        // 4. Check Scan Limit (if set)
+        // Check Scan Limit (if set) - check BEFORE incrementing
         if (qr.scanLimit && qr.scanCount >= qr.scanLimit) {
             return new NextResponse("This QR Code has reached its scan limit.", { status: 403 });
         }
 
-        // 5. Check Expiry Date (if set)
+        // Check Expiry Date (if set)
         if (qr.expiryDate && new Date() > qr.expiryDate) {
             return new NextResponse("This QR Code has expired.", { status: 403 });
         }
 
-        // 6. Log the Scan (Analytics) - This should NEVER block the redirect
-        // We do this in a fire-and-forget way to ensure redirect always works
+        // STEP 6: Increment scanCount using ATOMIC update (BEFORE redirect)
+        // This MUST happen synchronously before redirect to ensure count is accurate
+        // Using atomic $inc operator prevents race conditions in serverless environments
+        await QRCode.updateOne(
+            { _id: qr._id },
+            { $inc: { scanCount: 1 } }
+        );
+
+        // STEP 7: Log Analytics (NON-BLOCKING - fire and forget)
+        // Analytics logging should NEVER block the redirect
+        // Wrap in try/catch and fire-and-forget pattern
         (async () => {
             try {
                 const headersList = headers();
@@ -82,30 +95,26 @@ export async function GET(
                 // Extract device type from device object
                 const deviceType = clientInfo.device?.type || "unknown";
                 
-                // Fire and forget logging logic - Match ScanLog model schema exactly
+                // Create scan log entry (non-blocking)
                 await ScanLog.create({
-                    qrCodeId: qr._id,  // Must match model field name
+                    qrCodeId: qr._id,
                     ipAddress: clientInfo.ip || "Unknown",
                     userAgent: clientInfo.userAgent || "Unknown",
-                    deviceType: deviceType,  // mobile, tablet, desktop, etc.
+                    deviceType: deviceType,
                     os: clientInfo.device?.os || "Unknown",
                     browser: clientInfo.device?.browser || "Unknown",
                     country: clientInfo.geo?.country || "Unknown",
                     city: clientInfo.geo?.city || "Unknown",
                     scannedAt: new Date(),
                 });
-
-                // Increment atomic counter
-                await QRCode.findByIdAndUpdate(qr._id, { $inc: { scanCount: 1 } });
             } catch (logError) {
-                // Logging failure should NEVER stop the redirect
+                // Analytics logging failure MUST NOT affect redirect
                 console.error("Analytics Error (non-blocking):", logError);
             }
         })();
 
-        // 7. Perform the Real Redirect to ORIGINAL DATA
-        // We TRUST originalData because it can only be set/updated by the owner via Authorized API.
-        // originalData is the user's chosen destination - this is what they want to redirect to
+        // STEP 8: Perform HTTP 302 Redirect
+        // Redirect happens AFTER scan count is incremented
         let destination = qr.originalData;
 
         // Debug logging
