@@ -1,6 +1,6 @@
 import { MetadataRoute } from "next";
 
-const siteUrl = process.env.NEXT_PUBLIC_APP_URL || process.env.NEXTAUTH_URL || "https://qrify.app";
+const siteUrl = "https://qrezo.stackhaus.dev";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = siteUrl.replace(/\/$/, "");

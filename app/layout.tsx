@@ -9,26 +9,17 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   ...genMeta({
-    title: "Qrezo - Smart QR Code Generator SaaS",
-    description: "Create, track, and manage dynamic QR codes with advanced analytics. Custom branding, real-time tracking, and bulk generation for businesses. Free plan available.",
+    title: "Qrezo — Print once. Change links forever.",
+    description: "Create dynamic QR codes with custom branding and real-time analytics. Update destinations anytime without reprinting.",
     keywords: [
       "QR code generator",
       "dynamic QR codes",
       "QR code analytics",
       "custom QR codes",
       "QR code management",
-      "business QR codes",
-      "QR code tracking",
-      "QR code SaaS",
-      "India QR codes",
-      "QR code API",
     ],
     url: "/",
-    type: "website",
   }),
-  verification: {
-    google: "U6pzhL-mhhEQJR3ch2urTIkwKufFDdXe5r9Sh99aKXk",
-  },
 };
 
 export default function RootLayout({
