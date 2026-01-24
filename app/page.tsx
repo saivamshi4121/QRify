@@ -13,6 +13,7 @@ import {
 import { generateMetadata as genMeta, generateStructuredData } from "@/lib/seo";
 import type { Metadata } from "next";
 import Script from "next/script";
+import { ProductHuntEmbed } from "@/components/marketing/ProductHuntEmbed";
 
 export const metadata: Metadata = genMeta({
   title: "Qrezo — Print once. Change links forever.",
@@ -292,6 +293,9 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* Product Hunt Launch */}
+      <ProductHuntEmbed />
+
       {/* Footer */}
       <footer className="bg-white border-t border-slate-200 py-12 px-6">
         <div className="mx-auto max-w-7xl flex flex-col md:flex-row justify-between items-center gap-6">
@@ -309,6 +313,6 @@ export default function LandingPage() {
           </div>
         </div>
       </footer>
-    </div>
+    </div >
   );
 }
