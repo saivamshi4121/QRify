@@ -15,7 +15,7 @@ export interface SEOConfig {
 
 const defaultImage = "/og.png"; // Updated default image
 // Prioritize the custom domain, then env vars, then fallback
-const siteUrl = "https://qrezo.stackhaus.dev"; 
+const siteUrl = "https://qrezo.stackhaus.dev";
 const siteName = "Qrezo";
 
 export function generateMetadata(config: SEOConfig): Metadata {
@@ -50,24 +50,24 @@ export function generateMetadata(config: SEOConfig): Metadata {
     publisher: "Qrezo",
     robots: noindex
       ? {
+        index: false,
+        follow: false,
+        googleBot: {
           index: false,
           follow: false,
-          googleBot: {
-            index: false,
-            follow: false,
-          },
-        }
+        },
+      }
       : {
+        index: true,
+        follow: true,
+        googleBot: {
           index: true,
           follow: true,
-          googleBot: {
-            index: true,
-            follow: true,
-            "max-video-preview": -1,
-            "max-image-preview": "large",
-            "max-snippet": -1,
-          },
+          "max-video-preview": -1,
+          "max-image-preview": "large",
+          "max-snippet": -1,
         },
+      },
     alternates: {
       canonical: canonicalUrl,
     },
@@ -92,7 +92,7 @@ export function generateMetadata(config: SEOConfig): Metadata {
       title: fullTitle,
       description,
       images: [imageUrl],
-      creator: "@qrezo", 
+      creator: "@qrezo",
     },
     metadataBase: new URL(siteUrl),
     verification: {
@@ -187,6 +187,10 @@ export const defaultKeywords = [
   "business QR codes",
   "QR code tracking",
   "QR code SaaS",
+  "qr code",
+  "qr",
+  "qr generate free",
+  "free qr code generator",
 ];
 
 
