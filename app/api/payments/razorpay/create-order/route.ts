@@ -2,17 +2,19 @@ import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import Razorpay from "razorpay";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import { PRICING_PLANS, PlanType } from "@/lib/pricing";
+import { PRICING_PLANS } from "@/lib/pricing";
+import { checkoutPlanSchema } from "@/lib/validation/schemas";
+import { handleApiError } from "@/core/errors/handleApiError";
+import { UnauthorizedError } from "@/core/errors/AppError";
 
-// Lazy Razorpay initialization to avoid build-time errors
 function getRazorpay() {
     const keyId = process.env.RAZORPAY_KEY_ID;
     const keySecret = process.env.RAZORPAY_KEY_SECRET;
-    
+
     if (!keyId || !keySecret) {
         throw new Error("Razorpay credentials are not configured");
     }
-    
+
     return new Razorpay({
         key_id: keyId,
         key_secret: keySecret,
@@ -24,26 +26,13 @@ export async function POST(request: Request) {
         const session = await getServerSession(authOptions);
 
         if (!session || !session.user) {
-            return NextResponse.json(
-                { success: false, message: "Unauthorized" },
-                { status: 401 }
-            );
+            throw new UnauthorizedError("Unauthorized");
         }
 
         const body = await request.json();
-        const plan = body.plan as PlanType;
-
-        if (!PRICING_PLANS[plan] || plan === "free") {
-            return NextResponse.json(
-                { success: false, message: "Invalid plan selected" },
-                { status: 400 }
-            );
-        }
-
+        const { plan } = checkoutPlanSchema.parse(body);
         const planConfig = PRICING_PLANS[plan];
         const amountInPaise = planConfig.price * 100;
-
-        // Initialize Razorpay (lazy)
         const razorpay = getRazorpay();
 
         const options = {
@@ -67,10 +56,6 @@ export async function POST(request: Request) {
         });
 
     } catch (error) {
-        console.error("Razorpay Order Creation Error:", error);
-        return NextResponse.json(
-            { success: false, message: "Internal Server Error" },
-            { status: 500 }
-        );
+        return handleApiError(error, "Razorpay Order Creation Error");
     }
 }

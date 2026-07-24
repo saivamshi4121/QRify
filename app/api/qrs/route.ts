@@ -1,21 +1,44 @@
 import { NextResponse } from "next/server";
-import { getServerSession } from "next-auth";
+import mongoose from "mongoose";
 import dbConnect from "@/config/dbConnect";
 import QRCode from "@/models/QRCode";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { resolveWorkspace } from "@/core/workspace/resolveWorkspace";
+import { handleApiError } from "@/core/errors/handleApiError";
 
 export async function GET() {
     try {
-        const session = await getServerSession(authOptions);
-        if (!session || !session.user) {
-            return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
-        }
-
+        const { workspaceId, userId } = await resolveWorkspace();
         await dbConnect();
-        const qrs = await QRCode.find({ userId: session.user.id }).sort({ createdAt: -1 });
+
+        // Prefer workspace scope; include legacy orphans for this user (missing workspaceId)
+        const qrs = await QRCode.find({
+            $or: [
+                { workspaceId },
+                {
+                    userId,
+                    $or: [
+                        { workspaceId: { $exists: false } },
+                        { workspaceId: null },
+                    ],
+                },
+            ],
+        }).sort({ createdAt: -1 });
+
+        // Opportunistic backfill so future workspace-only queries stay correct
+        const workspaceObjectId = new mongoose.Types.ObjectId(workspaceId);
+        await mongoose.connection.collection("qrcodes").updateMany(
+            {
+                userId: new mongoose.Types.ObjectId(userId),
+                $or: [
+                    { workspaceId: { $exists: false } },
+                    { workspaceId: null },
+                ],
+            },
+            { $set: { workspaceId: workspaceObjectId } }
+        );
 
         return NextResponse.json({ success: true, data: qrs });
     } catch (error) {
-        return NextResponse.json({ success: false, message: String(error) }, { status: 500 });
+        return handleApiError(error, "List QRs Error");
     }
 }

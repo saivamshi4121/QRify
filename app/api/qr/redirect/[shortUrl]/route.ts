@@ -52,8 +52,10 @@ export async function GET(
             return new NextResponse("QR Code Not Found", { status: 404 });
         }
 
-        // Validate QR has required fields
-        if (!qr.shortUrl || !qr.originalData || qr.originalData.trim() === "") {
+        // Validate destination: need originalData OR a smartPageId link
+        const hasOriginal =
+            typeof qr.originalData === "string" && qr.originalData.trim() !== "";
+        if (!qr.shortUrl || (!hasOriginal && !qr.smartPageId)) {
             console.error(`[QR Redirect] Invalid legacy QR detected. QR ID: ${qr._id}, shortUrl: ${shortUrl}`);
             return NextResponse.json(
                 { success: false, message: "Invalid legacy QR" },
@@ -113,14 +115,42 @@ export async function GET(
             }
         })();
 
-        // STEP 8: Perform HTTP 302 Redirect
-        // Redirect happens AFTER scan count is incremented
+        // STEP 8: Prefer published Smart Page, otherwise originalData redirect
+        if (qr.smartPageId) {
+            const SmartPage = (await import("@/models/SmartPage")).default;
+            const page = await SmartPage.findOne({
+                _id: qr.smartPageId,
+                isPublished: true,
+            })
+                .select("slug")
+                .lean();
+
+            if (page?.slug) {
+                const baseUrl =
+                    process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+                const url = new URL(`${baseUrl}/p/${page.slug}`);
+                url.searchParams.set("qrId", String(qr._id));
+
+                // Forward common location query params from the scan URL if present
+                try {
+                    const incoming = new URL(request.url);
+                    for (const key of ["table", "zone", "waiter"]) {
+                        const value = incoming.searchParams.get(key);
+                        if (value) url.searchParams.set(key, value);
+                    }
+                } catch {
+                    // ignore
+                }
+
+                console.log(`[QR Redirect] Redirecting to Smart Page: ${url.toString()}`);
+                return NextResponse.redirect(url.toString(), { status: 302 });
+            }
+        }
+
         let destination = qr.originalData;
 
-        // Debug logging
         console.log(`[QR Redirect] shortUrl: ${shortUrl}, originalData: ${destination}, qrType: ${qr.qrType}`);
 
-        // Validate that originalData exists and is not empty
         if (!destination || destination.trim() === "") {
             console.error(`QR Code ${shortUrl} has empty originalData. QR Object:`, JSON.stringify(qr, null, 2));
             return new NextResponse("QR Code destination is not configured.", { status: 500 });

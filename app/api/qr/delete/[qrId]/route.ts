@@ -1,67 +1,51 @@
 import { NextResponse } from "next/server";
-import { getServerSession } from "next-auth";
 import dbConnect from "@/config/dbConnect";
 import QRCode from "@/models/QRCode";
 import ScanLog from "@/models/ScanLog";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { resolveWorkspace } from "@/core/workspace/resolveWorkspace";
+import { handleApiError } from "@/core/errors/handleApiError";
+import { ForbiddenError } from "@/core/errors/AppError";
+import { logger } from "@/lib/logger";
 
 export async function DELETE(
-    request: Request,
+    _request: Request,
     { params }: { params: Promise<{ qrId: string }> | { qrId: string } }
 ) {
     try {
-        const session = await getServerSession(authOptions);
-        if (!session || !session.user) {
-            return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
-        }
+        const { workspaceId } = await resolveWorkspace();
 
-        // Handle both Promise and direct params (Next.js 15+ compatibility)
         const resolvedParams = params instanceof Promise ? await params : params;
         const { qrId } = resolvedParams;
 
         await dbConnect();
 
-        // STRICT OWNERSHIP CHECK - Only delete if user owns the QR
         const qr = await QRCode.findOne({
             _id: qrId,
-            userId: session.user.id  // Critical: Only delete own QRs
+            workspaceId,
         });
 
         if (!qr) {
-            return NextResponse.json(
-                { message: "QR Code not found or you are not authorized to delete it." },
-                { status: 403 }
+            throw new ForbiddenError(
+                "QR Code not found or you are not authorized to delete it."
             );
         }
 
-        // Delete associated scan logs first (optional, but good for data hygiene)
         try {
-            await ScanLog.deleteMany({ qrId: qr._id });
+            await ScanLog.deleteMany({ qrCodeId: qr._id });
         } catch (logError) {
-            // Log but don't fail if scan log deletion fails
-            console.warn("Failed to delete scan logs:", logError);
+            logger.warn("Failed to delete scan logs", {
+                qrId: String(qr._id),
+                error: String(logError),
+            });
         }
 
-        // Delete the QR Code
         await QRCode.findByIdAndDelete(qrId);
 
         return NextResponse.json({
             success: true,
-            message: "QR Code deleted successfully"
+            message: "QR Code deleted successfully",
         });
-
     } catch (error) {
-        console.error("Delete QR Error:", error);
-        return NextResponse.json(
-            { success: false, message: String(error) },
-            { status: 500 }
-        );
+        return handleApiError(error, "Delete QR Error");
     }
 }
-
-
-
-
-
-
-

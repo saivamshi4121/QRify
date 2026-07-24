@@ -4,56 +4,68 @@ import dbConnect from "@/config/dbConnect";
 import User from "@/models/User";
 import QRCode from "@/models/QRCode";
 import ScanLog from "@/models/ScanLog";
+import Workspace from "@/models/Workspace";
+import WorkspaceMember from "@/models/WorkspaceMember";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { handleApiError } from "@/core/errors/handleApiError";
+import { UnauthorizedError } from "@/core/errors/AppError";
 
-export async function DELETE(request: Request) {
+export async function DELETE() {
     try {
         const session = await getServerSession(authOptions);
-        if (!session || !session.user) {
-            return NextResponse.json(
-                { success: false, message: "Unauthorized" },
-                { status: 401 }
-            );
+        if (!session?.user?.id) {
+            throw new UnauthorizedError("Unauthorized");
         }
 
         await dbConnect();
         const userId = session.user.id;
 
-        // Get all user's QR codes
         const userQRCodes = await QRCode.find({ userId }).select("_id");
-        const qrCodeIds = userQRCodes.map(qr => qr._id);
+        const qrCodeIds = userQRCodes.map((qr) => qr._id);
 
-        // Delete all scan logs for user's QR codes
         if (qrCodeIds.length > 0) {
             await ScanLog.deleteMany({ qrCodeId: { $in: qrCodeIds } });
-            console.log(`Deleted ${qrCodeIds.length} QR codes' scan logs for user ${userId}`);
         }
 
-        // Delete all user's QR codes
         await QRCode.deleteMany({ userId });
-        console.log(`Deleted all QR codes for user ${userId}`);
 
-        // Delete user account
+        // Remove memberships and workspaces owned by this user
+        const ownedWorkspaces = await Workspace.find({ ownerId: userId }).select(
+            "_id"
+        );
+        const ownedIds = ownedWorkspaces.map((w) => w._id);
+
+        await WorkspaceMember.deleteMany({
+            $or: [{ userId }, { workspaceId: { $in: ownedIds } }],
+        });
+
+        if (ownedIds.length > 0) {
+            const SmartPage = (await import("@/models/SmartPage")).default;
+            const Block = (await import("@/models/Block")).default;
+            const pages = await SmartPage.find({
+                workspaceId: { $in: ownedIds },
+            }).select("_id");
+            const pageIds = pages.map((p) => p._id);
+            if (pageIds.length > 0) {
+                await Block.deleteMany({ smartPageId: { $in: pageIds } });
+            }
+            const FeedbackResponse = (await import("@/models/FeedbackResponse"))
+                .default;
+            await FeedbackResponse.deleteMany({
+                workspaceId: { $in: ownedIds },
+            });
+            await SmartPage.deleteMany({ workspaceId: { $in: ownedIds } });
+        }
+
+        await Workspace.deleteMany({ ownerId: userId });
+
         await User.findByIdAndDelete(userId);
-        console.log(`Deleted user account ${userId}`);
 
         return NextResponse.json({
             success: true,
             message: "Account and all associated data deleted successfully",
         });
-
     } catch (error) {
-        console.error("Delete Account Error:", error);
-        return NextResponse.json(
-            { success: false, message: "Internal Server Error" },
-            { status: 500 }
-        );
+        return handleApiError(error, "Delete Account Error");
     }
 }
-
-
-
-
-
-
-

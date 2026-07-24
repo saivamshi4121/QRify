@@ -4,15 +4,6 @@ import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { Activity, QrCode, CheckCircle, XCircle, TrendingUp, Loader2 } from "lucide-react";
-import {
-    AreaChart,
-    Area,
-    XAxis,
-    YAxis,
-    CartesianGrid,
-    Tooltip,
-    ResponsiveContainer,
-} from "recharts";
 import { StatCard } from "@/app/(dashboard)/_components/StatCard";
 import { SectionCard } from "@/app/(dashboard)/_components/SectionCard";
 import { Toaster, toast } from "sonner";
@@ -47,8 +38,7 @@ export default function DashboardPage() {
         async function fetchData() {
             if (!session?.user?.id || status !== "authenticated") return;
             try {
-                // Use real session usage
-                const res = await fetch(`/api/dashboard/overview?userId=${session.user.id}`);
+                const res = await fetch("/api/dashboard/overview");
                 if (!res.ok) {
                     throw new Error("Failed to fetch dashboard data");
                 }

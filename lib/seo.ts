@@ -15,7 +15,7 @@ export interface SEOConfig {
 
 const defaultImage = "/og-image.png"; // You'll need to create this
 const siteUrl = process.env.NEXT_PUBLIC_APP_URL || process.env.NEXTAUTH_URL || "https://qrify.app";
-const siteName = "Qrezo - Smart QR Code Generator SaaS";
+const siteName = "Qrezo";
 
 export function generateMetadata(config: SEOConfig): Metadata {
   const {
@@ -183,6 +183,7 @@ export const defaultKeywords = [
   "India QR codes",
   "QR code API",
 ];
+
 
 
 

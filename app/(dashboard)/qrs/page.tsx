@@ -32,36 +32,101 @@ interface QRCodeType {
     createdAt: string;
     shortUrl: string;
     originalData: string;
+    smartPageId?: string | null;
 }
 
+type SmartPageOption = {
+    _id: string;
+    title: string;
+    slug: string;
+    isPublished: boolean;
+};
+
 // Simple internal modal component
-function EditLinkModal({ isOpen, onClose, qr, onUpdate }: any) {
-    const [url, setUrl] = useState(qr?.originalData || "");
+function EditLinkModal({
+    isOpen,
+    onClose,
+    qr,
+    onUpdate,
+}: {
+    isOpen: boolean;
+    onClose: () => void;
+    qr: QRCodeType | null;
+    onUpdate: () => void;
+}) {
+    const [mode, setMode] = useState<"url" | "smartpage">("url");
+    const [url, setUrl] = useState("");
+    const [smartPageId, setSmartPageId] = useState<string>("");
+    const [pages, setPages] = useState<SmartPageOption[]>([]);
     const [loading, setLoading] = useState(false);
+    const [loadingPages, setLoadingPages] = useState(false);
 
     useEffect(() => {
-        if (qr) setUrl(qr.originalData);
-    }, [qr]);
+        if (!qr || !isOpen) return;
+        setUrl(qr.originalData || "");
+        if (qr.smartPageId) {
+            setMode("smartpage");
+            setSmartPageId(String(qr.smartPageId));
+        } else {
+            setMode("url");
+            setSmartPageId("");
+        }
+    }, [qr, isOpen]);
 
-    if (!isOpen) return null;
+    useEffect(() => {
+        if (!isOpen) return;
+        setLoadingPages(true);
+        fetch("/api/v2/smartpages")
+            .then((r) => r.json())
+            .then((json) => {
+                if (json.success) setPages(json.data || []);
+            })
+            .finally(() => setLoadingPages(false));
+    }, [isOpen]);
+
+    if (!isOpen || !qr) return null;
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setLoading(true);
         try {
+            const body =
+                mode === "smartpage"
+                    ? {
+                          smartPageId: smartPageId || null,
+                          ...(url.trim()
+                              ? { newOriginalData: url.trim() }
+                              : {}),
+                      }
+                    : {
+                          newOriginalData: url.trim(),
+                          smartPageId: null,
+                      };
+
+            if (mode === "url" && !url.trim()) {
+                throw new Error("Destination URL is required");
+            }
+            if (mode === "smartpage" && !smartPageId) {
+                throw new Error("Select a Review Page");
+            }
+
             const res = await fetch(`/api/qr/update-link/${qr._id}`, {
                 method: "PATCH",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ newOriginalData: url })
+                body: JSON.stringify(body),
             });
             const json = await res.json();
             if (!res.ok) throw new Error(json.message);
 
-            toast.success("Destination URL updated!");
-            onUpdate(); // refresh list
+            toast.success(
+                mode === "smartpage"
+                    ? "Linked to Review Page"
+                    : "Destination URL updated!"
+            );
+            onUpdate();
             onClose();
-        } catch (e: any) {
-            toast.error(e.message || "Failed to update");
+        } catch (e: unknown) {
+            toast.error(e instanceof Error ? e.message : "Failed to update");
         } finally {
             setLoading(false);
         }
@@ -71,29 +136,128 @@ function EditLinkModal({ isOpen, onClose, qr, onUpdate }: any) {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
             <div className="bg-white rounded-xl shadow-xl w-full max-w-md overflow-hidden animate-in zoom-in duration-200">
                 <div className="px-6 py-4 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
-                    <h3 className="font-semibold text-slate-900">Edit Destination Link</h3>
-                    <button onClick={onClose}><X className="h-5 w-5 text-slate-400 hover:text-slate-600" /></button>
+                    <h3 className="font-semibold text-slate-900">
+                        Edit Destination
+                    </h3>
+                    <button type="button" onClick={onClose}>
+                        <X className="h-5 w-5 text-slate-400 hover:text-slate-600" />
+                    </button>
                 </div>
                 <form onSubmit={handleSubmit} className="p-6 space-y-4">
-                    <div>
-                        <label className="block text-sm font-medium text-slate-700 mb-1">New Destination URL</label>
-                        <input
-                            type="text"
-                            required
-                            value={url}
-                            onChange={(e) => setUrl(e.target.value)}
-                            className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:ring-indigo-500 focus:border-indigo-500 outline-none"
-                        />
+                    <div className="flex gap-2 rounded-lg bg-slate-100 p-1">
+                        <button
+                            type="button"
+                            onClick={() => setMode("url")}
+                            className={`flex-1 rounded-md px-3 py-1.5 text-sm font-medium ${
+                                mode === "url"
+                                    ? "bg-white text-slate-900 shadow-sm"
+                                    : "text-slate-500"
+                            }`}
+                        >
+                            URL
+                        </button>
+                        <button
+                            type="button"
+                            onClick={() => setMode("smartpage")}
+                            className={`flex-1 rounded-md px-3 py-1.5 text-sm font-medium ${
+                                mode === "smartpage"
+                                    ? "bg-white text-slate-900 shadow-sm"
+                                    : "text-slate-500"
+                            }`}
+                        >
+                            Review Page
+                        </button>
                     </div>
+
+                    {mode === "url" ? (
+                        <div>
+                            <label className="block text-sm font-medium text-slate-700 mb-1">
+                                Destination URL
+                            </label>
+                            <input
+                                type="text"
+                                required
+                                value={url}
+                                onChange={(e) => setUrl(e.target.value)}
+                                className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:ring-indigo-500 focus:border-indigo-500 outline-none"
+                            />
+                            <p className="mt-1 text-xs text-slate-400">
+                                Unlinks any Review Page and redirects to this URL.
+                            </p>
+                        </div>
+                    ) : (
+                        <div className="space-y-3">
+                            <div>
+                                <label className="block text-sm font-medium text-slate-700 mb-1">
+                                    Review Page
+                                </label>
+                                {loadingPages ? (
+                                    <div className="flex items-center gap-2 text-sm text-slate-400">
+                                        <Loader2 className="h-4 w-4 animate-spin" />
+                                        Loading pages…
+                                    </div>
+                                ) : (
+                                    <select
+                                        required
+                                        value={smartPageId}
+                                        onChange={(e) =>
+                                            setSmartPageId(e.target.value)
+                                        }
+                                        className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm outline-none"
+                                    >
+                                        <option value="">Select a page…</option>
+                                        {pages.map((p) => (
+                                            <option key={p._id} value={p._id}>
+                                                {p.title}
+                                                {p.isPublished
+                                                    ? ""
+                                                    : " (draft)"}{" "}
+                                                — /p/{p.slug}
+                                            </option>
+                                        ))}
+                                    </select>
+                                )}
+                                {pages.length === 0 && !loadingPages ? (
+                                    <p className="mt-1 text-xs text-amber-600">
+                                        No Review Pages yet. Create one under
+                                        Review Pages.
+                                    </p>
+                                ) : null}
+                            </div>
+                            <div>
+                                <label className="block text-sm font-medium text-slate-700 mb-1">
+                                    Fallback URL (optional)
+                                </label>
+                                <input
+                                    type="text"
+                                    value={url}
+                                    onChange={(e) => setUrl(e.target.value)}
+                                    className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm outline-none"
+                                    placeholder="Used if page is unpublished"
+                                />
+                            </div>
+                        </div>
+                    )}
+
                     <div className="flex justify-end gap-2 pt-2">
-                        <button type="button" onClick={onClose} className="px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-100 rounded-md">Cancel</button>
+                        <button
+                            type="button"
+                            onClick={onClose}
+                            className="px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-100 rounded-md"
+                        >
+                            Cancel
+                        </button>
                         <button
                             type="submit"
                             disabled={loading}
                             className="px-4 py-2 text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 rounded-md flex items-center gap-2"
                         >
-                            {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
-                            Update Link
+                            {loading ? (
+                                <Loader2 className="h-4 w-4 animate-spin" />
+                            ) : (
+                                <Save className="h-4 w-4" />
+                            )}
+                            Save
                         </button>
                     </div>
                 </form>

@@ -3,35 +3,35 @@ import mongoose from "mongoose";
 import dbConnect from "@/config/dbConnect";
 import ScanLog from "@/models/ScanLog";
 import QRCode from "@/models/QRCode";
+import { resolveWorkspace } from "@/core/workspace/resolveWorkspace";
+import { handleApiError } from "@/core/errors/handleApiError";
+import { NotFoundError, BadRequestError } from "@/core/errors/AppError";
 
 export async function GET(
-    request: Request,
+    _request: Request,
     { params }: { params: Promise<{ qrId: string }> | { qrId: string } }
 ) {
     try {
+        const { workspaceId } = await resolveWorkspace();
+
         await dbConnect();
         const resolvedParams = params instanceof Promise ? await params : params;
         const { qrId } = resolvedParams;
 
         if (!mongoose.Types.ObjectId.isValid(qrId)) {
-            return NextResponse.json(
-                { success: false, message: "Invalid QR ID" },
-                { status: 400 }
-            );
+            throw new BadRequestError("Invalid QR ID");
         }
 
-        // Ensure QR Exists
-        const qrExists = await QRCode.findById(qrId);
+        const qrExists = await QRCode.findOne({
+            _id: qrId,
+            workspaceId,
+        });
         if (!qrExists) {
-            return NextResponse.json(
-                { success: false, message: "QR Code not found" },
-                { status: 404 }
-            );
+            throw new NotFoundError("QR Code not found");
         }
 
         const objectId = new mongoose.Types.ObjectId(qrId);
 
-        // Aggregation Pipeline for Analytics
         const stats = await ScanLog.aggregate([
             { $match: { qrCodeId: objectId } },
             {
@@ -39,16 +39,21 @@ export async function GET(
                     totalScans: [{ $count: "count" }],
                     uniqueScans: [
                         { $group: { _id: "$ipAddress" } },
-                        { $count: "count" }
+                        { $count: "count" },
                     ],
                     scansByDate: [
                         {
                             $group: {
-                                _id: { $dateToString: { format: "%Y-%m-%d", date: "$scannedAt" } },
+                                _id: {
+                                    $dateToString: {
+                                        format: "%Y-%m-%d",
+                                        date: "$scannedAt",
+                                    },
+                                },
                                 count: { $sum: 1 },
                             },
                         },
-                        { $sort: { _id: 1 } }, // Sort by date ascending
+                        { $sort: { _id: 1 } },
                     ],
                     deviceBreakdown: [
                         {
@@ -65,35 +70,41 @@ export async function GET(
                                 count: { $sum: 1 },
                             },
                         },
-                        { $sort: { count: -1 } }, // Most popular countries first
-                        { $limit: 10 }
+                        { $sort: { count: -1 } },
+                        { $limit: 10 },
                     ],
                 },
             },
         ]);
 
-        // Format the output
         const data = stats[0];
         const totalScans = data.totalScans[0]?.count || 0;
         const uniqueScans = data.uniqueScans[0]?.count || 0;
 
-        // Format scansByDate
-        const scansByDate = data.scansByDate.map((item: any) => ({
-            date: item._id,
-            count: item.count,
-        }));
+        const scansByDate = data.scansByDate.map(
+            (item: { _id: string; count: number }) => ({
+                date: item._id,
+                count: item.count,
+            })
+        );
 
-        // Format deviceBreakdown
-        const deviceBreakdown = data.deviceBreakdown.reduce((acc: any, item: any) => {
-            acc[item._id || "unknown"] = item.count;
-            return acc;
-        }, {});
+        const deviceBreakdown = data.deviceBreakdown.reduce(
+            (
+                acc: Record<string, number>,
+                item: { _id: string | null; count: number }
+            ) => {
+                acc[item._id || "unknown"] = item.count;
+                return acc;
+            },
+            {}
+        );
 
-        // Format countryBreakdown
-        const countryBreakdown = data.countryBreakdown.map((item: any) => ({
-            country: item._id || "Unknown",
-            count: item.count,
-        }));
+        const countryBreakdown = data.countryBreakdown.map(
+            (item: { _id: string | null; count: number }) => ({
+                country: item._id || "Unknown",
+                count: item.count,
+            })
+        );
 
         return NextResponse.json({
             success: true,
@@ -105,12 +116,7 @@ export async function GET(
                 countryBreakdown,
             },
         });
-
     } catch (error) {
-        console.error("Stats API Error:", error);
-        return NextResponse.json(
-            { success: false, message: "Internal Server Error", error: String(error) },
-            { status: 500 }
-        );
+        return handleApiError(error, "Stats API Error");
     }
 }
