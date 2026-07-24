@@ -3,25 +3,18 @@ import mongoose from "mongoose";
 import dbConnect from "@/config/dbConnect";
 import QRCode from "@/models/QRCode";
 import ScanLog from "@/models/ScanLog";
+import { resolveWorkspace } from "@/core/workspace/resolveWorkspace";
+import { handleApiError } from "@/core/errors/handleApiError";
 
-export async function GET(request: NextRequest) {
+export async function GET(_request: NextRequest) {
     try {
+        const { workspaceId } = await resolveWorkspace();
         await dbConnect();
 
-        // Use searchParams to get userId
-        const { searchParams } = new URL(request.url);
-        const userId = searchParams.get("userId");
+        const workspaceObjectId = new mongoose.Types.ObjectId(workspaceId);
 
-        if (!userId || !mongoose.Types.ObjectId.isValid(userId)) {
-            return NextResponse.json(
-                { success: false, message: "Valid User ID is required" },
-                { status: 400 }
-            );
-        }
-
-        // 1. Get QR Code Stats for User
         const qrStats = await QRCode.aggregate([
-            { $match: { userId: new mongoose.Types.ObjectId(userId) } },
+            { $match: { workspaceId: workspaceObjectId } },
             {
                 $group: {
                     _id: null,
@@ -37,11 +30,11 @@ export async function GET(request: NextRequest) {
             },
         ]);
 
-        // 2. Get Recent Scans for User's QRs
-        // First find all QR IDs for this user
-        const userQrs = await QRCode.find({ userId }).select("_id qrName").lean();
-        const qrIds = userQrs.map(q => q._id);
-        const qrMap = userQrs.reduce((acc: any, qr: any) => {
+        const workspaceQrs = await QRCode.find({ workspaceId })
+            .select("_id qrName")
+            .lean();
+        const qrIds = workspaceQrs.map((q) => q._id);
+        const qrMap = workspaceQrs.reduce((acc: Record<string, string>, qr) => {
             acc[qr._id.toString()] = qr.qrName;
             return acc;
         }, {});
@@ -51,7 +44,7 @@ export async function GET(request: NextRequest) {
             .limit(10)
             .lean();
 
-        const recentScans = recentScansRaw.map(scan => ({
+        const recentScans = recentScansRaw.map((scan) => ({
             qrCodeId: scan.qrCodeId,
             qrName: qrMap[scan.qrCodeId.toString()] || "Unknown QR",
             scannedAt: scan.scannedAt,
@@ -76,12 +69,7 @@ export async function GET(request: NextRequest) {
                 recentScans,
             },
         });
-
     } catch (error) {
-        console.error("Dashboard Stats Error:", error);
-        return NextResponse.json(
-            { success: false, message: "Internal Server Error", error: String(error) },
-            { status: 500 }
-        );
+        return handleApiError(error, "Dashboard Stats Error");
     }
 }

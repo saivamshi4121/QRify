@@ -5,89 +5,6 @@ import bcrypt from "bcryptjs";
 import dbConnect from "@/config/dbConnect";
 import User from "@/models/User";
 
-// Helper to normalize the callback URL to use localhost if it's a private IP
-// Google OAuth requires device_id and device_name for private IPs, which is complex to implement.
-// The simplest solution is to use localhost instead of private IP.
-// For production, this function will return the public domain as-is.
-function getNormalizedCallbackUrl(): string | undefined {
-    const nextAuthUrl = process.env.NEXTAUTH_URL;
-    const isProduction = process.env.NODE_ENV === "production";
-    
-    if (!nextAuthUrl) {
-        if (isProduction) {
-            // In production, NEXTAUTH_URL must be set - log error but don't throw to avoid breaking the app
-            console.error("⚠️ CRITICAL: NEXTAUTH_URL is required in production. Please set it to your public domain (e.g., https://yourdomain.com)");
-            // Return undefined - NextAuth will use the request URL, but Google OAuth may fail
-            return undefined;
-        }
-        // For development, default to localhost
-        console.warn("NEXTAUTH_URL is not set. Defaulting to http://localhost:3000 for Google OAuth compatibility.");
-        return "http://localhost:3000";
-    }
-    
-    // If NEXTAUTH_URL uses a private IP, convert it to localhost (development only)
-    try {
-        const url = new URL(nextAuthUrl);
-        const hostname = url.hostname;
-        
-        // Check if it's a private IP
-        const isPrivateIP = hostname.startsWith("192.168.") || 
-                           hostname.startsWith("10.") || 
-                           hostname.startsWith("172.16.") ||
-                           hostname === "127.0.0.1";
-        
-        if (isPrivateIP && hostname !== "localhost") {
-            if (isProduction) {
-                // In production, private IPs should not be used
-                console.error(`⚠️ CRITICAL: NEXTAUTH_URL uses private IP (${hostname}) in production. This is not supported. Please use a public domain (e.g., https://yourdomain.com)`);
-                // Return as-is but log error - Google OAuth will likely fail
-                return nextAuthUrl;
-            }
-            // In development, convert private IP to localhost
-            console.warn(`NEXTAUTH_URL uses private IP (${hostname}). Converting to localhost for Google OAuth compatibility.`);
-            url.hostname = "localhost";
-            return url.toString();
-        }
-    } catch (e) {
-        // If URL parsing fails, return as is (but log error in production)
-        if (isProduction) {
-            console.error("Failed to parse NEXTAUTH_URL:", e);
-        } else {
-            console.warn("Failed to parse NEXTAUTH_URL:", e);
-        }
-    }
-    
-    // For production with public domain, return as-is (this is the normal case)
-    return nextAuthUrl;
-}
-
-// Helper to check if a hostname is a private IP
-function isPrivateIP(hostname: string): boolean {
-    return hostname.startsWith("192.168.") || 
-           hostname.startsWith("10.") || 
-           hostname.startsWith("172.16.") ||
-           hostname === "127.0.0.1";
-}
-
-// Helper to generate device ID (consistent per device)
-function generateDeviceId(hostname: string, userAgent?: string): string {
-    const seed = `${hostname}-${userAgent || "default"}`;
-    // Create a simple hash-like string
-    return `device_${Buffer.from(seed).toString("base64").substring(0, 32).replace(/[^a-zA-Z0-9]/g, "")}`;
-}
-
-// Helper to get device name from user agent
-function getDeviceName(userAgent?: string): string {
-    if (!userAgent) return "Unknown Device";
-    const ua = userAgent.toLowerCase();
-    if (ua.includes("windows")) return "Windows Device";
-    if (ua.includes("mac")) return "Mac Device";
-    if (ua.includes("linux")) return "Linux Device";
-    if (ua.includes("android")) return "Android Device";
-    if (ua.includes("ios") || ua.includes("iphone") || ua.includes("ipad")) return "iOS Device";
-    return "Unknown Device";
-}
-
 export const authOptions: NextAuthOptions = {
     providers: [
         GoogleProvider({
@@ -143,14 +60,23 @@ export const authOptions: NextAuthOptions = {
                 const existingUser = await User.findOne({ email: user.email });
 
                 if (!existingUser) {
-                    await User.create({
+                    const created = await User.create({
                         email: user.email,
                         name: user.name,
                         provider: "google",
                         role: "user",
                         subscriptionPlan: "free",
-                        isActive: true, // Auto-activate Google users
+                        isActive: true,
                     });
+                    const { ensureDefaultWorkspace } = await import(
+                        "@/modules/workspace/service"
+                    );
+                    await ensureDefaultWorkspace(created._id.toString());
+                } else {
+                    const { ensureDefaultWorkspace } = await import(
+                        "@/modules/workspace/service"
+                    );
+                    await ensureDefaultWorkspace(existingUser._id.toString());
                 }
             }
             return true;

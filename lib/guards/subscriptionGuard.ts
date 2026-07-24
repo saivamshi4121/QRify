@@ -2,10 +2,9 @@ import dbConnect from "@/config/dbConnect";
 import User from "@/models/User";
 import QRCode from "@/models/QRCode";
 import { PRICING_PLANS, PlanType } from "@/lib/pricing";
-
 import { isValidObjectId } from "mongoose";
 
-export async function subscriptionGuard(userId: string) {
+export async function subscriptionGuard(userId: string, workspaceId?: string) {
     if (!isValidObjectId(userId)) {
         throw new Error("Invalid User Session. Please logout and login again.");
     }
@@ -24,17 +23,17 @@ export async function subscriptionGuard(userId: string) {
         throw new Error("Invalid pricing plan configuration");
     }
 
-    // Check QR Code Limit
-    const currentQRCount = await QRCode.countDocuments({ userId, isActive: true });
+    // Prefer workspace-scoped counts; fall back to userId for legacy safety
+    const currentQRCount = workspaceId
+        ? await QRCode.countDocuments({ workspaceId, isActive: true })
+        : await QRCode.countDocuments({ userId, isActive: true });
 
     if (currentQRCount >= planConfig.maxQRCodes) {
-        // Special message for free plan users
         if (userPlan === "free") {
             throw new Error(
                 `Free plan limit reached! You've created ${currentQRCount}/${planConfig.maxQRCodes} QR codes. Upgrade to Pro plan to create more QR codes.`
             );
         }
-        // Message for other plans
         throw new Error(
             `You have reached the limit of ${planConfig.maxQRCodes} active QR codes for the ${planConfig.name} plan. Please upgrade to create more.`
         );

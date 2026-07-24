@@ -1,46 +1,51 @@
 import { NextResponse } from "next/server";
-import { getServerSession } from "next-auth";
 import dbConnect from "@/config/dbConnect";
 import QRCode from "@/models/QRCode";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { updateLinkSchema } from "@/lib/validation/schemas";
+import { handleApiError } from "@/core/errors/handleApiError";
+import { ForbiddenError } from "@/core/errors/AppError";
+import { resolveWorkspace } from "@/core/workspace/resolveWorkspace";
+import { assertSmartPageInWorkspace } from "@/modules/smartpage/service";
 
 export async function PATCH(
     request: Request,
     { params }: { params: Promise<{ qrId: string }> | { qrId: string } }
 ) {
-    const resolvedParams = params instanceof Promise ? await params : params;
-    const { qrId } = resolvedParams;
     try {
-        const session = await getServerSession(authOptions);
-        if (!session || !session.user) {
-            return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
-        }
+        const { workspaceId } = await resolveWorkspace();
 
-        const { newOriginalData } = await request.json();
-        if (!newOriginalData) {
-            return NextResponse.json({ message: "New data is required" }, { status: 400 });
-        }
+        const resolvedParams = params instanceof Promise ? await params : params;
+        const { qrId } = resolvedParams;
+
+        const body = await request.json();
+        const { newOriginalData, smartPageId } = updateLinkSchema.parse(body);
 
         await dbConnect();
 
-        // STRICT OWNERSHIP CHECK
-        // Only update if _id matches AND userId matches session
+        if (smartPageId) {
+            await assertSmartPageInWorkspace(smartPageId, workspaceId);
+        }
+
+        const update: Record<string, unknown> = {};
+        if (newOriginalData !== undefined) {
+            update.originalData = newOriginalData;
+        }
+        if (smartPageId !== undefined) {
+            update.smartPageId = smartPageId;
+        }
+
         const updatedQR = await QRCode.findOneAndUpdate(
             {
                 _id: qrId,
-                userId: session.user.id  // <--- The Critical Lock
+                workspaceId,
             },
-            { originalData: newOriginalData },
+            update,
             { new: true }
         );
 
         if (!updatedQR) {
-            // If not found, it means either:
-            // 1. QR doesn't exist
-            // 2. User is trying to hack someone else's QR
-            return NextResponse.json(
-                { message: "QR Code not found or you are not authorized to edit it." },
-                { status: 403 }
+            throw new ForbiddenError(
+                "QR Code not found or you are not authorized to edit it."
             );
         }
 
@@ -48,11 +53,11 @@ export async function PATCH(
             success: true,
             message: "Link updated successfully",
             data: {
-                originalData: updatedQR.originalData
-            }
+                originalData: updatedQR.originalData,
+                smartPageId: updatedQR.smartPageId ?? null,
+            },
         });
-
     } catch (error) {
-        return NextResponse.json({ success: false, message: String(error) }, { status: 500 });
+        return handleApiError(error, "Update Link Error");
     }
 }

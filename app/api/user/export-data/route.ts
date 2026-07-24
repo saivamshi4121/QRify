@@ -37,6 +37,7 @@ export async function GET(request: Request) {
             },
             qrCodes: qrCodes.map(qr => ({
                 id: qr._id,
+                workspaceId: qr.workspaceId,
                 qrName: qr.qrName,
                 qrType: qr.qrType,
                 originalData: qr.originalData,
@@ -77,6 +78,7 @@ export async function GET(request: Request) {
         );
     }
 }
+
 
 
 

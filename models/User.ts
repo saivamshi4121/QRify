@@ -15,7 +15,7 @@ const UserSchema = new Schema(
         },
         password: {
             type: String,
-            select: false, // Don't return password by default
+            select: false,
         },
         provider: {
             type: String,
@@ -36,13 +36,28 @@ const UserSchema = new Schema(
             type: Boolean,
             default: true,
         },
+        defaultWorkspaceId: {
+            type: Schema.Types.ObjectId,
+            ref: "Workspace",
+            required: false,
+        },
     },
     {
         timestamps: true,
     }
 );
 
-// Prevent overwriting the model if it's already compiled
 const User = models?.User || model("User", UserSchema);
+
+// Hot-reload safety: ensure new paths exist on a previously compiled model
+if (!User.schema.path("defaultWorkspaceId")) {
+    User.schema.add({
+        defaultWorkspaceId: {
+            type: Schema.Types.ObjectId,
+            ref: "Workspace",
+            required: false,
+        },
+    });
+}
 
 export default User;

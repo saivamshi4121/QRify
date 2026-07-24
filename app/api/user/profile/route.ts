@@ -3,43 +3,30 @@ import { getServerSession } from "next-auth";
 import dbConnect from "@/config/dbConnect";
 import User from "@/models/User";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { updateProfileSchema } from "@/lib/validation/schemas";
+import { handleApiError } from "@/core/errors/handleApiError";
+import { UnauthorizedError, NotFoundError, AppError } from "@/core/errors/AppError";
 
 export async function PATCH(request: Request) {
     try {
         const session = await getServerSession(authOptions);
         if (!session || !session.user) {
-            return NextResponse.json(
-                { success: false, message: "Unauthorized" },
-                { status: 401 }
-            );
+            throw new UnauthorizedError("Unauthorized");
         }
 
         await dbConnect();
         const body = await request.json();
-        const { name, email } = body;
+        const { name, email } = updateProfileSchema.parse(body);
 
-        // Validate
-        if (!name || !email) {
-            return NextResponse.json(
-                { success: false, message: "Name and email are required" },
-                { status: 400 }
-            );
-        }
-
-        // Check if email is already taken by another user
-        const existingUser = await User.findOne({ 
+        const existingUser = await User.findOne({
             email: email.toLowerCase().trim(),
             _id: { $ne: session.user.id }
         });
 
         if (existingUser) {
-            return NextResponse.json(
-                { success: false, message: "Email is already taken by another account" },
-                { status: 409 }
-            );
+            throw new AppError(409, "CONFLICT", "Email is already taken by another account");
         }
 
-        // Update user
         const updatedUser = await User.findByIdAndUpdate(
             session.user.id,
             {
@@ -50,10 +37,7 @@ export async function PATCH(request: Request) {
         ).select("-password");
 
         if (!updatedUser) {
-            return NextResponse.json(
-                { success: false, message: "User not found" },
-                { status: 404 }
-            );
+            throw new NotFoundError("User not found");
         }
 
         return NextResponse.json({
@@ -66,17 +50,6 @@ export async function PATCH(request: Request) {
         });
 
     } catch (error) {
-        console.error("Profile Update Error:", error);
-        return NextResponse.json(
-            { success: false, message: "Internal Server Error" },
-            { status: 500 }
-        );
+        return handleApiError(error, "Profile Update Error");
     }
 }
-
-
-
-
-
-
-

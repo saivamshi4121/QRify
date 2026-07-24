@@ -13,9 +13,8 @@ export interface SEOConfig {
   canonical?: string;
 }
 
-const defaultImage = "/og.png"; // Updated default image
-// Prioritize the custom domain, then env vars, then fallback
-const siteUrl = "https://qrezo.stackhaus.dev";
+const defaultImage = "/og-image.png"; // You'll need to create this
+const siteUrl = process.env.NEXT_PUBLIC_APP_URL || process.env.NEXTAUTH_URL || "https://qrify.app";
 const siteName = "Qrezo";
 
 export function generateMetadata(config: SEOConfig): Metadata {
@@ -192,6 +191,7 @@ export const defaultKeywords = [
   "qr generate free",
   "free qr code generator",
 ];
+
 
 
 

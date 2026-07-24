@@ -6,6 +6,19 @@ const QRCodeSchema = new Schema(
             type: Schema.Types.ObjectId,
             ref: "User",
             required: true,
+            index: true,
+        },
+        workspaceId: {
+            type: Schema.Types.ObjectId,
+            ref: "Workspace",
+            required: false,
+            index: true,
+        },
+        smartPageId: {
+            type: Schema.Types.ObjectId,
+            ref: "SmartPage",
+            required: false,
+            index: true,
         },
         qrName: {
             type: String,
@@ -50,7 +63,6 @@ const QRCodeSchema = new Schema(
             default: 0,
             index: true,
         },
-        // Design Fields
         foregroundColor: { type: String, default: "#000000" },
         backgroundColor: { type: String, default: "#ffffff" },
         gradient: { type: String, default: null },
@@ -72,5 +84,27 @@ const QRCodeSchema = new Schema(
 );
 
 const QRCode = models?.QRCode || model("QRCode", QRCodeSchema);
+
+// Hot-reload safety: ensure new tenant fields exist on a previously compiled model
+if (!QRCode.schema.path("workspaceId")) {
+    QRCode.schema.add({
+        workspaceId: {
+            type: Schema.Types.ObjectId,
+            ref: "Workspace",
+            required: false,
+            index: true,
+        },
+    });
+}
+if (!QRCode.schema.path("smartPageId")) {
+    QRCode.schema.add({
+        smartPageId: {
+            type: Schema.Types.ObjectId,
+            ref: "SmartPage",
+            required: false,
+            index: true,
+        },
+    });
+}
 
 export default QRCode;
