@@ -38,7 +38,10 @@ export function generateMetadata(config: SEOConfig): Metadata {
   const openGraphType: OpenGraphType = type === "article" ? "article" : "website";
 
   return {
-    title: fullTitle,
+    title: {
+      default: title,
+      template: `%s | ${siteName}`,
+    },
     description,
     keywords: keywords.length > 0 ? keywords.join(", ") : undefined,
     authors: [{ name: "Qrezo" }],
@@ -46,24 +49,24 @@ export function generateMetadata(config: SEOConfig): Metadata {
     publisher: "Qrezo",
     robots: noindex
       ? {
+        index: false,
+        follow: false,
+        googleBot: {
           index: false,
           follow: false,
-          googleBot: {
-            index: false,
-            follow: false,
-          },
-        }
+        },
+      }
       : {
+        index: true,
+        follow: true,
+        googleBot: {
           index: true,
           follow: true,
-          googleBot: {
-            index: true,
-            follow: true,
-            "max-video-preview": -1,
-            "max-image-preview": "large",
-            "max-snippet": -1,
-          },
+          "max-video-preview": -1,
+          "max-image-preview": "large",
+          "max-snippet": -1,
         },
+      },
     alternates: {
       canonical: canonicalUrl,
     },
@@ -88,13 +91,17 @@ export function generateMetadata(config: SEOConfig): Metadata {
       title: fullTitle,
       description,
       images: [imageUrl],
-      creator: "@qrezo", // Update with your Twitter handle
+      creator: "@qrezo",
     },
     metadataBase: new URL(siteUrl),
     verification: {
-      google: "U6pzhL-mhhEQJR3ch2urTIkwKufFDdXe5r9Sh99aKXk",
+      google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || "google-site-verification-id",
       yandex: process.env.NEXT_PUBLIC_YANDEX_VERIFICATION,
       yahoo: process.env.NEXT_PUBLIC_YAHOO_VERIFICATION,
+    },
+    icons: {
+      icon: "/favicon.ico",
+      apple: "/apple-touch-icon.png",
     },
   };
 }
@@ -131,14 +138,13 @@ export function generateStructuredData(type: "Website" | "Organization" | "Produ
         url: siteUrl,
         logo: `${siteUrl}/logo.png`,
         sameAs: [
-          // Add your social media links here
-          // "https://twitter.com/qrezo",
-          // "https://linkedin.com/company/qrezo",
+          "https://twitter.com/qrezo",
+          // Add other social media links here
         ],
         contactPoint: {
           "@type": "ContactPoint",
           contactType: "Customer Service",
-          email: "support@qrezo.app", // Update with your email
+          email: "support@qrezo.app",
         },
       };
 
@@ -180,8 +186,10 @@ export const defaultKeywords = [
   "business QR codes",
   "QR code tracking",
   "QR code SaaS",
-  "India QR codes",
-  "QR code API",
+  "qr code",
+  "qr",
+  "qr generate free",
+  "free qr code generator",
 ];
 
 

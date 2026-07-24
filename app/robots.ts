@@ -1,6 +1,6 @@
 import { MetadataRoute } from "next";
 
-const siteUrl = process.env.NEXT_PUBLIC_APP_URL || process.env.NEXTAUTH_URL || "https://qrify.app";
+const siteUrl = "https://qrezo.stackhaus.dev";
 
 export default function robots(): MetadataRoute.Robots {
   const baseUrl = siteUrl.replace(/\/$/, "");
@@ -9,49 +9,13 @@ export default function robots(): MetadataRoute.Robots {
     rules: [
       {
         userAgent: "*",
-        allow: [
-          "/",
-          "/create",
-          "/pricing",
-          "/login",
-          "/signup",
-          "/embed/",
-          "/api/qr/embed/",
-          "/api/qr/redirect/",
-        ],
-        disallow: [
-          "/dashboard/",
-          "/admin/",
-          "/api/auth/",
-          "/api/admin/",
-          "/api/user/",
-          "/api/qr/generate",
-          "/api/qr/delete/",
-          "/api/qr/update-link/",
-          "/api/qr/stats/",
-          "/api/qr/preview",
-          "/api/qr/upload-logo",
-          "/api/qrs",
-          "/api/dashboard/",
-          "/api/payments/",
-          "/settings/",
-          "/qrs/",
-        ],
-      },
-      {
-        userAgent: "Googlebot",
-        allow: [
-          "/",
-          "/create",
-          "/pricing",
-          "/embed/",
-          "/api/qr/embed/",
-          "/api/qr/redirect/",
-        ],
+        allow: ["/", "/pricing", "/create", "/login", "/signup"],
         disallow: [
           "/dashboard/",
           "/admin/",
           "/api/",
+          "/auth/", // In case there are auth callbacks
+          "/my-qrs/", // Private
         ],
       },
     ],
