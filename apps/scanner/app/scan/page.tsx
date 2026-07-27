@@ -38,17 +38,15 @@ export default function ScanPage() {
 
     if (!ready || !session) {
         return (
-            <main
-                style={{
-                    padding: "2rem",
-                    textAlign: "center",
-                    color: "#94a3b8",
-                }}
-            >
-                Loading…
+            <main className="min-h-dvh bg-[#090d16] flex items-center justify-center p-6 text-zinc-400">
+                <div className="flex flex-col items-center gap-3">
+                    <div className="w-8 h-8 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
+                    <span className="text-sm font-medium">Initializing camera module…</span>
+                </div>
             </main>
         );
     }
 
     return <ScannerView session={session} online={online} />;
 }
+

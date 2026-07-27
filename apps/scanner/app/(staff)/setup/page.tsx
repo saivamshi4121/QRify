@@ -126,242 +126,179 @@ export default function SetupPage() {
     }
 
     return (
-        <main className="setup">
-            <header>
+        <main className="min-h-dvh bg-[#090d16] flex flex-col justify-between p-5 max-w-md mx-auto">
+            {/* Header */}
+            <header className="py-2 border-b border-zinc-900 flex items-center justify-between">
                 <div>
-                    <p className="brand">Staff setup</p>
-                    <h1>
-                        {step === "workspace" && "Select workspace"}
-                        {step === "event" && "Select event"}
-                        {step === "gate" && "Select gate"}
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-blue-400">Staff Setup</span>
+                    <h1 className="text-xl font-bold text-white tracking-tight">
+                        {step === "workspace" && "1. Select Workspace"}
+                        {step === "event" && "2. Select Active Event"}
+                        {step === "gate" && "3. Select Gate Location"}
                     </h1>
                 </div>
                 <button
                     type="button"
-                    className="ghost"
                     onClick={() => signOut({ callbackUrl: "/" })}
+                    className="text-xs text-zinc-500 hover:text-rose-400 font-medium px-2 py-1 transition-colors"
                 >
-                    Sign out
+                    Sign Out
                 </button>
             </header>
 
+            {/* Breadcrumb indicator */}
             {workspaceName ? (
-                <p className="crumb">
-                    {workspaceName}
-                    {eventName ? ` · ${eventName}` : ""}
-                </p>
+                <div className="py-2 text-xs text-zinc-400 border-b border-zinc-900/60 flex items-center gap-1.5">
+                    <span className="text-zinc-200 font-semibold">{workspaceName}</span>
+                    {eventName ? (
+                        <>
+                            <span className="text-zinc-600">/</span>
+                            <span className="text-blue-400 font-semibold">{eventName}</span>
+                        </>
+                    ) : null}
+                </div>
             ) : null}
 
-            {error ? <p className="err">{error}</p> : null}
-            {loading ? <p className="muted">Loading…</p> : null}
+            {/* Content Body */}
+            <div className="my-auto py-6">
+                {error ? (
+                    <div className="mb-4 p-3 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-400 text-xs font-medium flex items-center gap-2">
+                        <svg className="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                        </svg>
+                        {error}
+                    </div>
+                ) : null}
 
-            {step === "workspace" && !loading ? (
-                <ul className="list">
-                    {workspaces.map((ws) => (
-                        <li key={ws.workspaceId}>
+                {loading ? (
+                    <div className="flex flex-col items-center justify-center py-12 text-zinc-400">
+                        <div className="w-8 h-8 border-2 border-blue-500 border-t-transparent rounded-full animate-spin mb-3" />
+                        <span className="text-xs font-medium">Fetching options…</span>
+                    </div>
+                ) : null}
+
+                {/* Step 1: Workspaces */}
+                {step === "workspace" && !loading ? (
+                    <div className="space-y-2.5">
+                        <p className="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-2">Available Workspaces</p>
+                        {workspaces.map((ws) => (
                             <button
+                                key={ws.workspaceId}
                                 type="button"
                                 onClick={() => selectWorkspace(ws)}
+                                className="w-full p-4 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-left flex items-center justify-between group transition-all active:scale-[0.98]"
                             >
-                                <span>{ws.name}</span>
-                                {ws.role ? (
-                                    <em>{ws.role.toLowerCase()}</em>
-                                ) : null}
+                                <div>
+                                    <p className="text-sm font-bold text-white group-hover:text-blue-400 transition-colors">{ws.name}</p>
+                                    {ws.role ? <p className="text-xs text-zinc-500 capitalize">{ws.role.toLowerCase()}</p> : null}
+                                </div>
+                                <svg className="w-5 h-5 text-zinc-600 group-hover:text-blue-400 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                                </svg>
                             </button>
-                        </li>
-                    ))}
-                </ul>
-            ) : null}
+                        ))}
+                    </div>
+                ) : null}
 
-            {step === "event" && !loading ? (
-                <>
-                    <button
-                        type="button"
-                        className="back"
-                        onClick={() => setStep("workspace")}
-                    >
-                        ← Workspaces
-                    </button>
-                    <ul className="list">
-                        {events.map((ev) => (
-                            <li key={String(ev._id)}>
+                {/* Step 2: Events */}
+                {step === "event" && !loading ? (
+                    <div className="space-y-3">
+                        <button
+                            type="button"
+                            onClick={() => setStep("workspace")}
+                            className="text-xs font-medium text-blue-400 hover:text-blue-300 flex items-center gap-1 mb-2"
+                        >
+                            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+                            </svg>
+                            Change Workspace
+                        </button>
+                        <div className="space-y-2.5">
+                            {events.map((ev) => (
                                 <button
+                                    key={String(ev._id)}
                                     type="button"
                                     onClick={() => selectEvent(ev)}
+                                    className="w-full p-4 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-left flex items-center justify-between group transition-all active:scale-[0.98]"
                                 >
-                                    <span>{ev.name}</span>
-                                    <em>{ev.status}</em>
+                                    <div>
+                                        <p className="text-sm font-bold text-white group-hover:text-blue-400 transition-colors">{ev.name}</p>
+                                        <span className="inline-block mt-1 px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 text-[10px] font-semibold">
+                                            {ev.status}
+                                        </span>
+                                    </div>
+                                    <svg className="w-5 h-5 text-zinc-600 group-hover:text-blue-400 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                                    </svg>
                                 </button>
-                            </li>
-                        ))}
-                        {events.length === 0 ? (
-                            <li className="empty">No published events</li>
-                        ) : null}
-                    </ul>
-                </>
-            ) : null}
+                            ))}
+                            {events.length === 0 ? (
+                                <div className="p-8 text-center bg-zinc-900/50 rounded-xl border border-zinc-800">
+                                    <p className="text-sm text-zinc-400">No published events found in this workspace.</p>
+                                </div>
+                            ) : null}
+                        </div>
+                    </div>
+                ) : null}
 
-            {step === "gate" ? (
-                <>
-                    <button
-                        type="button"
-                        className="back"
-                        onClick={() => setStep("event")}
-                    >
-                        ← Events
-                    </button>
-                    <ul className="list">
-                        {DEFAULT_GATES.map((g) => (
-                            <li key={g}>
+                {/* Step 3: Gate selection */}
+                {step === "gate" ? (
+                    <div className="space-y-4">
+                        <button
+                            type="button"
+                            onClick={() => setStep("event")}
+                            className="text-xs font-medium text-blue-400 hover:text-blue-300 flex items-center gap-1 mb-2"
+                        >
+                            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+                            </svg>
+                            Change Event
+                        </button>
+
+                        <div className="grid grid-cols-2 gap-2.5">
+                            {DEFAULT_GATES.map((g) => (
                                 <button
+                                    key={g}
                                     type="button"
                                     disabled={busy}
                                     onClick={() => finish(g)}
+                                    className="p-3.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-left font-bold text-sm text-white transition-all active:scale-[0.98]"
                                 >
-                                    <span>{g}</span>
+                                    {g}
                                 </button>
-                            </li>
-                        ))}
-                    </ul>
-                    <div className="custom">
-                        <label>
-                            Custom gate
-                            <input
-                                value={customGate}
-                                onChange={(e) => setCustomGate(e.target.value)}
-                                placeholder="e.g. North Entrance"
-                            />
-                        </label>
-                        <button
-                            type="button"
-                            className="primary"
-                            disabled={busy || !customGate.trim()}
-                            onClick={() => finish(customGate)}
-                        >
-                            Start scanning
-                        </button>
-                    </div>
-                </>
-            ) : null}
+                            ))}
+                        </div>
 
-            <style jsx>{`
-                .setup {
-                    min-height: 100dvh;
-                    padding: 1.25rem 1.25rem 2.5rem;
-                    max-width: 28rem;
-                    margin: 0 auto;
-                }
-                header {
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: flex-start;
-                    gap: 1rem;
-                    margin-bottom: 0.75rem;
-                }
-                .brand {
-                    margin: 0;
-                    font-size: 0.75rem;
-                    letter-spacing: 0.12em;
-                    text-transform: uppercase;
-                    color: #93c5fd;
-                    font-weight: 700;
-                }
-                h1 {
-                    margin: 0.2rem 0 0;
-                    font-size: 1.45rem;
-                }
-                .ghost {
-                    border: 0;
-                    background: transparent;
-                    color: var(--muted);
-                    font-size: 0.85rem;
-                    padding: 0.35rem;
-                }
-                .crumb {
-                    color: var(--muted);
-                    font-size: 0.85rem;
-                    margin: 0 0 1rem;
-                }
-                .list {
-                    list-style: none;
-                    margin: 0;
-                    padding: 0;
-                    display: flex;
-                    flex-direction: column;
-                    gap: 0.55rem;
-                }
-                .list button {
-                    width: 100%;
-                    text-align: left;
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-                    gap: 0.75rem;
-                    border: 1px solid #1f2937;
-                    background: #0f172a;
-                    color: var(--text);
-                    border-radius: 0.75rem;
-                    padding: 1rem 1.05rem;
-                    font-size: 1rem;
-                }
-                .list em {
-                    font-style: normal;
-                    color: var(--muted);
-                    font-size: 0.8rem;
-                    text-transform: capitalize;
-                }
-                .empty {
-                    color: var(--muted);
-                    padding: 1rem 0;
-                }
-                .back {
-                    border: 0;
-                    background: transparent;
-                    color: #93c5fd;
-                    padding: 0 0 0.85rem;
-                    font-size: 0.9rem;
-                }
-                .custom {
-                    margin-top: 1.25rem;
-                    display: flex;
-                    flex-direction: column;
-                    gap: 0.75rem;
-                }
-                label {
-                    display: flex;
-                    flex-direction: column;
-                    gap: 0.35rem;
-                    font-size: 0.85rem;
-                    color: var(--muted);
-                }
-                input {
-                    border: 1px solid #1f2937;
-                    background: #0f172a;
-                    color: var(--text);
-                    border-radius: 0.65rem;
-                    padding: 0.85rem 0.9rem;
-                    font-size: 1rem;
-                }
-                .primary {
-                    border: 0;
-                    border-radius: 0.65rem;
-                    padding: 0.95rem;
-                    font-size: 1rem;
-                    font-weight: 600;
-                    background: #2563eb;
-                    color: white;
-                }
-                button:disabled {
-                    opacity: 0.5;
-                }
-                .err {
-                    color: #fca5a5;
-                    margin: 0 0 0.75rem;
-                }
-                .muted {
-                    color: var(--muted);
-                }
-            `}</style>
+                        <div className="p-4 rounded-xl bg-zinc-900/60 border border-zinc-800">
+                            <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-400 mb-2">
+                                Custom Gate
+                            </label>
+                            <div className="flex gap-2">
+                                <input
+                                    value={customGate}
+                                    onChange={(e) => setCustomGate(e.target.value)}
+                                    placeholder="e.g. South VIP Entrance"
+                                    className="flex-1 bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-sm text-white placeholder-zinc-600 focus:outline-none focus:border-blue-500"
+                                />
+                                <button
+                                    type="button"
+                                    disabled={busy || !customGate.trim()}
+                                    onClick={() => finish(customGate)}
+                                    className="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-500 disabled:bg-zinc-800 text-white font-semibold text-xs transition-all shrink-0"
+                                >
+                                    Start
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                ) : null}
+            </div>
+
+            {/* Footer */}
+            <footer className="py-2 text-center text-xs text-zinc-600">
+                Authorized Staff Setup • Qrezo Scanner
+            </footer>
         </main>
     );
 }
+
