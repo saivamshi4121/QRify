@@ -6,7 +6,6 @@ import { useSession } from "next-auth/react";
 import {
     Activity,
     BarChart3,
-    Loader2,
     MessageSquare,
     QrCode,
     Star,
@@ -16,6 +15,7 @@ import {
 } from "lucide-react";
 import { toast, Toaster } from "sonner";
 import { SectionCard } from "@/app/(dashboard)/_components/SectionCard";
+import { SkeletonStatGrid } from "@/app/(dashboard)/_components/Skeletons";
 import { cn } from "@/lib/utils";
 
 type RangePreset = "today" | "7d" | "30d" | "custom";
@@ -220,8 +220,12 @@ export default function AnalyticsPage() {
 
     if (status === "loading" || (loading && !data)) {
         return (
-            <div className="flex h-96 items-center justify-center">
-                <Loader2 className="h-8 w-8 animate-spin text-indigo-500" />
+            <div className="space-y-8">
+                <div>
+                    <div className="h-8 w-32 animate-pulse rounded-lg bg-slate-100" />
+                    <div className="mt-2 h-4 w-64 animate-pulse rounded-lg bg-slate-100" />
+                </div>
+                <SkeletonStatGrid count={6} />
             </div>
         );
     }
@@ -289,7 +293,10 @@ export default function AnalyticsPage() {
             </div>
 
             {loading && data ? (
-                <p className="text-sm text-slate-400">Updating…</p>
+                <div className="flex items-center gap-2 text-sm text-slate-400">
+                    <div className="h-3 w-3 animate-pulse rounded-full bg-indigo-300" />
+                    Updating…
+                </div>
             ) : null}
 
             {!data ? (

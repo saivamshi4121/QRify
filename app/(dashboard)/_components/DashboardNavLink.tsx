@@ -1,5 +1,10 @@
 "use client";
 
+/**
+ * @deprecated Use DashboardNav.tsx which renders the full grouped navigation.
+ * Kept only for backward compatibility.
+ */
+
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
@@ -11,20 +16,32 @@ import {
     FileText,
     BarChart3,
     CalendarDays,
+    Bell,
+    Key,
+    Compass,
+    BookOpen,
+    Building2,
+    Webhook,
     type LucideIcon,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { DashboardNavIcon } from "./dashboard-nav";
 
 const ICONS: Record<DashboardNavIcon, LucideIcon> = {
-    dashboard: LayoutDashboard,
-    analytics: BarChart3,
-    events: CalendarDays,
-    qrs: QrCode,
-    pages: FileText,
-    feedback: MessageSquare,
-    create: PlusCircle,
-    settings: Settings,
+    dashboard:     LayoutDashboard,
+    analytics:     BarChart3,
+    events:        CalendarDays,
+    qrs:           QrCode,
+    pages:         FileText,
+    feedback:      MessageSquare,
+    create:        PlusCircle,
+    settings:      Settings,
+    notifications: Bell,
+    apikeys:       Key,
+    webhooks:      Webhook,
+    explorer:      Compass,
+    docs:          BookOpen,
+    workspace:     Building2,
 };
 
 type DashboardNavLinkProps = {
@@ -33,19 +50,11 @@ type DashboardNavLinkProps = {
     icon: DashboardNavIcon;
 };
 
-/**
- * Client island for active-route styling. Icon components stay on the client
- * (they cannot be passed from Server Components).
- */
-export function DashboardNavLink({
-    href,
-    name,
-    icon,
-}: DashboardNavLinkProps) {
+export function DashboardNavLink({ href, name, icon }: DashboardNavLinkProps) {
     const pathname = usePathname();
     const isActive =
         pathname === href || pathname.startsWith(`${href}/`);
-    const Icon = ICONS[icon];
+    const Icon = ICONS[icon] ?? LayoutDashboard;
 
     return (
         <Link
