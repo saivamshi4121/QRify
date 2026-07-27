@@ -1,7 +1,7 @@
-import { cookies } from "next/headers";
+﻿import { cookies } from "next/headers";
 import mongoose from "mongoose";
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/lib/auth";
 import dbConnect from "@/config/dbConnect";
 import Workspace from "@/models/Workspace";
 import WorkspaceMember, { WorkspaceRole } from "@/models/WorkspaceMember";
@@ -56,7 +56,7 @@ export async function resolveWorkspace(): Promise<ResolvedWorkspace> {
                 };
             }
         }
-        // Invalid/stale cookie → fall through to default
+        // Invalid/stale cookie â†’ fall through to default
     }
 
     const membership = await WorkspaceMember.findOne({

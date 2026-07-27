@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+﻿import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { v2 as cloudinary } from "cloudinary";
 import mongoose from "mongoose";
@@ -6,7 +6,7 @@ import dbConnect from "@/config/dbConnect";
 import QRCode from "@/models/QRCode";
 import { generateShortCode } from "@/lib/generateShortCode";
 import { subscriptionGuard } from "@/lib/guards/subscriptionGuard";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/lib/auth";
 import { generateQR } from "@/lib/qrGenerator";
 import { generateQRSchema } from "@/lib/validation/schemas";
 import { handleApiError } from "@/core/errors/handleApiError";

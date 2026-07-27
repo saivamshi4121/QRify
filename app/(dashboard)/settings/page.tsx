@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { toast, Toaster } from "sonner";
 import { SectionCard } from "../_components/SectionCard";
+import Link from "next/link";
 import { 
     User, 
     Mail, 
@@ -14,7 +15,9 @@ import {
     Save, 
     Loader2,
     Eye,
-    EyeOff
+    EyeOff,
+    Code2,
+    Bell,
 } from "lucide-react";
 
 export default function SettingsPage() {
@@ -281,6 +284,38 @@ export default function SettingsPage() {
                         </form>
                     </SectionCard>
                 )}
+
+                {/* Notifications */}
+                <SectionCard title="Notifications" icon={<Bell className="h-5 w-5" />}>
+                    <div className="space-y-3">
+                        <p className="text-sm text-slate-700">
+                            Automate Email, SMS, and WhatsApp messages from
+                            attendee and access events.
+                        </p>
+                        <Link
+                            href="/settings/notifications"
+                            className="inline-flex items-center gap-1 text-sm font-medium text-indigo-600 hover:text-indigo-700"
+                        >
+                            Manage notifications →
+                        </Link>
+                    </div>
+                </SectionCard>
+
+                {/* Developer Platform */}
+                <SectionCard title="Developer" icon={<Code2 className="h-5 w-5" />}>
+                    <div className="space-y-3">
+                        <p className="text-sm text-slate-700">
+                            Create API keys, explore the public REST API, and
+                            integrate Qrezo into your own registration apps.
+                        </p>
+                        <Link
+                            href="/settings/developer"
+                            className="inline-flex items-center gap-1 text-sm font-medium text-indigo-600 hover:text-indigo-700"
+                        >
+                            Manage API Keys →
+                        </Link>
+                    </div>
+                </SectionCard>
 
                 {/* Account Information */}
                 <SectionCard title="Account Information" icon={<CreditCard className="h-5 w-5" />}>

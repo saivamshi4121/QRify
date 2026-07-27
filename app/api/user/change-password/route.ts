@@ -1,9 +1,9 @@
-import { NextResponse } from "next/server";
+﻿import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import bcrypt from "bcryptjs";
 import dbConnect from "@/config/dbConnect";
 import User from "@/models/User";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/lib/auth";
 import { changePasswordSchema } from "@/lib/validation/schemas";
 import { handleApiError } from "@/core/errors/handleApiError";
 import {

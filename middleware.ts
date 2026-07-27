@@ -31,6 +31,11 @@ export const config = {
         "/dashboard/:path*",
         "/qrs/:path*",
         "/settings/:path*",
+        "/events/:path*",
+        "/smart-pages/:path*",
+        "/feedback/:path*",
+        "/analytics/:path*",
+        "/docs/:path*",
         "/admin/:path*",
     ],
 };
