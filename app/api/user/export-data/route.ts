@@ -1,9 +1,9 @@
-import { NextResponse } from "next/server";
+﻿import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import dbConnect from "@/config/dbConnect";
 import QRCode from "@/models/QRCode";
 import ScanLog from "@/models/ScanLog";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/lib/auth";
 
 export async function GET(request: Request) {
     try {

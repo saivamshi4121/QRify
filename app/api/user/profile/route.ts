@@ -1,8 +1,8 @@
-import { NextResponse } from "next/server";
+﻿import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import dbConnect from "@/config/dbConnect";
 import User from "@/models/User";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/lib/auth";
 import { updateProfileSchema } from "@/lib/validation/schemas";
 import { handleApiError } from "@/core/errors/handleApiError";
 import { UnauthorizedError, NotFoundError, AppError } from "@/core/errors/AppError";

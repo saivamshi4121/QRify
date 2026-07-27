@@ -4,9 +4,14 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "dev:scanner": "npm run dev --prefix apps/scanner",
     "build": "next build",
+    "build:scanner": "npm run build --prefix apps/scanner",
     "start": "next start",
-    "lint": "eslint"
+    "start:scanner": "npm run start --prefix apps/scanner",
+    "lint": "eslint",
+    "build:sdk": "npm run build --prefix packages/sdk",
+    "typecheck:sdk": "npm run typecheck --prefix packages/sdk"
   },
   "dependencies": {
     "bcryptjs": "^3.0.3",
@@ -38,6 +43,7 @@
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
     "@types/geoip-lite": "^1.4.4",
+    "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^20",
     "@types/qrcode": "^1.5.6",
     "@types/react": "^19",

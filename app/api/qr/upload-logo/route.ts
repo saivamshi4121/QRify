@@ -1,7 +1,7 @@
-import { NextResponse } from "next/server";
+﻿import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { v2 as cloudinary } from "cloudinary";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/lib/auth";
 import { handleApiError } from "@/core/errors/handleApiError";
 import { BadRequestError } from "@/core/errors/AppError";
 

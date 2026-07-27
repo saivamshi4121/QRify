@@ -1,7 +1,7 @@
-import { NextResponse } from "next/server";
+﻿import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import Razorpay from "razorpay";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/lib/auth";
 import { PRICING_PLANS } from "@/lib/pricing";
 import { checkoutPlanSchema } from "@/lib/validation/schemas";
 import { handleApiError } from "@/core/errors/handleApiError";

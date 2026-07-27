@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+﻿import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import dbConnect from "@/config/dbConnect";
 import User from "@/models/User";
@@ -6,7 +6,7 @@ import QRCode from "@/models/QRCode";
 import ScanLog from "@/models/ScanLog";
 import Workspace from "@/models/Workspace";
 import WorkspaceMember from "@/models/WorkspaceMember";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/lib/auth";
 import { handleApiError } from "@/core/errors/handleApiError";
 import { UnauthorizedError } from "@/core/errors/AppError";
 
