@@ -17,6 +17,7 @@ import type {
     RetryPolicy,
 } from "@/modules/webhooks/types";
 import type { WebhookEventTypeValue } from "@/modules/webhooks/constants";
+import { assertFeature, assertWithinLimit } from "@/modules/entitlement/service";
 
 async function uniqueEndpointPublicId(): Promise<string> {
     for (let i = 0; i < 8; i++) {
@@ -73,6 +74,8 @@ export async function createWebhookEndpoint(input: {
     timeoutMs?: number;
 }): Promise<CreatedWebhookEndpoint> {
     await dbConnect();
+    await assertFeature(input.workspaceId, "webhooks");
+    await assertWithinLimit(input.workspaceId, "webhook_endpoints");
     if (!input.url.startsWith("https://") && !input.url.startsWith("http://")) {
         throw new BadRequestError("Webhook URL must be http(s)");
     }

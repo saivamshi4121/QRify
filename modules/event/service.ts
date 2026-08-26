@@ -13,6 +13,7 @@ import {
     ForbiddenError,
     NotFoundError,
 } from "@/core/errors/AppError";
+import { assertWithinLimit } from "@/modules/entitlement/service";
 import type { CreateEventInput, UpdateEventInput } from "@/modules/event/validation";
 
 function slugify(input: string): string {
@@ -99,6 +100,7 @@ export async function createEvent(
     input: CreateEventInput
 ) {
     await dbConnect();
+    await assertWithinLimit(workspaceId, "events");
 
     const slug = input.slug
         ? await uniqueSlug(input.slug)

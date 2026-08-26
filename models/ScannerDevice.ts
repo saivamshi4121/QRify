@@ -95,6 +95,7 @@ const ScannerDeviceSchema = new Schema<IScannerDevice>(
 
 ScannerDeviceSchema.index({ eventId: 1, status: 1 });
 ScannerDeviceSchema.index({ workspaceId: 1, eventId: 1 });
+ScannerDeviceSchema.index({ workspaceId: 1, status: 1 });
 
 const ScannerDevice =
     models?.ScannerDevice ||

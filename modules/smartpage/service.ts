@@ -6,6 +6,7 @@ import Block from "@/models/Block";
 import { blockRegistry } from "@/modules/smartpage/blockRegistry";
 import { BlockType } from "@/modules/smartpage/constants";
 import { NotFoundError, BadRequestError, ForbiddenError } from "@/core/errors/AppError";
+import { assertWithinLimit } from "@/modules/entitlement/service";
 
 function slugify(input: string): string {
     const base = input
@@ -59,6 +60,7 @@ export async function createSmartPage(
     }
 ) {
     await dbConnect();
+    await assertWithinLimit(workspaceId, "smart_pages");
     const slug = input.slug
         ? await uniqueSlug(input.slug)
         : await uniqueSlug(input.title);
@@ -127,6 +129,7 @@ export async function deleteSmartPage(pageId: string, workspaceId: string) {
 
 export async function duplicateSmartPage(pageId: string, workspaceId: string) {
     await dbConnect();
+    await assertWithinLimit(workspaceId, "smart_pages");
     const page = await SmartPage.findOne({ _id: pageId, workspaceId }).lean();
     if (!page) throw new NotFoundError("Smart Page not found");
 

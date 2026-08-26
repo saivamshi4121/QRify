@@ -32,28 +32,32 @@ export default function LoginClient() {
     }
 
     return (
-        <main className="min-h-dvh bg-[#090d16] flex items-center justify-center p-6 relative overflow-hidden">
-            {/* Ambient Background Glow */}
-            <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-72 h-72 bg-blue-600/10 rounded-full blur-3xl pointer-events-none" />
+        <main className="min-h-dvh bg-[#050a10] flex items-center justify-center p-6 relative overflow-hidden">
+            <div className="absolute inset-0 hud-grid opacity-20 pointer-events-none" />
 
-            <div className="w-full max-w-sm relative z-10">
-                {/* Header Badge */}
+            {/* Ambient glow */}
+            <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[400px] h-[300px] rounded-full pointer-events-none"
+                style={{ background: "radial-gradient(ellipse, rgba(16,185,129,0.08) 0%, transparent 65%)" }} />
+
+            <div className="w-full max-w-sm relative z-10" style={{ animation: "slide-in-up 0.6s ease" }}>
+                {/* Header */}
                 <div className="text-center mb-6">
-                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-semibold uppercase tracking-wider mb-3">
-                        <span className="w-1.5 h-1.5 rounded-full bg-blue-400" />
+                    <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border border-emerald-500/20 text-emerald-400 text-[11px] font-bold uppercase tracking-widest mb-3"
+                        style={{ background: "rgba(16,185,129,0.08)" }}>
+                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
                         Organizer Portal
                     </div>
-                    <h1 className="text-2xl font-bold text-white tracking-tight">Staff Sign In</h1>
-                    <p className="mt-1.5 text-xs text-zinc-400">
-                        Sign in with your Qrezo organizer credentials to configure gate scanners.
+                    <h1 className="text-2xl font-extrabold text-white tracking-tight">Staff Sign In</h1>
+                    <p className="mt-2 text-xs text-slate-400">
+                        Sign in with your Qrezo organizer credentials.
                     </p>
                 </div>
 
-                {/* Form Panel */}
-                <div className="p-6 rounded-2xl bg-zinc-900/90 border border-zinc-800/80 shadow-2xl backdrop-blur-xl">
+                {/* Form */}
+                <div className="p-6 rounded-2xl shadow-2xl" style={{ background: "rgba(13,21,32,0.8)", border: "1px solid rgba(16,185,129,0.12)", backdropFilter: "blur(20px)" }}>
                     <form onSubmit={onSubmit} className="space-y-4">
                         <div>
-                            <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-400 mb-1.5">
+                            <label className="block text-[11px] font-bold uppercase tracking-widest text-slate-500 mb-1.5">
                                 Account Email
                             </label>
                             <input
@@ -63,12 +67,15 @@ export default function LoginClient() {
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                                 placeholder="organizer@qrezo.com"
-                                className="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-3.5 py-3 text-sm text-white placeholder-zinc-600 focus:outline-none focus:border-blue-500 transition-colors"
+                                className="w-full rounded-xl px-3.5 py-3 text-sm text-white placeholder-slate-600 focus:outline-none transition-colors"
+                                style={{ background: "rgba(5,10,16,0.8)", border: "1px solid rgba(16,185,129,0.15)" }}
+                                onFocus={(e) => (e.target.style.borderColor = "rgba(16,185,129,0.4)")}
+                                onBlur={(e) => (e.target.style.borderColor = "rgba(16,185,129,0.15)")}
                             />
                         </div>
 
                         <div>
-                            <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-400 mb-1.5">
+                            <label className="block text-[11px] font-bold uppercase tracking-widest text-slate-500 mb-1.5">
                                 Password
                             </label>
                             <input
@@ -78,15 +85,15 @@ export default function LoginClient() {
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                                 placeholder="••••••••"
-                                className="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-3.5 py-3 text-sm text-white placeholder-zinc-600 focus:outline-none focus:border-blue-500 transition-colors"
+                                className="w-full rounded-xl px-3.5 py-3 text-sm text-white placeholder-slate-600 focus:outline-none transition-colors"
+                                style={{ background: "rgba(5,10,16,0.8)", border: "1px solid rgba(16,185,129,0.15)" }}
+                                onFocus={(e) => (e.target.style.borderColor = "rgba(16,185,129,0.4)")}
+                                onBlur={(e) => (e.target.style.borderColor = "rgba(16,185,129,0.15)")}
                             />
                         </div>
 
                         {error ? (
-                            <div className="p-3 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-400 text-xs font-medium text-center flex items-center justify-center gap-2">
-                                <svg className="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                                </svg>
+                            <div className="p-3 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-400 text-xs font-bold text-center">
                                 {error}
                             </div>
                         ) : null}
@@ -94,12 +101,12 @@ export default function LoginClient() {
                         <button
                             type="submit"
                             disabled={loading}
-                            className="w-full py-3.5 px-4 rounded-xl bg-blue-600 hover:bg-blue-500 disabled:bg-zinc-800 disabled:text-zinc-600 text-white font-semibold text-sm shadow-lg shadow-blue-600/20 flex items-center justify-center gap-2 transition-all active:scale-[0.98] min-h-[48px]"
+                            className="w-full py-3.5 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-500 disabled:bg-slate-800 disabled:text-slate-600 text-white font-bold text-sm btn-tactical shadow-lg shadow-emerald-600/20 flex items-center justify-center gap-2 min-h-[48px]"
                         >
                             {loading ? (
                                 <>
                                     <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                                    <span>Signing in…</span>
+                                    <span>Signing in...</span>
                                 </>
                             ) : (
                                 <span>Sign In to Continue</span>
@@ -108,11 +115,10 @@ export default function LoginClient() {
                     </form>
                 </div>
 
-                {/* Return Home Link */}
                 <div className="mt-6 text-center">
                     <Link
                         href="/"
-                        className="text-xs text-zinc-500 hover:text-zinc-300 font-medium inline-flex items-center gap-1 transition-colors"
+                        className="text-xs text-slate-500 hover:text-slate-300 font-bold inline-flex items-center gap-1 transition-colors"
                     >
                         <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                             <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
@@ -124,4 +130,3 @@ export default function LoginClient() {
         </main>
     );
 }
-

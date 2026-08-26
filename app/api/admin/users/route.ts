@@ -1,7 +1,8 @@
-﻿import { NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import dbConnect from "@/config/dbConnect";
 import User from "@/models/User";
+import Workspace from "@/models/Workspace";
 import { authOptions } from "@/lib/auth";
 import { adminUpdateUserSchema } from "@/lib/validation/schemas";
 import { handleApiError } from "@/core/errors/handleApiError";
@@ -42,6 +43,13 @@ export async function PATCH(request: Request) {
             },
             { new: true }
         ).select("-password");
+
+        if (subscriptionPlan) {
+            await Workspace.updateMany(
+                { ownerId: userId },
+                { planTier: subscriptionPlan }
+            );
+        }
 
         return NextResponse.json({ success: true, data: updatedUser });
     } catch (error) {

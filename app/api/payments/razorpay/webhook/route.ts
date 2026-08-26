@@ -3,6 +3,7 @@ import crypto from "crypto";
 import dbConnect from "@/config/dbConnect";
 import Subscription from "@/models/Subscription";
 import User from "@/models/User";
+import Workspace from "@/models/Workspace";
 
 export async function POST(request: Request) {
     try {
@@ -67,10 +68,14 @@ export async function POST(request: Request) {
                     endDate,
                 });
 
-                // 2. Update User Plan
+                // 2. Update User Plan & Workspace Plan
                 await User.findByIdAndUpdate(userId, {
                     subscriptionPlan: plan,
                 });
+                await Workspace.updateMany(
+                    { ownerId: userId },
+                    { planTier: plan }
+                );
             }
         }
 

@@ -52,7 +52,6 @@ export default function PairClient() {
         if (initial && /^\d{6}$/.test(initial)) {
             void completePairing(initial);
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {
@@ -92,7 +91,6 @@ export default function PairClient() {
             scannerRef.current = null;
             if (s?.isScanning) void s.stop().catch(() => undefined);
         };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [scanningQr]);
 
     function onSubmit(e: FormEvent) {
@@ -100,16 +98,17 @@ export default function PairClient() {
         void completePairing(code);
     }
 
-    // Helper to render individual digit slots
     const digits = Array.from({ length: 6 }, (_, i) => code[i] || "");
 
     return (
-        <main className="min-h-dvh bg-[#090d16] flex flex-col justify-between p-5 max-w-md mx-auto relative">
+        <main className="min-h-dvh bg-[#050a10] flex flex-col justify-between p-5 max-w-md mx-auto relative">
+            <div className="absolute inset-0 hud-grid opacity-20 pointer-events-none" />
+
             {/* Header */}
-            <header className="flex items-center justify-between py-2 border-b border-zinc-900">
+            <header className="flex items-center justify-between py-2 border-b border-slate-800/60 relative z-10" style={{ animation: "fade-in 0.4s ease" }}>
                 <Link
                     href="/"
-                    className="p-2 -ml-2 text-zinc-400 hover:text-white flex items-center gap-1.5 text-sm font-medium transition-colors"
+                    className="p-2 -ml-2 text-slate-400 hover:text-white flex items-center gap-1.5 text-sm font-bold transition-colors"
                 >
                     <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
@@ -117,31 +116,31 @@ export default function PairClient() {
                     Back
                 </Link>
                 <div className="flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-blue-500" />
-                    <span className="text-xs font-semibold uppercase tracking-wider text-zinc-400">Device Pairing</span>
+                    <span className="w-2 h-2 rounded-full bg-emerald-400" />
+                    <span className="text-[11px] font-bold uppercase tracking-widest text-slate-400">Device Pairing</span>
                 </div>
             </header>
 
-            {/* Main Area */}
-            <div className="my-auto py-6">
-                <div className="text-center mb-6">
-                    <h1 className="text-2xl font-bold text-white tracking-tight">
+            {/* Main */}
+            <div className="my-auto py-6 relative z-10">
+                <div className="text-center mb-6" style={{ animation: "slide-in-up 0.5s ease" }}>
+                    <h1 className="text-2xl font-extrabold text-white tracking-tight">
                         Pair Scanner Device
                     </h1>
-                    <p className="mt-2 text-sm text-zinc-400 max-w-xs mx-auto">
-                        Ask an event manager for the 6-digit code from Dashboard → Scanner Devices, or scan the pairing QR code.
+                    <p className="mt-2 text-sm text-slate-400 max-w-xs mx-auto">
+                        Enter the 6-digit code from Dashboard or scan the pairing QR code.
                     </p>
                 </div>
 
                 {/* Mode Selector */}
-                <div className="grid grid-cols-2 p-1 mb-6 rounded-xl bg-zinc-900/80 border border-zinc-800">
+                <div className="grid grid-cols-2 p-1 mb-6 rounded-xl border border-slate-800/80" style={{ background: "rgba(13,21,32,0.6)", animation: "slide-in-up 0.5s ease 0.1s both" }}>
                     <button
                         type="button"
                         onClick={() => setScanningQr(false)}
-                        className={`py-2 px-3 text-xs font-semibold rounded-lg transition-all ${
+                        className={`py-2.5 px-3 text-xs font-bold rounded-lg transition-all ${
                             !scanningQr
-                                ? "bg-blue-600 text-white shadow-md shadow-blue-600/30"
-                                : "text-zinc-400 hover:text-white"
+                                ? "bg-emerald-600 text-white shadow-lg shadow-emerald-600/20"
+                                : "text-slate-400 hover:text-white"
                         }`}
                     >
                         Pair Code
@@ -152,10 +151,10 @@ export default function PairClient() {
                             setCameraError("");
                             setScanningQr(true);
                         }}
-                        className={`py-2 px-3 text-xs font-semibold rounded-lg transition-all ${
+                        className={`py-2.5 px-3 text-xs font-bold rounded-lg transition-all ${
                             scanningQr
-                                ? "bg-blue-600 text-white shadow-md shadow-blue-600/30"
-                                : "text-zinc-400 hover:text-white"
+                                ? "bg-emerald-600 text-white shadow-lg shadow-emerald-600/20"
+                                : "text-slate-400 hover:text-white"
                         }`}
                     >
                         Scan QR Code
@@ -163,9 +162,8 @@ export default function PairClient() {
                 </div>
 
                 {!scanningQr ? (
-                    <form onSubmit={onSubmit} className="flex flex-col items-center">
-                        {/* Hidden native input for soft keyboard trigger */}
-                        <div className="relative w-full max-w-xs mb-4">
+                    <form onSubmit={onSubmit} className="flex flex-col items-center" style={{ animation: "slide-in-up 0.5s ease 0.2s both" }}>
+                        <div className="relative w-full max-w-xs mb-5">
                             <input
                                 inputMode="numeric"
                                 pattern="\d{6}"
@@ -178,31 +176,35 @@ export default function PairClient() {
                                 disabled={loading}
                                 className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-20 text-center"
                             />
-
-                            {/* Digit Boxes Display */}
                             <div className="grid grid-cols-6 gap-2 pointer-events-none">
                                 {digits.map((digit, idx) => (
                                     <div
                                         key={idx}
-                                        className={`h-14 rounded-xl border flex items-center justify-center text-xl font-mono font-bold transition-all ${
-                                            digit
-                                                ? "bg-blue-500/10 border-blue-500 text-blue-400 shadow-sm shadow-blue-500/20"
+                                        className="h-14 rounded-xl border flex items-center justify-center text-xl font-mono font-bold transition-all"
+                                        style={{
+                                            background: digit
+                                                ? "rgba(16,185,129,0.08)"
                                                 : idx === code.length
-                                                ? "bg-zinc-900 border-blue-500/80 animate-pulse text-transparent"
-                                                : "bg-zinc-900/60 border-zinc-800 text-zinc-600"
-                                        }`}
+                                                ? "rgba(13,21,32,0.8)"
+                                                : "rgba(5,10,16,0.5)",
+                                            borderColor: digit
+                                                ? "rgba(16,185,129,0.4)"
+                                                : idx === code.length
+                                                ? "rgba(16,185,129,0.3)"
+                                                : "rgba(21,32,48,0.8)",
+                                            color: digit ? "#34d399" : "#334155",
+                                            boxShadow: digit ? "0 0 10px rgba(16,185,129,0.1)" : "none",
+                                            animation: idx === code.length ? "h-border-pulse 1.5s ease-in-out infinite" : "none",
+                                        }}
                                     >
-                                        {digit || "•"}
+                                        {digit || "·"}
                                     </div>
                                 ))}
                             </div>
                         </div>
 
                         {error ? (
-                            <div className="w-full mb-4 p-3 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-400 text-xs font-medium text-center flex items-center justify-center gap-2">
-                                <svg className="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                                </svg>
+                            <div className="w-full mb-4 p-3 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-400 text-xs font-bold text-center">
                                 {error}
                             </div>
                         ) : null}
@@ -210,12 +212,12 @@ export default function PairClient() {
                         <button
                             type="submit"
                             disabled={loading || code.length !== 6}
-                            className="w-full max-w-xs py-3.5 px-4 rounded-xl bg-blue-600 hover:bg-blue-500 disabled:bg-zinc-800 disabled:text-zinc-600 text-white font-semibold text-base shadow-lg shadow-blue-600/25 transition-all flex items-center justify-center gap-2 active:scale-[0.98] min-h-[52px]"
+                            className="w-full max-w-xs py-3.5 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-500 disabled:bg-slate-800 disabled:text-slate-600 text-white font-bold text-sm btn-tactical shadow-lg shadow-emerald-600/20 flex items-center justify-center gap-2 min-h-[52px]"
                         >
                             {loading ? (
                                 <>
                                     <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                                    <span>Pairing Device…</span>
+                                    <span>Pairing...</span>
                                 </>
                             ) : (
                                 <>
@@ -228,42 +230,36 @@ export default function PairClient() {
                         </button>
                     </form>
                 ) : (
-                    <div className="flex flex-col items-center">
-                        <div className="w-full max-w-xs aspect-square rounded-2xl bg-black border border-zinc-800 overflow-hidden relative shadow-2xl flex items-center justify-center">
+                    <div className="flex flex-col items-center" style={{ animation: "scale-in 0.3s ease" }}>
+                        <div className="w-full max-w-xs aspect-square rounded-2xl bg-black border border-slate-800/80 overflow-hidden relative shadow-2xl flex items-center justify-center">
                             <div id={readerId} className="w-full h-full" />
-
-                            {/* Viewfinder overlay */}
-                            <div className="absolute inset-0 pointer-events-none border-2 border-dashed border-blue-500/40 m-6 rounded-xl flex items-center justify-center">
-                                <div className="w-full h-0.5 bg-blue-500/80 animate-laser absolute" />
+                            <div className="absolute inset-0 pointer-events-none border-2 border-dashed border-emerald-500/30 m-6 rounded-xl flex items-center justify-center">
+                                <div className="w-full h-0.5 bg-emerald-500/60 animate-laser absolute" />
                             </div>
                         </div>
 
                         {cameraError ? (
-                            <p className="mt-3 text-xs text-rose-400 text-center font-medium">
-                                {cameraError}
-                            </p>
+                            <p className="mt-3 text-xs text-rose-400 text-center font-bold">{cameraError}</p>
                         ) : (
-                            <p className="mt-3 text-xs text-zinc-400 text-center">
-                                Point camera at the pairing QR shown on Dashboard
-                            </p>
+                            <p className="mt-3 text-xs text-slate-400 text-center">Point camera at pairing QR on Dashboard</p>
                         )}
 
                         <button
                             type="button"
                             onClick={() => setScanningQr(false)}
-                            className="mt-4 px-4 py-2 rounded-lg bg-zinc-900 border border-zinc-800 text-xs font-semibold text-zinc-300 hover:text-white"
+                            className="mt-4 px-4 py-2 rounded-lg border border-slate-800 text-xs font-bold text-slate-300 hover:text-white transition-colors"
+                            style={{ background: "rgba(13,21,32,0.6)" }}
                         >
-                            Cancel Camera Scan
+                            Cancel Camera
                         </button>
                     </div>
                 )}
             </div>
 
-            {/* Footer tip */}
-            <footer className="py-2 text-center text-xs text-zinc-500">
-                Paired devices automatically receive gate security credentials.
+            {/* Footer */}
+            <footer className="py-2 text-center text-[11px] text-slate-600 relative z-10">
+                Paired devices receive gate security credentials.
             </footer>
         </main>
     );
 }
-

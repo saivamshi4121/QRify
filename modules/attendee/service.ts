@@ -14,6 +14,13 @@ import type {
 } from "@/modules/attendee/validation";
 import { getEventForWorkspace } from "@/modules/event/service";
 import { BadRequestError, NotFoundError } from "@/core/errors/AppError";
+import {
+    assertWithinLimit,
+    getLimit,
+    getUsage,
+    getWorkspacePlan,
+} from "@/modules/entitlement/service";
+import { PlanLimitReachedError } from "@/modules/entitlement/errors";
 
 export type PublicAttendee = {
     id: string;
@@ -208,6 +215,7 @@ export async function createAttendee(
 ) {
     await dbConnect();
     await assertEventInWorkspace(eventId, workspaceId);
+    await assertWithinLimit(workspaceId, "attendees", { eventId });
 
     if (!mongoose.Types.ObjectId.isValid(eventId)) {
         throw new BadRequestError("Invalid event ID");
@@ -476,6 +484,25 @@ export async function bulkImport(
     input: { headers: string[]; rows: string[][]; columnMap: CsvColumnMap }
 ) {
     const preview = await bulkImportPreview(workspaceId, eventId, input);
+    const validNewRows = preview.rows.filter((r) => r.valid && r.data);
+
+    if (validNewRows.length > 0) {
+        const currentUsage = await getUsage(workspaceId, "attendees", { eventId });
+        const limit = await getLimit(workspaceId, "attendees");
+        if (currentUsage + validNewRows.length > limit) {
+            const planTier = await getWorkspacePlan(workspaceId);
+            throw new PlanLimitReachedError(
+                `Bulk import of ${validNewRows.length} attendees exceeds attendee limit (${currentUsage}/${limit}) for this event on the current plan.`,
+                {
+                    resource: "attendees",
+                    currentUsage,
+                    limit,
+                    currentPlan: planTier,
+                }
+            );
+        }
+    }
+
     const created: PublicAttendee[] = [];
     const failed: { index: number; error: string }[] = [];
 

@@ -1,4 +1,4 @@
-﻿import { cookies } from "next/headers";
+import { cookies } from "next/headers";
 import mongoose from "mongoose";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
@@ -9,11 +9,14 @@ import { ACTIVE_WORKSPACE_COOKIE } from "@/modules/workspace/constants";
 import { ensureDefaultWorkspace } from "@/modules/workspace/service";
 import { UnauthorizedError, ForbiddenError } from "@/core/errors/AppError";
 
+import { PlanTier } from "@/modules/entitlement/types";
+
 export type ResolvedWorkspace = {
     userId: string;
     workspaceId: string;
     role: WorkspaceRole;
     workspaceName: string;
+    planTier: PlanTier;
 };
 
 /**
@@ -53,10 +56,11 @@ export async function resolveWorkspace(): Promise<ResolvedWorkspace> {
                     workspaceId: workspace._id.toString(),
                     role: membership.role,
                     workspaceName: workspace.name,
+                    planTier: (workspace.planTier as PlanTier) || "free",
                 };
             }
         }
-        // Invalid/stale cookie â†’ fall through to default
+        // Invalid/stale cookie -> fall through to default
     }
 
     const membership = await WorkspaceMember.findOne({
@@ -68,10 +72,13 @@ export async function resolveWorkspace(): Promise<ResolvedWorkspace> {
         throw new ForbiddenError("You do not have access to this workspace");
     }
 
+    const defaultWorkspace = await Workspace.findById(workspaceId);
+
     return {
         userId,
         workspaceId,
         role: membership.role,
         workspaceName: defaults.name,
+        planTier: (defaultWorkspace?.planTier as PlanTier) || "free",
     };
 }

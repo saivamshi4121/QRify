@@ -25,6 +25,7 @@ import type {
     PublicApiKey,
     PublicApiRequestLog,
 } from "@/modules/api-key/types";
+import { assertFeature, assertWithinLimit } from "@/modules/entitlement/service";
 
 async function uniquePublicId(): Promise<string> {
     for (let i = 0; i < 8; i++) {
@@ -64,16 +65,23 @@ function toPublic(doc: {
     };
 }
 
-export async function createApiKey(input: {
-    workspaceId: string;
-    userId: string;
-    name: string;
-    description?: string;
-    environment: ApiKeyEnvironmentValue;
-    permissions: ApiKeyScopeValue[];
-    expiresAt?: Date | null;
-}): Promise<CreatedApiKey> {
+export async function createApiKey(
+    input: {
+        workspaceId: string;
+        userId: string;
+        name: string;
+        description?: string;
+        environment: ApiKeyEnvironmentValue;
+        permissions: ApiKeyScopeValue[];
+        expiresAt?: Date | null;
+    },
+    options?: { skipEntitlementCheck?: boolean }
+): Promise<CreatedApiKey> {
     await dbConnect();
+    if (!options?.skipEntitlementCheck) {
+        await assertFeature(input.workspaceId, "api_access");
+        await assertWithinLimit(input.workspaceId, "api_keys");
+    }
     const { rawKey, prefix } = generateRawApiKey(input.environment);
     const doc = await ApiKey.create({
         publicId: await uniquePublicId(),
@@ -148,15 +156,18 @@ export async function rotateApiKey(
     doc.revokedAt = new Date();
     await doc.save();
 
-    return createApiKey({
-        workspaceId,
-        userId,
-        name: doc.name,
-        description: doc.description,
-        environment: doc.environment,
-        permissions: doc.permissions as ApiKeyScopeValue[],
-        expiresAt: doc.expiresAt,
-    });
+    return createApiKey(
+        {
+            workspaceId,
+            userId,
+            name: doc.name,
+            description: doc.description,
+            environment: doc.environment,
+            permissions: doc.permissions as ApiKeyScopeValue[],
+            expiresAt: doc.expiresAt,
+        },
+        { skipEntitlementCheck: true }
+    );
 }
 
 export async function authenticateApiKey(

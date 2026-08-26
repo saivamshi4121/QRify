@@ -120,3 +120,163 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   3D QR MATRIX — Custom Utilities & Keyframes
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Perspective containers */
+.perspective-deep { perspective: 1200px; }
+.perspective-mid { perspective: 900px; }
+.perspective-near { perspective: 600px; }
+
+/* 3D card hover */
+.card-3d {
+  transform-style: preserve-3d;
+  transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.card-3d:hover {
+  transform: translateZ(30px) rotateX(-3deg) rotateY(4deg) scale(1.02) !important;
+  box-shadow: 0 40px 80px -12px rgba(99, 102, 241, 0.35), 0 0 60px rgba(99, 102, 241, 0.15), 0 0 0 1px rgba(99, 102, 241, 0.3) !important;
+  border-color: rgba(99, 102, 241, 0.4) !important;
+}
+
+/* Floating animation for QR fragments */
+@keyframes qr-float-1 {
+  0%, 100% { transform: translate3d(0, 0, 0) rotateX(15deg) rotateY(-10deg) rotateZ(3deg); }
+  25% { transform: translate3d(15px, -25px, 40px) rotateX(25deg) rotateY(-5deg) rotateZ(-2deg); }
+  50% { transform: translate3d(-8px, -45px, 20px) rotateX(10deg) rotateY(-18deg) rotateZ(5deg); }
+  75% { transform: translate3d(20px, -20px, 45px) rotateX(22deg) rotateY(-8deg) rotateZ(-3deg); }
+}
+@keyframes qr-float-2 {
+  0%, 100% { transform: translate3d(0, 0, 0) rotateX(-12deg) rotateY(20deg) rotateZ(-4deg); }
+  33% { transform: translate3d(-20px, -30px, 35px) rotateX(-8deg) rotateY(28deg) rotateZ(3deg); }
+  66% { transform: translate3d(18px, -50px, 40px) rotateX(-20deg) rotateY(14deg) rotateZ(-2deg); }
+}
+@keyframes qr-float-3 {
+  0%, 100% { transform: translate3d(0, 0, 0) rotateX(5deg) rotateY(-20deg) rotateZ(4deg); }
+  50% { transform: translate3d(16px, -22px, 18px) rotateX(10deg) rotateY(-14deg) rotateZ(-2deg); }
+}
+
+/* Grid floor pattern */
+.matrix-grid {
+  background-image:
+    linear-gradient(rgba(99, 102, 241, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(99, 102, 241, 0.06) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+.matrix-grid-fine {
+  background-image:
+    linear-gradient(rgba(34, 211, 238, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(34, 211, 238, 0.04) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* Particle drift */
+@keyframes particle-rise {
+  0% { transform: translateY(0) scale(1); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { transform: translateY(-100vh) scale(0.3); opacity: 0; }
+}
+@keyframes particle-drift {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(30px); }
+}
+
+/* Glow pulse */
+@keyframes glow-pulse {
+  0%, 100% { opacity: 0.4; filter: blur(40px); }
+  50% { opacity: 0.7; filter: blur(60px); }
+}
+
+/* Scanline sweep */
+@keyframes scanline {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100%); }
+}
+
+/* Scroll reveal */
+@keyframes reveal-up {
+  from { opacity: 0; transform: translateY(40px) translateZ(-20px); }
+  to { opacity: 1; transform: translateY(0) translateZ(0); }
+}
+@keyframes reveal-left {
+  from { opacity: 0; transform: translateX(-40px) rotateY(8deg); }
+  to { opacity: 1; transform: translateX(0) rotateY(0deg); }
+}
+@keyframes reveal-right {
+  from { opacity: 0; transform: translateX(40px) rotateY(-8deg); }
+  to { opacity: 1; transform: translateX(0) rotateY(0deg); }
+}
+@keyframes reveal-scale {
+  from { opacity: 0; transform: scale(0.92) translateZ(-30px); }
+  to { opacity: 1; transform: scale(1) translateZ(0); }
+}
+
+/* Laser line for scanner */
+@keyframes laser-sweep {
+  0% { top: 0%; opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { top: 100%; opacity: 0; }
+}
+
+/* Logo ring rotate */
+@keyframes ring-rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Ambient float for background elements */
+@keyframes ambient-drift {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  25% { transform: translate(20px, -15px) scale(1.02); }
+  50% { transform: translate(-10px, -25px) scale(0.98); }
+  75% { transform: translate(15px, -10px) scale(1.01); }
+}
+
+/* QR Code Matrix Cell Pattern — decorative */
+.qr-matrix-pattern {
+  position: relative;
+}
+.qr-matrix-pattern::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    repeating-linear-gradient(0deg, transparent, transparent 11px, rgba(99, 102, 241, 0.07) 11px, rgba(99, 102, 241, 0.07) 12px),
+    repeating-linear-gradient(90deg, transparent, transparent 11px, rgba(99, 102, 241, 0.07) 11px, rgba(99, 102, 241, 0.07) 12px);
+  pointer-events: none;
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 50%, black 20%, transparent 70%);
+  -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 50%, black 20%, transparent 70%);
+}
+
+/* 3D depth shadow layers */
+.depth-shadow {
+  box-shadow:
+    0 2px 4px rgba(0, 0, 0, 0.3),
+    0 8px 16px rgba(0, 0, 0, 0.2),
+    0 24px 48px rgba(0, 0, 0, 0.15),
+    0 0 0 1px rgba(99, 102, 241, 0.08);
+}
+.depth-shadow-glow {
+  box-shadow:
+    0 2px 4px rgba(0, 0, 0, 0.3),
+    0 8px 16px rgba(0, 0, 0, 0.2),
+    0 24px 48px rgba(0, 0, 0, 0.15),
+    0 0 0 1px rgba(99, 102, 241, 0.15),
+    0 0 60px -10px rgba(99, 102, 241, 0.15);
+}
+
+/* Glass surface */
+.glass-surface {
+  background: rgba(9, 13, 22, 0.7);
+  backdrop-filter: blur(20px) saturate(1.5);
+  -webkit-backdrop-filter: blur(20px) saturate(1.5);
+}
+
+/* Ensure laser animation class works */
+.animate-laser {
+  animation: laser-sweep 2s ease-in-out infinite;
+}

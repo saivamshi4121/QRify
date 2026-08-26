@@ -26,101 +26,152 @@ export default function HomePage() {
 
     if (loading) {
         return (
-            <main className="min-h-dvh bg-[#090d16] flex items-center justify-center p-6 text-zinc-400">
-                <div className="flex flex-col items-center gap-3">
-                    <div className="w-8 h-8 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
-                    <span className="text-sm font-medium tracking-wide">Loading scanner environment…</span>
+            <main className="min-h-dvh bg-[#050a10] flex items-center justify-center p-6">
+                <div className="flex flex-col items-center gap-4">
+                    <div className="relative w-12 h-12">
+                        <div className="absolute inset-0 rounded-full border-2 border-emerald-500/30" />
+                        <div className="absolute inset-0 rounded-full border-2 border-t-emerald-400 animate-spin" />
+                    </div>
+                    <div className="text-center">
+                        <p className="text-sm font-semibold text-emerald-400 tracking-wide">INITIALIZING</p>
+                        <p className="text-[11px] text-slate-500 font-mono mt-1">Loading scanner environment</p>
+                    </div>
                 </div>
             </main>
         );
     }
 
     return (
-        <main className="min-h-dvh bg-[#090d16] flex flex-col justify-between p-6 max-w-md mx-auto relative overflow-hidden">
-            {/* Background Glow */}
-            <div className="absolute -top-24 left-1/2 -translate-x-1/2 w-80 h-80 bg-blue-600/15 rounded-full blur-3xl pointer-events-none" />
+        <main className="min-h-dvh bg-[#050a10] flex flex-col justify-between relative overflow-hidden">
+            {/* HUD Grid Background */}
+            <div className="absolute inset-0 hud-grid opacity-40 pointer-events-none" />
 
-            {/* Header / Brand */}
-            <header className="pt-4 flex items-center justify-between z-10">
-                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-semibold uppercase tracking-wider">
-                    <span className="w-2 h-2 rounded-full bg-blue-400 animate-pulse" />
-                    Qrezo Scanner
-                </div>
-                <span className="text-xs text-zinc-500 font-mono">v1.1.0</span>
-            </header>
+            {/* Ambient glow */}
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[400px] rounded-full pointer-events-none"
+                style={{ background: "radial-gradient(ellipse, rgba(16,185,129,0.12) 0%, transparent 65%)" }} />
 
-            {/* Main Content */}
-            <div className="my-auto py-8 text-center z-10 flex flex-col items-center">
-                {/* Hero Icon */}
-                <div className="w-20 h-20 mb-6 rounded-2xl bg-gradient-to-b from-blue-500/20 to-blue-600/5 border border-blue-500/30 flex items-center justify-center text-blue-400 shadow-xl shadow-blue-900/20">
-                    <svg className="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" />
-                    </svg>
-                </div>
+            <div className="relative z-10 flex flex-col flex-1 p-5 max-w-md mx-auto w-full">
+                {/* Top Bar */}
+                <header className="pt-2 pb-4 flex items-center justify-between" style={{ animation: "fade-in 0.6s ease" }}>
+                    <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border border-emerald-500/20 text-emerald-400 text-[11px] font-bold uppercase tracking-widest"
+                        style={{ background: "rgba(16,185,129,0.08)" }}>
+                        <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                        QREZO SCANNER
+                    </div>
+                    <span className="text-[10px] text-slate-600 font-mono">v2.0</span>
+                </header>
 
-                <h1 className="text-3xl font-bold text-white tracking-tight leading-tight">
-                    Fast Event Check-In
-                </h1>
-                <p className="mt-3 text-zinc-400 text-sm leading-relaxed max-w-xs">
-                    Turn any device into an enterprise gate scanner in seconds. Built for high-throughput entry.
-                </p>
-
-                {/* Active Session Card if present */}
-                {activeSession ? (
-                    <div className="mt-6 w-full p-4 rounded-xl bg-zinc-900/90 border border-zinc-800 text-left">
-                        <div className="flex items-center justify-between text-xs text-zinc-400 mb-1">
-                            <span className="font-semibold text-emerald-400 uppercase tracking-wider">Active Device Session</span>
-                            <span className="px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 font-mono text-[10px]">Paired</span>
+                {/* Main Content */}
+                <div className="flex-1 flex flex-col items-center justify-center py-8" style={{ animation: "slide-in-up 0.7s ease" }}>
+                    {/* Tactical Crosshair */}
+                    <div className="relative w-28 h-28 mb-8">
+                        {/* Outer ring */}
+                        <div className="absolute inset-0 rounded-full border-2 border-emerald-500/20" style={{ animation: "corner-glow 3s ease-in-out infinite" }} />
+                        {/* Middle ring */}
+                        <div className="absolute inset-3 rounded-full border border-emerald-500/15" />
+                        {/* Inner ring */}
+                        <div className="absolute inset-6 rounded-full border border-emerald-500/10" />
+                        {/* Center glow */}
+                        <div className="absolute inset-0 flex items-center justify-center">
+                            <div className="w-10 h-10 rounded-full flex items-center justify-center"
+                                style={{
+                                    background: "linear-gradient(135deg, rgba(16,185,129,0.2), rgba(34,211,238,0.1))",
+                                    boxShadow: "0 0 30px rgba(16,185,129,0.2)",
+                                }}>
+                                <div className="w-5 h-5 rounded-full bg-emerald-500/80 shadow-[0_0_15px_rgba(16,185,129,0.5)]" />
+                            </div>
                         </div>
-                        <p className="text-sm font-bold text-white truncate">{activeSession.eventName}</p>
-                        <p className="text-xs text-zinc-400 mt-0.5">Gate: <span className="text-zinc-200 font-medium">{activeSession.gate || "Not selected"}</span></p>
+                        {/* Crosshair lines */}
+                        <div className="absolute top-1/2 left-0 right-0 h-px bg-gradient-to-r from-transparent via-emerald-500/30 to-transparent -translate-y-1/2" />
+                        <div className="absolute left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-emerald-500/30 to-transparent -translate-x-1/2" />
+                        {/* Corner brackets */}
+                        <div className="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-emerald-400/60 rounded-tl" />
+                        <div className="absolute top-0 right-0 w-4 h-4 border-t-2 border-r-2 border-emerald-400/60 rounded-tr" />
+                        <div className="absolute bottom-0 left-0 w-4 h-4 border-b-2 border-l-2 border-emerald-400/60 rounded-bl" />
+                        <div className="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-emerald-400/60 rounded-br" />
+                    </div>
+
+                    {/* Title */}
+                    <h1 className="text-3xl font-extrabold text-white tracking-tight leading-tight text-center">
+                        High-Speed Event
+                        <br />
+                        <span className="text-emerald-400" style={{ textShadow: "0 0 20px rgba(16,185,129,0.3)" }}>Check-In System</span>
+                    </h1>
+                    <p className="mt-3 text-slate-400 text-sm leading-relaxed max-w-xs text-center">
+                        Enterprise-grade QR validation with sub-second response times and offline fallback reliability.
+                    </p>
+
+                    {/* Active Session Card */}
+                    {activeSession ? (
+                        <div className="mt-8 w-full p-4 rounded-xl glass-card" style={{ animation: "slide-in-up 0.5s ease 0.2s both" }}>
+                            <div className="flex items-center justify-between text-[10px] text-slate-400 mb-2">
+                                <span className="font-bold text-emerald-400 uppercase tracking-widest flex items-center gap-1.5">
+                                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                                    Active Session
+                                </span>
+                                <span className="px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-400 font-mono border border-emerald-500/20">PAIRED</span>
+                            </div>
+                            <p className="text-sm font-bold text-white truncate">{activeSession.eventName}</p>
+                            <p className="text-xs text-slate-500 mt-0.5 font-mono">Gate: {activeSession.gate || "Not selected"}</p>
+                            <Link
+                                href="/scan"
+                                className="mt-3 w-full py-3 px-4 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm flex items-center justify-center gap-2 btn-tactical shadow-lg shadow-emerald-600/20"
+                            >
+                                Resume Scanning
+                                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                                </svg>
+                            </Link>
+                        </div>
+                    ) : null}
+
+                    {/* Action Buttons */}
+                    <div className="mt-8 w-full flex flex-col gap-3" style={{ animation: "slide-in-up 0.7s ease 0.3s both" }}>
+                        <Link
+                            href="/pair"
+                            className="w-full py-4 px-5 rounded-xl text-white font-bold text-sm flex items-center justify-center gap-3 btn-tactical min-h-[56px] relative overflow-hidden"
+                            style={{
+                                background: "linear-gradient(135deg, #059669, #0d9488)",
+                                boxShadow: "0 0 30px rgba(16,185,129,0.2), inset 0 1px 0 rgba(255,255,255,0.1)",
+                            }}
+                        >
+                            {/* Scan sweep effect */}
+                            <div className="absolute inset-0 pointer-events-none overflow-hidden">
+                                <div className="absolute top-0 bottom-0 w-20 bg-gradient-to-r from-transparent via-white/10 to-transparent"
+                                    style={{ animation: "scan-sweep 3s linear infinite" }} />
+                            </div>
+                            <svg className="w-5 h-5 relative z-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" />
+                            </svg>
+                            <span className="relative z-10">Pair Scanner Device</span>
+                        </Link>
 
                         <Link
-                            href="/scan"
-                            className="mt-3 w-full py-2.5 px-4 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-sm flex items-center justify-center gap-2 transition-colors active:scale-[0.99]"
+                            href="/login"
+                            className="w-full py-4 px-5 rounded-xl bg-[#0d1520] hover:bg-[#111c2a] text-slate-300 border border-slate-800/80 font-bold text-sm flex items-center justify-center gap-3 btn-tactical min-h-[56px] transition-all"
                         >
-                            Resume Scanning
-                            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                            <svg className="w-5 h-5 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
                             </svg>
+                            Staff Login
                         </Link>
                     </div>
-                ) : null}
-
-                {/* Action Buttons */}
-                <div className="mt-8 w-full flex flex-col gap-3">
-                    <Link
-                        href="/pair"
-                        className="w-full py-3.5 px-5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-semibold text-base shadow-lg shadow-blue-600/25 flex items-center justify-center gap-2 transition-all active:scale-[0.98] min-h-[52px]"
-                    >
-                        <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
-                        </svg>
-                        Pair Scanner
-                    </Link>
-
-                    <Link
-                        href="/login"
-                        className="w-full py-3.5 px-5 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-zinc-200 border border-zinc-800 font-semibold text-base flex items-center justify-center gap-2 transition-all active:scale-[0.98] min-h-[52px]"
-                    >
-                        <svg className="w-5 h-5 text-zinc-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
-                        </svg>
-                        Staff Login
-                    </Link>
                 </div>
-            </div>
 
-            {/* Footer Information */}
-            <footer className="pt-4 border-t border-zinc-900 text-center z-10">
-                <p className="text-xs text-zinc-500 flex items-center justify-center gap-2">
-                    <svg className="w-3.5 h-3.5 text-emerald-500" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                    </svg>
-                    PWA Ready • Encrypted Validation Proxy
-                </p>
-            </footer>
+                {/* Footer */}
+                <footer className="py-3 border-t border-slate-900/60 text-center" style={{ animation: "fade-in 0.8s ease 0.5s both" }}>
+                    <div className="flex items-center justify-center gap-4 text-[10px] text-slate-600 font-mono">
+                        <span className="flex items-center gap-1.5">
+                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" style={{ animation: "glow-pulse 2s ease-in-out infinite" }} />
+                            PWA READY
+                        </span>
+                        <span className="text-slate-800">|</span>
+                        <span>ENCRYPTED</span>
+                        <span className="text-slate-800">|</span>
+                        <span>OFFLINE QUEUE</span>
+                    </div>
+                </footer>
+            </div>
         </main>
     );
 }
-

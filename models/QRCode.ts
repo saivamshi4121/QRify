@@ -83,6 +83,8 @@ const QRCodeSchema = new Schema(
     }
 );
 
+QRCodeSchema.index({ workspaceId: 1, isActive: 1 });
+
 const QRCode = models?.QRCode || model("QRCode", QRCodeSchema);
 
 // Hot-reload safety: ensure new tenant fields exist on a previously compiled model

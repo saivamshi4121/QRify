@@ -10,7 +10,12 @@ import { logger } from "@/lib/logger";
 export function handleApiError(error: unknown, context = "API Error") {
     if (error instanceof AppError) {
         return NextResponse.json(
-            { success: false, message: error.message },
+            {
+                success: false,
+                message: error.message,
+                code: error.code,
+                ...(error.details !== undefined && { details: error.details }),
+            },
             { status: error.statusCode }
         );
     }

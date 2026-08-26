@@ -1,4 +1,4 @@
-﻿import { NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import {
@@ -68,7 +68,7 @@ export async function POST(request: Request) {
             name,
             slug,
             ownerId: session.user.id,
-            planTier: session.user.subscriptionPlan || "free",
+            planTier: "free",
         });
 
         await WorkspaceMember.create({

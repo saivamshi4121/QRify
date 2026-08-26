@@ -13,6 +13,7 @@ import type {
     NotificationTriggerEventValue,
 } from "@/modules/notifications/constants";
 import { STARTER_TEMPLATES } from "@/modules/notifications/starters";
+import { assertFeature, assertWithinLimit } from "@/modules/entitlement/service";
 
 function generateTemplatePublicId() {
     return `ntpl_${crypto.randomBytes(6).toString("hex")}`;
@@ -81,18 +82,25 @@ export async function getNotificationTemplate(
     return toPublic(doc as never);
 }
 
-export async function createNotificationTemplate(input: {
-    workspaceId: string;
-    userId: string;
-    name: string;
-    description?: string;
-    channel: NotificationChannelValue;
-    triggerEvent: NotificationTriggerEventValue;
-    enabled?: boolean;
-    subject?: string;
-    content: string;
-}): Promise<PublicNotificationTemplate> {
+export async function createNotificationTemplate(
+    input: {
+        workspaceId: string;
+        userId: string;
+        name: string;
+        description?: string;
+        channel: NotificationChannelValue;
+        triggerEvent: NotificationTriggerEventValue;
+        enabled?: boolean;
+        subject?: string;
+        content: string;
+    },
+    options?: { skipEntitlementCheck?: boolean }
+): Promise<PublicNotificationTemplate> {
     await dbConnect();
+    if (!options?.skipEntitlementCheck) {
+        await assertFeature(input.workspaceId, "notifications");
+        await assertWithinLimit(input.workspaceId, "notification_templates");
+    }
     if (
         input.channel === NotificationChannel.EMAIL &&
         !(input.subject || "").trim()
@@ -190,17 +198,20 @@ export async function ensureStarterTemplates(input: {
             .select("_id")
             .lean();
         if (exists) continue;
-        await createNotificationTemplate({
-            workspaceId: input.workspaceId,
-            userId: input.userId,
-            name: starter.name,
-            description: starter.description,
-            channel: starter.channel,
-            triggerEvent: starter.triggerEvent,
-            subject: starter.subject,
-            content: starter.content,
-            enabled: false,
-        });
+        await createNotificationTemplate(
+            {
+                workspaceId: input.workspaceId,
+                userId: input.userId,
+                name: starter.name,
+                description: starter.description,
+                channel: starter.channel,
+                triggerEvent: starter.triggerEvent,
+                subject: starter.subject,
+                content: starter.content,
+                enabled: false,
+            },
+            { skipEntitlementCheck: true }
+        );
         created += 1;
     }
     return created;

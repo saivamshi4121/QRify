@@ -1,12 +1,10 @@
-﻿import { NextResponse } from "next/server";
-import { getServerSession } from "next-auth";
+import { NextResponse } from "next/server";
 import { v2 as cloudinary } from "cloudinary";
 import mongoose from "mongoose";
 import dbConnect from "@/config/dbConnect";
 import QRCode from "@/models/QRCode";
 import { generateShortCode } from "@/lib/generateShortCode";
-import { subscriptionGuard } from "@/lib/guards/subscriptionGuard";
-import { authOptions } from "@/lib/auth";
+import { assertWithinLimit } from "@/modules/entitlement/service";
 import { generateQR } from "@/lib/qrGenerator";
 import { generateQRSchema } from "@/lib/validation/schemas";
 import { handleApiError } from "@/core/errors/handleApiError";
@@ -24,7 +22,6 @@ function configureCloudinary() {
 export async function POST(request: Request) {
     try {
         const { userId, workspaceId } = await resolveWorkspace();
-        const session = await getServerSession(authOptions);
 
         await dbConnect();
         const body = await request.json();
@@ -45,21 +42,7 @@ export async function POST(request: Request) {
             await assertSmartPageInWorkspace(smartPageId, workspaceId);
         }
 
-        try {
-            await subscriptionGuard(userId, workspaceId);
-        } catch (e: unknown) {
-            const isFreePlan = session?.user?.subscriptionPlan === "free";
-            const message = e instanceof Error ? e.message : "QR limit reached";
-            return NextResponse.json(
-                {
-                    success: false,
-                    message,
-                    upgradeRequired: isFreePlan,
-                    currentPlan: session?.user?.subscriptionPlan || "free",
-                },
-                { status: 403 }
-            );
-        }
+        await assertWithinLimit(workspaceId, "qr_codes");
 
         const shortUrl = await generateShortCode();
         const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";

@@ -1,20 +1,24 @@
 @import "tailwindcss";
 
 :root {
-  --bg: #090d16;
-  --card: #111726;
-  --card-border: #1e293b;
-  --muted: #94a3b8;
-  --text: #f8fafc;
-  --accent: #2563eb;
-  --accent-hover: #1d4ed8;
+  --bg: #050a10;
+  --bg-card: #0a1018;
+  --bg-elevated: #0d1520;
+  --border: #152030;
+  --border-accent: #10b981;
+  --text: #e2e8f0;
+  --text-muted: #64748b;
+  --accent: #10b981;
+  --accent-dim: rgba(16, 185, 129, 0.15);
+  --accent-glow: rgba(16, 185, 129, 0.3);
+  --cyan: #22d3ee;
+  --cyan-dim: rgba(34, 211, 238, 0.12);
   --ok: #10b981;
   --warn: #f59e0b;
   --bad: #ef4444;
 }
 
-html,
-body {
+html, body {
   height: 100%;
   background-color: var(--bg);
   color: var(--text);
@@ -23,48 +27,163 @@ body {
 
 body {
   margin: 0;
-  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-family: 'SF Pro Display', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   -webkit-tap-highlight-color: transparent;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   touch-action: manipulation;
 }
 
-/* Custom laser animation for viewfinder */
+/* ─── Tactical Scanner Animations ─── */
+
 @keyframes laser-scan {
-  0% {
-    top: 5%;
-    opacity: 0.8;
-  }
-  50% {
-    top: 90%;
-    opacity: 1;
-  }
-  100% {
-    top: 5%;
-    opacity: 0.8;
-  }
+  0% { top: 0%; opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { top: 100%; opacity: 0; }
 }
 
 .animate-laser {
-  animation: laser-scan 2.5s ease-in-out infinite;
+  animation: laser-scan 1.8s ease-in-out infinite;
 }
 
-@keyframes pulse-subtle {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.6; transform: scale(0.96); }
+@keyframes pulse-ring {
+  0% { transform: scale(0.8); opacity: 0.8; }
+  50% { transform: scale(1.2); opacity: 0; }
+  100% { transform: scale(0.8); opacity: 0; }
 }
 
-.animate-pulse-subtle {
-  animation: pulse-subtle 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+.animate-pulse-ring {
+  animation: pulse-ring 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
-/* Hide scrollbars for slick mobile drawers */
-.no-scrollbar::-webkit-scrollbar {
-  display: none;
-}
-.no-scrollbar {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+@keyframes hud-scan {
+  0% { background-position: 0% 0%; }
+  100% { background-position: 0% 100%; }
 }
 
+@keyframes data-stream {
+  0% { transform: translateY(-100%); opacity: 0; }
+  10% { opacity: 0.3; }
+  90% { opacity: 0.3; }
+  100% { transform: translateY(100%); opacity: 0; }
+}
+
+@keyframes glow-pulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.8; }
+}
+
+@keyframes scan-sweep {
+  0% { transform: translateX(-100%) rotate(45deg); }
+  100% { transform: translateX(200%) rotate(45deg); }
+}
+
+@keyframes status-flash {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+@keyframes slide-in-up {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes scale-in {
+  from { transform: scale(0.9); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+@keyframes h-border-pulse {
+  0%, 100% { border-color: rgba(16, 185, 129, 0.2); }
+  50% { border-color: rgba(16, 185, 129, 0.5); }
+}
+
+@keyframes corner-glow {
+  0%, 100% { box-shadow: 0 0 4px rgba(16, 185, 129, 0.3); }
+  50% { box-shadow: 0 0 12px rgba(16, 185, 129, 0.6); }
+}
+
+@keyframes typing-dot {
+  0%, 60%, 100% { opacity: 0.3; transform: translateY(0); }
+  30% { opacity: 1; transform: translateY(-3px); }
+}
+
+/* ─── Scrollbar ─── */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* ─── HUD Grid Background ─── */
+.hud-grid {
+  background-image:
+    linear-gradient(rgba(16, 185, 129, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(16, 185, 129, 0.04) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* ─── Glass Card ─── */
+.glass-card {
+  background: rgba(10, 16, 24, 0.8);
+  backdrop-filter: blur(20px) saturate(1.5);
+  -webkit-backdrop-filter: blur(20px) saturate(1.5);
+  border: 1px solid rgba(16, 185, 129, 0.12);
+}
+
+/* ─── Tactical Button ─── */
+.btn-tactical {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.2s ease;
+}
+
+.btn-tactical::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.08), transparent);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.btn-tactical:active::after {
+  opacity: 1;
+}
+
+.btn-tactical:active {
+  transform: scale(0.97);
+}
+
+/* ─── Scan Result Animations ─── */
+.result-success {
+  animation: scale-in 0.2s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.result-deny {
+  animation: scale-in 0.15s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+/* ─── Status Indicator ─── */
+.status-dot {
+  position: relative;
+}
+
+.status-dot::after {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  animation: pulse-ring 2s ease-in-out infinite;
+}
+
+.status-dot.ok::after {
+  background: radial-gradient(circle, rgba(16, 185, 129, 0.4), transparent 70%);
+}
+
+.status-dot.offline::after {
+  background: radial-gradient(circle, rgba(239, 68, 68, 0.4), transparent 70%);
+}

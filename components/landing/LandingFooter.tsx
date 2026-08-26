@@ -4,13 +4,16 @@ import Link from "next/link";
 
 export function LandingFooter() {
   return (
-    <footer className="bg-[#030712] border-t border-slate-900 pt-16 pb-12 text-xs text-slate-400">
-      <div className="max-w-7xl mx-auto px-6 space-y-12">
+    <footer className="bg-[#030712] border-t border-slate-900 pt-16 pb-12 text-xs text-slate-400 relative overflow-hidden">
+      {/* Grid background */}
+      <div className="absolute inset-0 matrix-grid-fine opacity-20 pointer-events-none" />
+
+      <div className="max-w-7xl mx-auto px-6 space-y-12 relative z-10">
         <div className="grid grid-cols-2 md:grid-cols-5 gap-8">
-          {/* Column 1: Brand & Newsletter */}
+          {/* Brand */}
           <div className="col-span-2 space-y-4">
             <Link href="/" className="flex items-center gap-2 font-mono text-lg font-black text-white">
-              <span className="w-6 h-6 rounded bg-indigo-600 flex items-center justify-center text-white text-[11px] font-bold">
+              <span className="w-6 h-6 rounded bg-gradient-to-tr from-indigo-500 to-cyan-400 flex items-center justify-center text-white text-[11px] font-bold">
                 Q
               </span>
               QREZO<span className="text-indigo-500">.</span>
@@ -22,7 +25,7 @@ export function LandingFooter() {
               <input
                 type="email"
                 placeholder="Enter your email"
-                className="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500"
+                className="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500/50 transition-colors"
               />
               <button
                 type="submit"
@@ -33,7 +36,7 @@ export function LandingFooter() {
             </form>
           </div>
 
-          {/* Column 2: Products */}
+          {/* Products */}
           <div className="space-y-3">
             <h5 className="font-bold text-white uppercase tracking-wider text-[11px]">Products</h5>
             <ul className="space-y-2">
@@ -45,7 +48,7 @@ export function LandingFooter() {
             </ul>
           </div>
 
-          {/* Column 3: Solutions */}
+          {/* Solutions */}
           <div className="space-y-3">
             <h5 className="font-bold text-white uppercase tracking-wider text-[11px]">Solutions</h5>
             <ul className="space-y-2">
@@ -57,7 +60,7 @@ export function LandingFooter() {
             </ul>
           </div>
 
-          {/* Column 4: Developers & Legal */}
+          {/* Developers & Legal */}
           <div className="space-y-3">
             <h5 className="font-bold text-white uppercase tracking-wider text-[11px]">Developers & Legal</h5>
             <ul className="space-y-2">
@@ -70,12 +73,15 @@ export function LandingFooter() {
           </div>
         </div>
 
-        {/* Bottom copyright */}
+        {/* Bottom */}
         <div className="pt-8 border-t border-slate-900 flex flex-col sm:flex-row justify-between items-center gap-4 text-[11px] text-slate-500">
-          <p>© {new Date().getFullYear()} Qrezo Inc. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} Qrezo Inc. All rights reserved.</p>
           <div className="flex items-center gap-4 font-mono">
-            <span>STATUS: 99.99% ONLINE</span>
-            <span>•</span>
+            <span className="flex items-center gap-1.5">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+              STATUS: 99.99% ONLINE
+            </span>
+            <span className="text-slate-700">|</span>
             <span>EDGE LATENCY: &lt;20MS</span>
           </div>
         </div>

@@ -17,6 +17,7 @@ import {
     PAIRING_TTL_MS,
     ScannerDeviceStatus,
 } from "@/modules/scanner-device/constants";
+import { assertWithinLimit } from "@/modules/entitlement/service";
 import {
     buildPairingQrPayload,
     computeDisplayStatus,
@@ -114,6 +115,9 @@ export async function createPairing(input: {
     gate?: string;
 }): Promise<PairingCreateResult> {
     await dbConnect();
+    await assertWithinLimit(input.workspaceId, "scanner_devices", {
+        eventId: input.eventId,
+    });
     const event = await getEventForWorkspace(input.eventId, input.workspaceId);
     assertEventScannable(event.status);
 
@@ -388,6 +392,9 @@ export async function createStaffSession(input: {
     appVersion?: string | null;
 }): Promise<ScannerSessionResponse> {
     await dbConnect();
+    await assertWithinLimit(input.workspaceId, "scanner_devices", {
+        eventId: input.eventId,
+    });
     const event = await getEventForWorkspace(input.eventId, input.workspaceId);
     assertEventScannable(event.status);
 
