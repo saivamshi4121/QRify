@@ -51,12 +51,12 @@ export default function NewEventPage() {
             <div className="flex items-center gap-3">
                 <Link
                     href="/events"
-                    className="rounded-md p-2 text-slate-500 hover:bg-slate-100"
+                    className="rounded-md p-2 text-slate-500 hover:bg-white/[0.06]"
                 >
                     <ArrowLeft className="h-5 w-5" />
                 </Link>
                 <div>
-                    <h1 className="text-2xl font-bold text-slate-900">
+                    <h1 className="text-2xl font-bold text-white">
                         Create Event
                     </h1>
                     <p className="text-sm text-slate-500">

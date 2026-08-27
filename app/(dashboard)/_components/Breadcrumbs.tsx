@@ -33,7 +33,6 @@ export function Breadcrumbs() {
 
     const crumbs = segments.map((seg, idx) => {
         const href = "/" + segments.slice(0, idx + 1).join("/");
-        // Use label map, fall back to title-cased segment (handles event IDs etc.)
         const label =
             SEGMENT_LABELS[seg] ??
             seg.charAt(0).toUpperCase() + seg.slice(1);
@@ -45,22 +44,22 @@ export function Breadcrumbs() {
         <nav aria-label="Breadcrumb" className="hidden text-sm sm:flex items-center gap-1">
             <Link
                 href="/dashboard"
-                className="flex items-center text-slate-400 hover:text-slate-700 transition-colors"
+                className="flex items-center text-slate-500 hover:text-white transition-colors"
                 aria-label="Dashboard"
             >
                 <Home className="h-3.5 w-3.5" />
             </Link>
             {crumbs.map((crumb) => (
                 <span key={crumb.href} className="flex items-center gap-1">
-                    <ChevronRight className="h-3.5 w-3.5 text-slate-300" />
+                    <ChevronRight className="h-3.5 w-3.5 text-slate-600" />
                     {crumb.isLast ? (
-                        <span className="font-medium text-slate-700">
+                        <span className="font-medium text-white">
                             {crumb.label}
                         </span>
                     ) : (
                         <Link
                             href={crumb.href}
-                            className="text-slate-400 hover:text-slate-700 transition-colors"
+                            className="text-slate-500 hover:text-white transition-colors"
                         >
                             {crumb.label}
                         </Link>

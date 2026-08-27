@@ -172,21 +172,21 @@ export default function EventDetailPage() {
                 <div className="flex items-start gap-3">
                     <Link
                         href="/events"
-                        className="mt-0.5 rounded-lg border border-slate-200 p-2 text-slate-500 shadow-sm hover:bg-slate-50 transition-colors"
+                        className="mt-0.5 rounded-lg border border-white/[0.08] p-2 text-slate-400 shadow-sm hover:bg-white/[0.05] transition-colors"
                         aria-label="Back to events"
                     >
                         <ArrowLeft className="h-4 w-4" />
                     </Link>
                     <div>
                         <div className="flex flex-wrap items-center gap-2.5">
-                            <h1 className="text-2xl font-semibold tracking-tight text-slate-900">
+                            <h1 className="text-2xl font-semibold tracking-tight text-white">
                                 {event.name}
                             </h1>
                             <EventStatusBadge status={event.status} />
                         </div>
-                        <div className="mt-1.5 flex flex-wrap items-center gap-3 text-sm text-slate-500">
+                        <div className="mt-1.5 flex flex-wrap items-center gap-3 text-sm text-slate-400">
                             <span className="flex items-center gap-1.5">
-                                <CalendarDays className="h-3.5 w-3.5 text-slate-400" />
+                                <CalendarDays className="h-3.5 w-3.5 text-slate-500" />
                                 {formatEventDateRange(
                                     event.startDate,
                                     event.endDate,
@@ -195,7 +195,7 @@ export default function EventDetailPage() {
                             </span>
                             {event.venue && (
                                 <span className="flex items-center gap-1.5">
-                                    <MapPin className="h-3.5 w-3.5 text-slate-400" />
+                                    <MapPin className="h-3.5 w-3.5 text-slate-500" />
                                     {event.venue}
                                 </span>
                             )}
@@ -207,7 +207,7 @@ export default function EventDetailPage() {
                 <div className="flex flex-wrap gap-2">
                     <Link
                         href={`/events/${event._id}/edit`}
-                        className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 shadow-sm hover:bg-slate-50"
+                        className="inline-flex items-center gap-1.5 rounded-lg border border-white/[0.08] bg-white/[0.05] px-3 py-2 text-sm font-medium text-slate-300 shadow-sm hover:bg-white/[0.08]"
                     >
                         <Pencil className="h-3.5 w-3.5" />
                         Edit
@@ -217,7 +217,7 @@ export default function EventDetailPage() {
                             type="button"
                             disabled={busy}
                             onClick={handleArchive}
-                            className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 shadow-sm hover:bg-slate-50 disabled:opacity-50"
+                            className="inline-flex items-center gap-1.5 rounded-lg border border-white/[0.08] bg-white/[0.05] px-3 py-2 text-sm font-medium text-slate-300 shadow-sm hover:bg-white/[0.08] disabled:opacity-50"
                         >
                             <Archive className="h-3.5 w-3.5" />
                             Archive
@@ -227,7 +227,7 @@ export default function EventDetailPage() {
                         type="button"
                         disabled={busy}
                         onClick={handleDelete}
-                        className="inline-flex items-center gap-1.5 rounded-lg border border-red-200 bg-white px-3 py-2 text-sm font-medium text-red-600 shadow-sm hover:bg-red-50 disabled:opacity-50"
+                        className="inline-flex items-center gap-1.5 rounded-lg border border-red-500/20 bg-red-500/10 px-3 py-2 text-sm font-medium text-red-400 shadow-sm hover:bg-red-500/20 disabled:opacity-50"
                     >
                         <Trash2 className="h-3.5 w-3.5" />
                         Delete
@@ -236,7 +236,7 @@ export default function EventDetailPage() {
             </div>
 
             {/* Tab bar */}
-            <div className="border-b border-slate-200">
+            <div className="border-b border-white/[0.08]">
                 <nav className="-mb-px flex gap-0 overflow-x-auto" aria-label="Event tabs">
                     {tabs.map((tab) => {
                         const active = isTabActive(tab);
@@ -248,8 +248,8 @@ export default function EventDetailPage() {
                                 className={cn(
                                     "flex shrink-0 items-center gap-2 border-b-2 px-4 py-3 text-sm font-medium transition-colors",
                                     active
-                                        ? "border-indigo-600 text-indigo-600"
-                                        : "border-transparent text-slate-500 hover:border-slate-200 hover:text-slate-700"
+                                        ? "border-indigo-500 text-indigo-400"
+                                        : "border-transparent text-slate-500 hover:border-white/[0.15] hover:text-slate-300"
                                 )}
                             >
                                 <Icon className="h-4 w-4" aria-hidden />
@@ -271,44 +271,44 @@ export default function EventDetailPage() {
                     />
                 )}
 
-                <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+                <div className="rounded-xl border border-white/[0.08] bg-white/[0.03] p-6 shadow-sm">
                     <div className="flex items-start gap-5">
                         {event.logo ? (
                             // eslint-disable-next-line @next/next/no-img-element
                             <img
                                 src={event.logo}
                                 alt=""
-                                className="h-16 w-16 shrink-0 rounded-xl object-cover ring-1 ring-slate-100"
+                                className="h-16 w-16 shrink-0 rounded-xl object-cover ring-1 ring-white/[0.08]"
                             />
                         ) : (
-                            <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-xl bg-slate-100 text-2xl font-bold text-slate-400">
+                            <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-xl bg-white/[0.05] text-2xl font-bold text-slate-500">
                                 {event.name.charAt(0)}
                             </div>
                         )}
                         <div className="min-w-0 flex-1 space-y-4">
                             <div>
-                                <p className="text-xs font-semibold uppercase tracking-widest text-slate-400">
+                                <p className="text-xs font-semibold uppercase tracking-widest text-slate-500">
                                     Venue
                                 </p>
-                                <p className="mt-1 text-slate-900">
-                                    {event.venue || <span className="italic text-slate-400">Not set</span>}
+                                <p className="mt-1 text-white">
+                                    {event.venue || <span className="italic text-slate-500">Not set</span>}
                                 </p>
                             </div>
                             <div>
-                                <p className="text-xs font-semibold uppercase tracking-widest text-slate-400">
+                                <p className="text-xs font-semibold uppercase tracking-widest text-slate-500">
                                     Description
                                 </p>
-                                <p className="mt-1 whitespace-pre-wrap text-slate-700 leading-relaxed">
+                                <p className="mt-1 whitespace-pre-wrap text-slate-300 leading-relaxed">
                                     {event.description || (
-                                        <span className="italic text-slate-400">No description added yet.</span>
+                                        <span className="italic text-slate-500">No description added yet.</span>
                                     )}
                                 </p>
                             </div>
                             <div>
-                                <p className="text-xs font-semibold uppercase tracking-widest text-slate-400">
+                                <p className="text-xs font-semibold uppercase tracking-widest text-slate-500">
                                     Slug
                                 </p>
-                                <p className="mt-1 font-mono text-sm text-slate-600">
+                                <p className="mt-1 font-mono text-sm text-slate-400">
                                     {event.slug}
                                 </p>
                             </div>
@@ -317,7 +317,7 @@ export default function EventDetailPage() {
                 </div>
 
                 {/* Quick navigation hint */}
-                <p className="mt-4 rounded-lg border border-dashed border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-500">
+                <p className="mt-4 rounded-lg border border-dashed border-white/[0.08] bg-white/[0.03] px-4 py-3 text-sm text-slate-400">
                     Use the tabs above to manage <strong>Attendees</strong>, <strong>Scanners</strong>, view <strong>Analytics</strong>, and the <strong>Access Log</strong>.
                 </p>
             </div>

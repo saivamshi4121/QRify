@@ -16,8 +16,6 @@ import {
     Key,
     Webhook,
     Compass,
-    BookOpen,
-    Building2,
     ChevronDown,
     ChevronRight,
     type LucideIcon,
@@ -44,8 +42,8 @@ const ICONS: Record<NavIcon, LucideIcon> = {
     apikeys:       Key,
     webhooks:      Webhook,
     explorer:      Compass,
-    docs:          BookOpen,
-    workspace:     Building2,
+    docs:          Compass,
+    workspace:     LayoutDashboard,
 };
 
 function NavLink({
@@ -66,11 +64,11 @@ function NavLink({
         <Link
             href={item.href}
             className={cn(
-                "flex items-center gap-2.5 rounded-md px-3 py-2 text-sm font-medium transition-colors duration-150",
-                nested ? "ml-3 pl-2.5" : "",
+                "group relative flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-200",
+                nested ? "ml-4 pl-3" : "",
                 isActive
-                    ? "bg-indigo-600 text-white"
-                    : "text-slate-400 hover:bg-slate-800 hover:text-white"
+                    ? "text-white"
+                    : "text-slate-400 hover:text-white hover:bg-white/[0.04]"
             )}
             onClick={() => {
                 const toggle = document.getElementById(
@@ -79,14 +77,35 @@ function NavLink({
                 if (toggle) toggle.checked = false;
             }}
         >
-            <Icon
-                className={cn(
-                    "h-4 w-4 shrink-0",
-                    isActive ? "text-white" : "text-slate-400"
-                )}
-                aria-hidden
-            />
-            {item.name}
+            {/* Active indicator */}
+            {isActive && (
+                <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-5 rounded-r-full"
+                    style={{
+                        background: "linear-gradient(180deg, #818cf8, #22d3ee)",
+                        boxShadow: "0 0 12px rgba(99,102,241,0.4)",
+                    }}
+                />
+            )}
+
+            {/* Background glow on active */}
+            {isActive && (
+                <div className="absolute inset-0 rounded-lg pointer-events-none"
+                    style={{
+                        background: "linear-gradient(135deg, rgba(99,102,241,0.12), rgba(34,211,238,0.06))",
+                        boxShadow: "0 0 20px rgba(99,102,241,0.08)",
+                    }}
+                />
+            )}
+
+            <div className={cn(
+                "flex h-7 w-7 shrink-0 items-center justify-center rounded-md transition-all duration-200",
+                isActive
+                    ? "bg-indigo-500/20 text-indigo-300"
+                    : "bg-white/[0.04] text-slate-500 group-hover:bg-white/[0.08] group-hover:text-slate-300"
+            )}>
+                <Icon className="h-4 w-4" aria-hidden />
+            </div>
+            <span className="relative z-10">{item.name}</span>
         </Link>
     );
 }
@@ -107,44 +126,50 @@ function NavGroupSection({ group }: { group: NavGroup }) {
                 type="button"
                 onClick={() => setOpen((v) => !v)}
                 className={cn(
-                    "flex w-full items-center justify-between rounded-md px-3 py-2 text-sm font-medium transition-colors duration-150",
+                    "flex w-full items-center justify-between rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-200",
                     isChildActive
                         ? "text-white"
-                        : "text-slate-400 hover:bg-slate-800 hover:text-white"
+                        : "text-slate-400 hover:text-white hover:bg-white/[0.04]"
                 )}
                 aria-expanded={open}
             >
-                <span className="flex items-center gap-2.5">
-                    <Icon className="h-4 w-4 shrink-0" aria-hidden />
+                <span className="flex items-center gap-3">
+                    <div className={cn(
+                        "flex h-7 w-7 shrink-0 items-center justify-center rounded-md transition-all duration-200",
+                        isChildActive
+                            ? "bg-indigo-500/20 text-indigo-300"
+                            : "bg-white/[0.04] text-slate-500"
+                    )}>
+                        <Icon className="h-4 w-4" aria-hidden />
+                    </div>
                     {group.label}
                 </span>
-                {open ? (
-                    <ChevronDown className="h-3.5 w-3.5 shrink-0 text-slate-500" />
-                ) : (
-                    <ChevronRight className="h-3.5 w-3.5 shrink-0 text-slate-500" />
-                )}
+                <ChevronDown className={cn(
+                    "h-4 w-4 shrink-0 text-slate-500 transition-transform duration-200",
+                    open ? "rotate-0" : "-rotate-90"
+                )} />
             </button>
-            {open && (
-                <div className="mt-0.5 space-y-0.5 border-l border-slate-700 ml-4">
+            <div className={cn(
+                "overflow-hidden transition-all duration-300",
+                open ? "max-h-40 opacity-100 mt-1" : "max-h-0 opacity-0"
+            )}>
+                <div className="ml-4 border-l border-white/[0.06] pl-3 space-y-0.5">
                     {group.items.map((item) => (
                         <NavLink key={item.href} item={item} nested />
                     ))}
                 </div>
-            )}
+            </div>
         </div>
     );
 }
 
-/**
- * Full sidebar navigation with grouped sections and collapsible groups.
- */
 export function DashboardNav() {
     return (
         <nav
-            className="flex-1 overflow-y-auto px-3 py-4"
+            className="flex-1 overflow-y-auto px-4 py-4"
             aria-label="Main navigation"
         >
-            <div className="space-y-0.5">
+            <div className="space-y-1">
                 {DASHBOARD_NAV.map((entry) =>
                     isNavGroup(entry) ? (
                         <NavGroupSection key={entry.label} group={entry} />

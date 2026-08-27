@@ -95,8 +95,8 @@ function ChangeBadge({ value }: { value: number | null | undefined }) {
                 flat
                     ? "text-slate-400"
                     : up
-                      ? "text-emerald-600"
-                      : "text-rose-600"
+                      ? "text-emerald-400"
+                      : "text-rose-400"
             )}
         >
             {!flat &&
@@ -125,11 +125,11 @@ function KpiCard({
     hint?: string;
 }) {
     return (
-        <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+        <div className="rounded-xl border border-white/[0.08] bg-white/[0.03] p-5 shadow-sm">
             <div className="flex items-start justify-between gap-3">
                 <div className="min-w-0">
-                    <p className="text-sm font-medium text-slate-500">{title}</p>
-                    <p className="mt-2 text-3xl font-bold tabular-nums text-slate-900">
+                    <p className="text-sm font-medium text-slate-400">{title}</p>
+                    <p className="mt-2 text-3xl font-bold tabular-nums text-white">
                         {value}
                     </p>
                     <div className="mt-2">
@@ -139,7 +139,7 @@ function KpiCard({
                         <p className="mt-1.5 text-xs text-slate-400">{hint}</p>
                     ) : null}
                 </div>
-                <div className="rounded-full bg-slate-100 p-2.5 text-slate-600">
+                <div className="rounded-full bg-white/[0.06] p-2.5 text-indigo-400">
                     {icon}
                 </div>
             </div>
@@ -149,7 +149,7 @@ function KpiCard({
 
 function EmptyBlock({ message }: { message: string }) {
     return (
-        <div className="flex min-h-[120px] items-center justify-center rounded-lg border border-dashed border-slate-200 bg-slate-50/50 px-4 py-8 text-center text-sm text-slate-400">
+        <div className="flex min-h-[120px] items-center justify-center rounded-lg border border-dashed border-white/[0.08] bg-white/[0.03] px-4 py-8 text-center text-sm text-slate-400">
             {message}
         </div>
     );
@@ -222,8 +222,8 @@ export default function AnalyticsPage() {
         return (
             <div className="space-y-8">
                 <div>
-                    <div className="h-8 w-32 animate-pulse rounded-lg bg-slate-100" />
-                    <div className="mt-2 h-4 w-64 animate-pulse rounded-lg bg-slate-100" />
+                    <div className="h-8 w-32 animate-pulse rounded-lg bg-white/[0.06]" />
+                    <div className="mt-2 h-4 w-64 animate-pulse rounded-lg bg-white/[0.06]" />
                 </div>
                 <SkeletonStatGrid count={6} />
             </div>
@@ -236,10 +236,10 @@ export default function AnalyticsPage() {
 
             <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
                 <div>
-                    <h1 className="text-3xl font-bold text-slate-900">
+                    <h1 className="text-3xl font-bold text-white">
                         Analytics
                     </h1>
-                    <p className="mt-2 text-slate-500">
+                    <p className="mt-2 text-slate-400">
                         Scans, ratings, and review performance for this
                         workspace.
                     </p>
@@ -247,7 +247,7 @@ export default function AnalyticsPage() {
 
                 <div className="flex flex-col items-stretch gap-2 sm:items-end">
                     <div
-                        className="inline-flex rounded-lg bg-slate-100 p-1"
+                        className="inline-flex rounded-lg bg-white/[0.06] p-1"
                         role="group"
                         aria-label="Date range"
                     >
@@ -259,8 +259,8 @@ export default function AnalyticsPage() {
                                 className={cn(
                                     "rounded-md px-3 py-1.5 text-sm font-medium transition-colors",
                                     range === opt.id
-                                        ? "bg-white text-slate-900 shadow-sm"
-                                        : "text-slate-500 hover:text-slate-800"
+                                        ? "bg-white/[0.1] text-white shadow-sm"
+                                        : "text-slate-400 hover:text-white"
                                 )}
                             >
                                 {opt.label}
@@ -273,14 +273,14 @@ export default function AnalyticsPage() {
                                 type="date"
                                 value={customFrom}
                                 onChange={(e) => setCustomFrom(e.target.value)}
-                                className="rounded-md border border-slate-200 px-2 py-1.5 text-sm"
+                                className="rounded-lg border border-white/[0.08] bg-white/[0.04] px-2 py-1.5 text-sm text-white focus:border-indigo-500/50"
                             />
                             <span className="text-xs text-slate-400">to</span>
                             <input
                                 type="date"
                                 value={customTo}
                                 onChange={(e) => setCustomTo(e.target.value)}
-                                className="rounded-md border border-slate-200 px-2 py-1.5 text-sm"
+                                className="rounded-lg border border-white/[0.08] bg-white/[0.04] px-2 py-1.5 text-sm text-white focus:border-indigo-500/50"
                             />
                         </div>
                     ) : data ? (
@@ -294,7 +294,7 @@ export default function AnalyticsPage() {
 
             {loading && data ? (
                 <div className="flex items-center gap-2 text-sm text-slate-400">
-                    <div className="h-3 w-3 animate-pulse rounded-full bg-indigo-300" />
+                    <div className="h-3 w-3 animate-pulse rounded-full bg-indigo-400" />
                     Updating…
                 </div>
             ) : null}
@@ -376,10 +376,10 @@ export default function AnalyticsPage() {
                                 ].map((step) => (
                                     <div key={step.label}>
                                         <div className="mb-1 flex items-baseline justify-between gap-2 text-sm">
-                                            <span className="font-medium text-slate-700">
+                                            <span className="font-medium text-slate-300">
                                                 {step.label}
                                             </span>
-                                            <span className="tabular-nums text-slate-900">
+                                            <span className="tabular-nums text-white">
                                                 {step.value.toLocaleString()}
                                                 {step.rate !== null ? (
                                                     <span className="ml-2 text-xs font-normal text-slate-400">
@@ -389,7 +389,7 @@ export default function AnalyticsPage() {
                                                 ) : null}
                                             </span>
                                         </div>
-                                        <div className="h-2.5 overflow-hidden rounded-full bg-slate-100">
+                                        <div className="h-2.5 overflow-hidden rounded-full bg-white/[0.06]">
                                             <div
                                                 className="h-full rounded-full bg-indigo-500"
                                                 style={{
@@ -424,10 +424,10 @@ export default function AnalyticsPage() {
                                                 key={row.score}
                                                 className="flex items-center gap-3"
                                             >
-                                                <span className="w-12 shrink-0 text-sm text-slate-600">
+                                                <span className="w-12 shrink-0 text-sm text-slate-400">
                                                     {row.score}★
                                                 </span>
-                                                <div className="h-2.5 flex-1 overflow-hidden rounded-full bg-slate-100">
+                                                <div className="h-2.5 flex-1 overflow-hidden rounded-full bg-white/[0.06]">
                                                     <div
                                                         className="h-full rounded-full bg-amber-400"
                                                         style={{
@@ -439,7 +439,7 @@ export default function AnalyticsPage() {
                                                         }}
                                                     />
                                                 </div>
-                                                <span className="w-8 shrink-0 text-right text-sm tabular-nums text-slate-700">
+                                                <span className="w-8 shrink-0 text-right text-sm tabular-nums text-slate-300">
                                                     {row.count}
                                                 </span>
                                             </div>
@@ -455,19 +455,19 @@ export default function AnalyticsPage() {
                             {data.topQrCodes.length === 0 ? (
                                 <EmptyBlock message="No QR scans yet in this period." />
                             ) : (
-                                <ul className="divide-y divide-slate-100">
+                                <ul className="divide-y divide-white/[0.06]">
                                     {data.topQrCodes.map((qr, i) => (
                                         <li
                                             key={qr.qrCodeId}
                                             className="flex items-center justify-between gap-3 py-2.5 text-sm"
                                         >
-                                            <span className="min-w-0 truncate text-slate-800">
+                                            <span className="min-w-0 truncate text-slate-300">
                                                 <span className="mr-2 text-slate-400">
                                                     {i + 1}.
                                                 </span>
                                                 {qr.qrName}
                                             </span>
-                                            <span className="shrink-0 tabular-nums font-medium text-slate-900">
+                                            <span className="shrink-0 tabular-nums font-medium text-white">
                                                 {qr.scans.toLocaleString()} scans
                                             </span>
                                         </li>
@@ -486,7 +486,7 @@ export default function AnalyticsPage() {
                         ) : (
                             <div className="overflow-x-auto">
                                 <table className="min-w-full text-left text-sm">
-                                    <thead className="border-b border-slate-100 text-xs uppercase text-slate-500">
+                                    <thead className="border-b border-white/[0.08] text-xs uppercase text-slate-400">
                                         <tr>
                                             <th className="px-2 py-2 font-medium">
                                                 Page
@@ -508,10 +508,10 @@ export default function AnalyticsPage() {
                                             </th>
                                         </tr>
                                     </thead>
-                                    <tbody className="divide-y divide-slate-50">
+                                    <tbody className="divide-y divide-white/[0.06]">
                                         {data.topSmartPages.map((page) => (
                                             <tr key={page.smartPageId}>
-                                                <td className="px-2 py-2.5 font-medium text-slate-900">
+                                                <td className="px-2 py-2.5 font-medium text-white">
                                                     {page.title}
                                                     {page.slug ? (
                                                         <span className="mt-0.5 block text-xs font-normal text-slate-400">
@@ -519,19 +519,19 @@ export default function AnalyticsPage() {
                                                         </span>
                                                     ) : null}
                                                 </td>
-                                                <td className="px-2 py-2.5 tabular-nums text-slate-700">
+                                                <td className="px-2 py-2.5 tabular-nums text-slate-300">
                                                     {page.reviewPageVisits}
                                                 </td>
-                                                <td className="px-2 py-2.5 tabular-nums text-slate-700">
+                                                <td className="px-2 py-2.5 tabular-nums text-slate-300">
                                                     {page.responses}
                                                 </td>
-                                                <td className="px-2 py-2.5 tabular-nums text-slate-700">
+                                                <td className="px-2 py-2.5 tabular-nums text-slate-300">
                                                     {formatPct(page.responseRate)}
                                                 </td>
-                                                <td className="px-2 py-2.5 tabular-nums text-slate-700">
+                                                <td className="px-2 py-2.5 tabular-nums text-slate-300">
                                                     {page.googleReviewClicks}
                                                 </td>
-                                                <td className="px-2 py-2.5 tabular-nums text-slate-700">
+                                                <td className="px-2 py-2.5 tabular-nums text-slate-300">
                                                     {formatPct(
                                                         page.googleConversionRate
                                                     )}
@@ -553,7 +553,7 @@ export default function AnalyticsPage() {
                         ) : (
                             <div className="overflow-x-auto">
                                 <table className="min-w-full text-left text-sm">
-                                    <thead className="border-b border-slate-100 text-xs uppercase text-slate-500">
+                                    <thead className="border-b border-white/[0.08] text-xs uppercase text-slate-400">
                                         <tr>
                                             <th className="px-2 py-2 font-medium">
                                                 When
@@ -572,7 +572,7 @@ export default function AnalyticsPage() {
                                             </th>
                                         </tr>
                                     </thead>
-                                    <tbody className="divide-y divide-slate-50">
+                                    <tbody className="divide-y divide-white/[0.06]">
                                         {data.recentFeedback.map((row) => (
                                             <tr key={row.id}>
                                                 <td className="px-2 py-2.5 whitespace-nowrap text-xs text-slate-400">
@@ -580,13 +580,13 @@ export default function AnalyticsPage() {
                                                         row.createdAt
                                                     ).toLocaleString()}
                                                 </td>
-                                                <td className="px-2 py-2.5 text-slate-700">
+                                                <td className="px-2 py-2.5 text-slate-300">
                                                     {row.pageTitle}
                                                 </td>
-                                                <td className="px-2 py-2.5 tabular-nums text-slate-900">
+                                                <td className="px-2 py-2.5 tabular-nums text-white">
                                                     {row.ratingScore}★
                                                 </td>
-                                                <td className="px-2 py-2.5 text-slate-600">
+                                                <td className="px-2 py-2.5 text-slate-400">
                                                     {row.routingResult ===
                                                     "google_review"
                                                         ? row.reviewClicked
@@ -594,7 +594,7 @@ export default function AnalyticsPage() {
                                                             : "Google"
                                                         : "Private"}
                                                 </td>
-                                                <td className="max-w-xs truncate px-2 py-2.5 text-slate-500">
+                                                <td className="max-w-xs truncate px-2 py-2.5 text-slate-400">
                                                     {row.commentText || "—"}
                                                 </td>
                                             </tr>

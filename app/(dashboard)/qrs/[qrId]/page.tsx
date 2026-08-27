@@ -57,7 +57,7 @@ export default function QRAnalyticsPage() {
         }
     }, [params.qrId]);
 
-    if (loading) return <div className="p-12 flex justify-center"><Loader2 className="animate-spin h-8 w-8 text-indigo-500" /></div>;
+    if (loading) return <div className="p-12 flex justify-center"><Loader2 className="animate-spin h-8 w-8 text-indigo-400" /></div>;
 
     if (!data) return <div className="p-8">No data found.</div>;
 
@@ -68,7 +68,7 @@ export default function QRAnalyticsPage() {
         <div className="space-y-8">
             <Toaster richColors position="top-right" />
             <div>
-                <h1 className="text-3xl font-bold text-slate-900">QR Analytics</h1>
+                <h1 className="text-3xl font-bold text-white">QR Analytics</h1>
                 <p className="mt-2 text-slate-500">Real-time performance metrics</p>
             </div>
 
@@ -77,7 +77,7 @@ export default function QRAnalyticsPage() {
                 <StatCard
                     title="Total Scans"
                     value={data.totalScans}
-                    icon={<TrendingUp className="h-6 w-6 text-indigo-600" />}
+                    icon={<TrendingUp className="h-6 w-6 text-indigo-400" />}
                 />
                 <StatCard
                     title="Unique Scans"
@@ -155,23 +155,23 @@ export default function QRAnalyticsPage() {
             <SectionCard title="Top Locations" description="Where your scans are coming from">
                 <div className="overflow-hidden">
                     <table className="min-w-full text-sm text-left">
-                        <thead className="bg-slate-50 font-medium text-slate-500">
+                        <thead className="bg-white/[0.03] font-medium text-slate-500">
                             <tr>
                                 <th className="px-6 py-3">Country</th>
                                 <th className="px-6 py-3">Scans</th>
                                 <th className="px-6 py-3 w-full">Usage</th>
                             </tr>
                         </thead>
-                        <tbody className="divide-y divide-slate-100">
+                        <tbody className="divide-y divide-white/[0.06]">
                             {data.countryBreakdown.length === 0 && (
                                 <tr><td colSpan={3} className="px-6 py-4 text-center text-slate-400">No location data yet.</td></tr>
                             )}
                             {data.countryBreakdown.map((item, i) => (
                                 <tr key={i}>
-                                    <td className="px-6 py-3 font-medium text-slate-900">{item.country || "Unknown"}</td>
+                                    <td className="px-6 py-3 font-medium text-white">{item.country || "Unknown"}</td>
                                     <td className="px-6 py-3 text-slate-600">{item.count}</td>
                                     <td className="px-6 py-3">
-                                        <div className="h-1.5 w-full max-w-[100px] bg-slate-100 rounded-full overflow-hidden">
+                                        <div className="h-1.5 w-full max-w-[100px] bg-white/[0.06] rounded-full overflow-hidden">
                                             <div
                                                 className="h-full bg-indigo-500"
                                                 style={{ width: `${Math.min((item.count / data.totalScans) * 100, 100)}%` }}

@@ -195,18 +195,18 @@ export default function EventAttendeesPage() {
                 <div className="flex items-start gap-3">
                     <Link
                         href={`/events/${eventId}`}
-                        className="mt-0.5 rounded-lg border border-slate-200 p-2 text-slate-500 shadow-sm hover:bg-slate-50"
+                        className="mt-0.5 rounded-lg border border-white/[0.08] p-2 text-slate-500 shadow-sm hover:bg-white/[0.04]"
                         aria-label="Back to event"
                     >
                         <ArrowLeft className="h-4 w-4" />
                     </Link>
                     <div>
-                        <h1 className="text-2xl font-semibold tracking-tight text-slate-900">
+                        <h1 className="text-2xl font-semibold tracking-tight text-white">
                             Attendees
                         </h1>
                         <p className="mt-1 text-sm text-slate-500">
                             {eventName || "Event"} ·{" "}
-                            <span className="font-medium text-slate-700">
+                            <span className="font-medium text-slate-300">
                                 {pagination.total}
                             </span>{" "}
                             total
@@ -216,14 +216,14 @@ export default function EventAttendeesPage() {
                 <div className="flex flex-wrap gap-2">
                     <Link
                         href={`/events/${eventId}/attendees/import`}
-                        className="inline-flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3.5 py-2 text-sm font-medium text-slate-700 shadow-sm hover:bg-slate-50"
+                        className="inline-flex items-center gap-2 rounded-lg border border-white/[0.08] bg-white/[0.04] px-3.5 py-2 text-sm font-medium text-slate-300 shadow-sm hover:bg-white/[0.04]"
                     >
                         <Upload className="h-4 w-4" />
                         Import CSV
                     </Link>
                     <Link
                         href={`/events/${eventId}/attendees/new`}
-                        className="inline-flex items-center gap-2 rounded-lg bg-indigo-600 px-3.5 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700"
+                        className="inline-flex items-center gap-2 rounded-lg bg-gradient-to-r from-indigo-500 to-purple-600 px-3.5 py-2 text-sm font-medium text-white shadow-sm hover:from-indigo-600 hover:to-purple-700"
                     >
                         <Plus className="h-4 w-4" />
                         Add Attendee
@@ -232,7 +232,7 @@ export default function EventAttendeesPage() {
             </div>
 
             {/* Toolbar */}
-            <div className="flex flex-col gap-3 rounded-xl border border-slate-200 bg-white p-3.5 shadow-sm lg:flex-row lg:items-center">
+            <div className="flex flex-col gap-3 rounded-xl border border-white/[0.08] p-3.5 shadow-sm lg:flex-row lg:items-center">
                 <div className="relative flex-1 lg:max-w-xs">
                     <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
                     <input
@@ -243,7 +243,7 @@ export default function EventAttendeesPage() {
                             setPage(1);
                             setQ(e.target.value);
                         }}
-                        className="w-full rounded-md border border-slate-200 py-2 pl-9 pr-3 text-sm outline-none placeholder:text-slate-400 focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100"
+                        className="w-full rounded-lg border border-white/[0.08] bg-white/[0.04] py-2 pl-9 pr-3 text-sm text-white outline-none placeholder:text-slate-400 focus:border-indigo-500/50 focus:ring-2 focus:ring-indigo-500/20"
                     />
                 </div>
                 <select
@@ -252,7 +252,7 @@ export default function EventAttendeesPage() {
                         setPage(1);
                         setStatusFilter(e.target.value);
                     }}
-                    className="rounded-md border border-slate-200 bg-white px-3 py-2 text-sm outline-none focus:border-indigo-400"
+                    className="rounded-lg border border-white/[0.08] bg-white/[0.04] px-3 py-2 text-sm text-white outline-none focus:border-indigo-500/50"
                 >
                     <option value="">All statuses</option>
                     {REGISTRATION_STATUS_VALUES.map((s) => (
@@ -267,7 +267,7 @@ export default function EventAttendeesPage() {
                         setPage(1);
                         setSourceFilter(e.target.value);
                     }}
-                    className="rounded-md border border-slate-200 bg-white px-3 py-2 text-sm outline-none focus:border-indigo-400"
+                    className="rounded-lg border border-white/[0.08] bg-white/[0.04] px-3 py-2 text-sm text-white outline-none focus:border-indigo-500/50"
                 >
                     <option value="">All sources</option>
                     {REGISTRATION_SOURCE_VALUES.map((s) => (
@@ -279,7 +279,7 @@ export default function EventAttendeesPage() {
                 <select
                     value={sort}
                     onChange={(e) => setSort(e.target.value)}
-                    className="rounded-md border border-slate-200 bg-white px-3 py-2 text-sm outline-none focus:border-indigo-400"
+                    className="rounded-lg border border-white/[0.08] bg-white/[0.04] px-3 py-2 text-sm text-white outline-none focus:border-indigo-500/50"
                 >
                     <option value="createdAt_desc">Newest</option>
                     <option value="createdAt_asc">Oldest</option>
@@ -290,7 +290,7 @@ export default function EventAttendeesPage() {
 
                 <button
                     type="button"
-                    className="ml-auto inline-flex items-center gap-1.5 rounded-md border border-slate-200 px-3 py-2 text-sm text-slate-600 hover:bg-slate-50"
+                    className="ml-auto inline-flex items-center gap-1.5 rounded-lg border border-white/[0.08] bg-white/[0.04] px-3 py-2 text-sm text-slate-400 hover:bg-white/[0.08]"
                 >
                     <Download className="h-4 w-4" />
                     Export
@@ -299,8 +299,8 @@ export default function EventAttendeesPage() {
 
             {/* Bulk action bar */}
             {selected.size > 0 && (
-                <div className="flex items-center justify-between rounded-lg border border-indigo-100 bg-indigo-50 px-4 py-3">
-                    <span className="text-sm font-medium text-indigo-900">
+                <div className="flex items-center justify-between rounded-lg border border-indigo-500/20 bg-indigo-500/10 px-4 py-3">
+                    <span className="text-sm font-medium text-indigo-400">
                         {selected.size} attendee{selected.size !== 1 ? "s" : ""} selected
                     </span>
                     <button
@@ -332,13 +332,13 @@ export default function EventAttendeesPage() {
                             <div className="flex gap-3">
                                 <Link
                                     href={`/events/${eventId}/attendees/new`}
-                                    className="rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-medium text-white hover:bg-indigo-700"
+                                    className="rounded-lg bg-gradient-to-r from-indigo-500 to-purple-600 px-4 py-2.5 text-sm font-medium text-white hover:from-indigo-600 hover:to-purple-700"
                                 >
                                     Add Attendee
                                 </Link>
                                 <Link
                                     href={`/events/${eventId}/attendees/import`}
-                                    className="rounded-lg border border-slate-200 px-4 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-50"
+                                    className="rounded-lg border border-white/[0.08] bg-white/[0.04] px-4 py-2.5 text-sm font-medium text-slate-300 hover:bg-white/[0.08]"
                                 >
                                     Import CSV
                                 </Link>
@@ -347,17 +347,17 @@ export default function EventAttendeesPage() {
                     }
                 />
             ) : (
-                <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
+                <div className="overflow-hidden rounded-xl border border-white/[0.08] shadow-sm">
                     <div className="overflow-x-auto">
                         <table className="min-w-full text-left text-sm">
-                            <thead className="border-b border-slate-100 bg-slate-50/80 text-xs font-semibold uppercase tracking-wide text-slate-500">
+                            <thead className="border-b border-white/[0.08] bg-white/[0.03] text-xs font-semibold uppercase tracking-wide text-slate-500">
                                 <tr>
                                     <th className="px-4 py-3">
                                         <input
                                             type="checkbox"
                                             checked={allSelected}
                                             onChange={(e) => toggleAll(e.target.checked)}
-                                            className="rounded border-slate-300 text-indigo-600 focus:ring-indigo-500"
+                                            className="rounded border-white/[0.08] text-indigo-500 focus:ring-indigo-500/20"
                                         />
                                     </th>
                                     <th className="px-4 py-3">Name</th>
@@ -369,11 +369,11 @@ export default function EventAttendeesPage() {
                                     <th className="px-4 py-3" />
                                 </tr>
                             </thead>
-                            <tbody className="divide-y divide-slate-50">
+                            <tbody className="divide-y divide-white/[0.06]">
                                 {items.map((row) => (
                                     <tr
                                         key={row.publicId}
-                                        className="hover:bg-slate-50/60 transition-colors"
+                                        className="hover:bg-white/[0.04] transition-colors"
                                     >
                                         <td className="px-4 py-3">
                                             <input
@@ -382,23 +382,23 @@ export default function EventAttendeesPage() {
                                                 onChange={(e) =>
                                                     toggleOne(row.publicId, e.target.checked)
                                                 }
-                                                className="rounded border-slate-300 text-indigo-600 focus:ring-indigo-500"
+                                                className="rounded border-white/[0.08] text-indigo-500 focus:ring-indigo-500/20"
                                             />
                                         </td>
                                         <td className="px-4 py-3">
                                             <Link
                                                 href={`/events/${eventId}/attendees/${row.publicId}`}
-                                                className="font-medium text-slate-900 hover:text-indigo-600 transition-colors"
+                                                className="font-medium text-white hover:text-indigo-400 transition-colors"
                                             >
                                                 {row.firstName} {row.lastName}
                                             </Link>
                                         </td>
-                                        <td className="px-4 py-3 text-slate-600">
+                                        <td className="px-4 py-3 text-slate-400">
                                             {row.email}
                                         </td>
                                         <td className="px-4 py-3">
                                             {row.ticketType ? (
-                                                <span className="inline-flex items-center rounded-md bg-slate-100 px-2 py-0.5 text-xs font-medium text-slate-700">
+                                                <span className="inline-flex items-center rounded-md bg-white/[0.06] px-2 py-0.5 text-xs font-medium text-slate-300">
                                                     {row.ticketType}
                                                 </span>
                                             ) : (
@@ -426,7 +426,7 @@ export default function EventAttendeesPage() {
                                                         `${row.firstName} ${row.lastName}`
                                                     )
                                                 }
-                                                className="rounded-md p-1.5 text-slate-400 hover:bg-red-50 hover:text-red-500 disabled:opacity-40 transition-colors"
+                                                className="rounded-md p-1.5 text-slate-400 hover:bg-red-500/10 hover:text-red-400 disabled:opacity-40 transition-colors"
                                                 title="Delete attendee"
                                             >
                                                 <Trash2 className="h-4 w-4" />
@@ -439,14 +439,14 @@ export default function EventAttendeesPage() {
                     </div>
 
                     {/* Pagination footer */}
-                    <div className="flex items-center justify-between border-t border-slate-100 px-4 py-3">
+                    <div className="flex items-center justify-between border-t border-white/[0.08] px-4 py-3">
                         <p className="text-sm text-slate-500">
                             Page{" "}
-                            <span className="font-medium text-slate-700">
+                            <span className="font-medium text-slate-300">
                                 {pagination.page}
                             </span>{" "}
                             of{" "}
-                            <span className="font-medium text-slate-700">
+                            <span className="font-medium text-slate-300">
                                 {pagination.totalPages}
                             </span>
                             <span className="ml-2 text-slate-400">
@@ -458,7 +458,7 @@ export default function EventAttendeesPage() {
                                 type="button"
                                 disabled={page <= 1}
                                 onClick={() => setPage((p) => p - 1)}
-                                className="rounded-md border border-slate-200 bg-white px-3 py-1.5 text-sm text-slate-700 shadow-sm hover:bg-slate-50 disabled:opacity-40"
+                                className="rounded-lg border border-white/[0.08] bg-white/[0.04] px-3 py-1.5 text-sm text-slate-300 shadow-sm hover:bg-white/[0.08] disabled:opacity-40"
                             >
                                 Previous
                             </button>
@@ -466,7 +466,7 @@ export default function EventAttendeesPage() {
                                 type="button"
                                 disabled={page >= pagination.totalPages}
                                 onClick={() => setPage((p) => p + 1)}
-                                className="rounded-md border border-slate-200 bg-white px-3 py-1.5 text-sm text-slate-700 shadow-sm hover:bg-slate-50 disabled:opacity-40"
+                                className="rounded-lg border border-white/[0.08] bg-white/[0.04] px-3 py-1.5 text-sm text-slate-300 shadow-sm hover:bg-white/[0.08] disabled:opacity-40"
                             >
                                 Next
                             </button>

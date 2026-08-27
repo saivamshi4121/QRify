@@ -10,11 +10,6 @@ export type DashboardUserSummary = {
     subscriptionPlan: string;
 };
 
-/**
- * Server-rendered chrome. Mobile open/close uses a CSS checkbox peer so there
- * is no client useState for the sidebar (avoids Turbopack SSR/HMR hydration
- * mismatches on the whole layout tree).
- */
 export function DashboardChrome({
     user,
     children,
@@ -26,7 +21,7 @@ export function DashboardChrome({
     const plan = user.subscriptionPlan || "Free";
 
     return (
-        <div className="min-h-screen bg-slate-50">
+        <div className="min-h-screen bg-[#080b14]">
             {/* Peer checkbox: checked = mobile sidebar open */}
             <input
                 id="dashboard-sidebar-toggle"
@@ -38,31 +33,52 @@ export function DashboardChrome({
             {/* Backdrop (mobile) */}
             <label
                 htmlFor="dashboard-sidebar-toggle"
-                className="pointer-events-none fixed inset-0 z-40 bg-slate-900/60 opacity-0 backdrop-blur-sm transition-opacity peer-checked/sidebar:pointer-events-auto peer-checked/sidebar:opacity-100 lg:hidden"
+                className="pointer-events-none fixed inset-0 z-40 bg-black/60 opacity-0 backdrop-blur-sm transition-opacity peer-checked/sidebar:pointer-events-auto peer-checked/sidebar:opacity-100 lg:hidden"
                 aria-label="Close menu"
             />
 
             {/* ── Sidebar ── */}
-            <aside className="fixed inset-y-0 left-0 z-50 flex w-[240px] -translate-x-full flex-col bg-[#0f1117] text-white transition-transform duration-200 peer-checked/sidebar:translate-x-0 lg:translate-x-0">
+            <aside className="fixed inset-y-0 left-0 z-50 flex w-[260px] -translate-x-full flex-col transition-transform duration-300 peer-checked/sidebar:translate-x-0 lg:translate-x-0"
+                style={{
+                    background: "linear-gradient(180deg, #0c1021 0%, #080b14 100%)",
+                    borderRight: "1px solid rgba(99,102,241,0.08)",
+                }}
+            >
+                {/* Subtle glow on sidebar */}
+                <div className="absolute top-0 right-0 w-px h-full pointer-events-none"
+                    style={{ background: "linear-gradient(180deg, rgba(99,102,241,0.15) 0%, rgba(34,211,238,0.08) 50%, transparent 100%)" }}
+                />
+
                 {/* Logo */}
-                <div className="flex h-14 items-center gap-2.5 border-b border-white/[0.06] px-5">
-                    <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-indigo-600">
-                        <QrCode className="h-4 w-4 text-white" aria-hidden />
+                <div className="relative flex h-16 items-center gap-3 border-b border-white/[0.06] px-5">
+                    <div className="flex h-9 w-9 items-center justify-center rounded-xl"
+                        style={{
+                            background: "linear-gradient(135deg, rgba(99,102,241,0.2), rgba(34,211,238,0.15))",
+                            border: "1px solid rgba(99,102,241,0.2)",
+                            boxShadow: "0 0 20px rgba(99,102,241,0.1)",
+                        }}
+                    >
+                        <QrCode className="h-4.5 w-4.5 text-indigo-400" aria-hidden />
                     </div>
-                    <span className="text-[15px] font-semibold tracking-tight text-white">
-                        Qrezo
-                    </span>
+                    <div>
+                        <span className="text-[15px] font-bold tracking-tight text-white">
+                            Qrezo
+                        </span>
+                        <span className="block text-[9px] font-mono text-slate-500 tracking-widest uppercase -mt-0.5">
+                            Control Center
+                        </span>
+                    </div>
                     <label
                         htmlFor="dashboard-sidebar-toggle"
                         className="ml-auto cursor-pointer lg:hidden"
                         aria-label="Close menu"
                     >
-                        <X className="h-5 w-5 text-slate-400" />
+                        <X className="h-5 w-5 text-slate-400 hover:text-white transition-colors" />
                     </label>
                 </div>
 
                 {/* Workspace pill */}
-                <div className="border-b border-white/[0.06] px-3 py-2.5">
+                <div className="border-b border-white/[0.06] px-4 py-3">
                     <WorkspaceSwitcher variant="sidebar" />
                 </div>
 
@@ -70,16 +86,21 @@ export function DashboardChrome({
                 <DashboardNav />
 
                 {/* User Footer */}
-                <div className="border-t border-white/[0.06] p-3">
-                    <div className="flex items-center gap-3 rounded-lg px-2.5 py-2">
-                        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-indigo-500 text-sm font-semibold text-white">
+                <div className="border-t border-white/[0.06] p-4">
+                    <div className="flex items-center gap-3 rounded-xl px-3 py-2.5 transition-colors hover:bg-white/[0.04]">
+                        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-sm font-bold"
+                            style={{
+                                background: "linear-gradient(135deg, #6366f1, #8b5cf6)",
+                                boxShadow: "0 0 16px rgba(99,102,241,0.25)",
+                            }}
+                        >
                             {initial}
                         </div>
                         <div className="min-w-0 flex-1 overflow-hidden">
-                            <p className="truncate text-sm font-medium leading-tight text-white">
+                            <p className="truncate text-sm font-semibold leading-tight text-white">
                                 {user.name}
                             </p>
-                            <p className="text-xs capitalize text-slate-500">
+                            <p className="text-[11px] capitalize text-slate-500 font-medium">
                                 {plan} plan
                             </p>
                         </div>
@@ -89,32 +110,34 @@ export function DashboardChrome({
             </aside>
 
             {/* ── Main content ── */}
-            <div className="lg:pl-[240px]">
+            <div className="lg:pl-[260px]">
                 {/* Top Bar */}
-                <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b border-slate-200 bg-white/90 px-4 backdrop-blur-md sm:px-6">
+                <header className="sticky top-0 z-30 flex h-16 items-center gap-4 border-b border-white/[0.06] px-4 backdrop-blur-xl sm:px-6"
+                    style={{ background: "rgba(8,11,20,0.8)" }}
+                >
                     {/* Mobile menu toggle */}
                     <label
                         htmlFor="dashboard-sidebar-toggle"
                         className="cursor-pointer lg:hidden"
                         aria-label="Open menu"
                     >
-                        <Menu className="h-5 w-5 text-slate-500" />
+                        <Menu className="h-5 w-5 text-slate-400 hover:text-white transition-colors" />
                     </label>
 
                     {/* Breadcrumbs */}
                     <Breadcrumbs />
 
                     {/* Right section */}
-                    <div className="ml-auto flex items-center gap-2">
-                        {/* Global search (decorative trigger) */}
+                    <div className="ml-auto flex items-center gap-3">
+                        {/* Global search */}
                         <button
                             type="button"
-                            className="hidden items-center gap-2 rounded-md border border-slate-200 bg-white px-3 py-1.5 text-sm text-slate-400 shadow-sm transition hover:border-slate-300 hover:text-slate-600 sm:flex"
+                            className="hidden items-center gap-2 rounded-lg border border-white/[0.08] bg-white/[0.03] px-3 py-2 text-sm text-slate-400 transition-all hover:border-white/[0.15] hover:bg-white/[0.06] hover:text-white sm:flex"
                             aria-label="Search"
                         >
                             <Search className="h-3.5 w-3.5" />
-                            <span className="text-xs">Search…</span>
-                            <kbd className="ml-2 inline-flex h-5 items-center rounded border border-slate-200 bg-slate-50 px-1.5 font-mono text-[10px] text-slate-400">
+                            <span className="text-xs">Search...</span>
+                            <kbd className="ml-2 inline-flex h-5 items-center rounded-md border border-white/[0.1] bg-white/[0.05] px-1.5 font-mono text-[10px] text-slate-500">
                                 ⌘K
                             </kbd>
                         </button>
@@ -122,7 +145,11 @@ export function DashboardChrome({
                         {/* Quick create */}
                         <Link
                             href="/events/new"
-                            className="inline-flex items-center gap-1.5 rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-medium text-white shadow-sm transition hover:bg-indigo-700"
+                            className="inline-flex items-center gap-1.5 rounded-lg px-3.5 py-2 text-sm font-semibold text-white transition-all duration-300 hover:shadow-lg hover:shadow-indigo-500/20"
+                            style={{
+                                background: "linear-gradient(135deg, #4f46e5, #6366f1)",
+                                border: "1px solid rgba(99,102,241,0.3)",
+                            }}
                         >
                             <Plus className="h-3.5 w-3.5" aria-hidden />
                             <span className="hidden sm:inline">Create Event</span>
@@ -130,7 +157,11 @@ export function DashboardChrome({
                         </Link>
 
                         {/* User avatar */}
-                        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-indigo-100 text-sm font-semibold text-indigo-700 ring-2 ring-white">
+                        <div className="flex h-9 w-9 items-center justify-center rounded-full text-sm font-bold text-white ring-2 ring-white/[0.08]"
+                            style={{
+                                background: "linear-gradient(135deg, #6366f1, #8b5cf6)",
+                            }}
+                        >
                             {initial}
                         </div>
                     </div>

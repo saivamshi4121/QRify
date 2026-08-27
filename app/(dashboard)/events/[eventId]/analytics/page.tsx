@@ -124,7 +124,7 @@ function Skeleton({ className }: { className?: string }) {
     return (
         <div
             className={cn(
-                "animate-pulse rounded-lg bg-slate-200/70",
+                "animate-pulse rounded-lg bg-white/[0.1]",
                 className
             )}
         />
@@ -290,15 +290,15 @@ export default function EventAnalyticsPage() {
                 <div className="flex items-start gap-3">
                     <Link
                         href={`/events/${eventId}`}
-                        className="rounded-md p-2 text-slate-500 hover:bg-slate-100"
+                        className="rounded-md p-2 text-slate-400 hover:bg-white/[0.06]"
                     >
                         <ArrowLeft className="h-5 w-5" />
                     </Link>
                     <div>
-                        <h1 className="text-2xl font-bold text-slate-900">
+                        <h1 className="text-2xl font-bold text-white">
                             Event analytics
                         </h1>
-                        <p className="mt-1 text-sm text-slate-500">
+                        <p className="mt-1 text-sm text-slate-400">
                             {overview.event.name} · {overview.event.status}
                         </p>
                     </div>
@@ -307,7 +307,7 @@ export default function EventAnalyticsPage() {
                     <button
                         type="button"
                         onClick={() => loadCore()}
-                        className="inline-flex items-center gap-1.5 rounded-md border border-slate-200 px-3 py-1.5 text-sm text-slate-700 hover:bg-slate-50"
+                        className="inline-flex items-center gap-1.5 rounded-md border border-white/[0.08] px-3 py-1.5 text-sm text-slate-300 hover:bg-white/[0.04]"
                     >
                         <RefreshCw className="h-4 w-4" />
                         Refresh
@@ -315,7 +315,7 @@ export default function EventAnalyticsPage() {
                     <button
                         type="button"
                         onClick={() => downloadCsv("attendees")}
-                        className="inline-flex items-center gap-1.5 rounded-md border border-slate-200 px-3 py-1.5 text-sm text-slate-700 hover:bg-slate-50"
+                        className="inline-flex items-center gap-1.5 rounded-md border border-white/[0.08] px-3 py-1.5 text-sm text-slate-300 hover:bg-white/[0.04]"
                     >
                         <Download className="h-4 w-4" />
                         Attendees CSV
@@ -323,7 +323,7 @@ export default function EventAnalyticsPage() {
                     <button
                         type="button"
                         onClick={() => downloadCsv("access")}
-                        className="inline-flex items-center gap-1.5 rounded-md border border-slate-200 px-3 py-1.5 text-sm text-slate-700 hover:bg-slate-50"
+                        className="inline-flex items-center gap-1.5 rounded-md border border-white/[0.08] px-3 py-1.5 text-sm text-slate-300 hover:bg-white/[0.04]"
                     >
                         <Download className="h-4 w-4" />
                         Access CSV
@@ -331,7 +331,7 @@ export default function EventAnalyticsPage() {
                     <button
                         type="button"
                         onClick={() => downloadCsv("credentials")}
-                        className="inline-flex items-center gap-1.5 rounded-md border border-slate-200 px-3 py-1.5 text-sm text-slate-700 hover:bg-slate-50"
+                        className="inline-flex items-center gap-1.5 rounded-md border border-white/[0.08] px-3 py-1.5 text-sm text-slate-300 hover:bg-white/[0.04]"
                     >
                         <Download className="h-4 w-4" />
                         Credentials CSV
@@ -390,13 +390,13 @@ export default function EventAnalyticsPage() {
                             value={searchQ}
                             onChange={(e) => setSearchQ(e.target.value)}
                             placeholder="Search attendees, credentials, access events…"
-                            className="w-full rounded-md border border-slate-200 py-2 pl-9 pr-3 text-sm"
+                            className="w-full rounded-md border border-white/[0.08] bg-white/[0.03] py-2 pl-9 pr-3 text-sm text-white placeholder:text-slate-500 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
                         />
                     </div>
                     <button
                         type="submit"
                         disabled={searching}
-                        className="inline-flex items-center justify-center gap-1.5 rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 disabled:opacity-60"
+                        className="inline-flex items-center justify-center gap-1.5 rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-500 disabled:opacity-60"
                     >
                         {searching ? (
                             <Loader2 className="h-4 w-4 animate-spin" />
@@ -405,20 +405,20 @@ export default function EventAnalyticsPage() {
                     </button>
                 </form>
                 {searchHits.length > 0 ? (
-                    <ul className="mt-4 divide-y divide-slate-100 rounded-lg border border-slate-100">
+                    <ul className="mt-4 divide-y divide-white/[0.06] rounded-lg border border-white/[0.06]">
                         {searchHits.map((hit) => (
                             <li key={`${hit.kind}-${hit.id}`}>
                                 <Link
                                     href={hit.href}
-                                    className="block px-4 py-3 hover:bg-slate-50"
+                                    className="block px-4 py-3 hover:bg-white/[0.04]"
                                 >
-                                    <p className="text-sm font-medium text-slate-900">
-                                        <span className="mr-2 rounded bg-slate-100 px-1.5 py-0.5 text-xs uppercase text-slate-500">
+                                    <p className="text-sm font-medium text-white">
+                                        <span className="mr-2 rounded bg-white/[0.06] px-1.5 py-0.5 text-xs uppercase text-slate-400">
                                             {hit.kind}
                                         </span>
                                         {hit.title}
                                     </p>
-                                    <p className="mt-0.5 text-xs text-slate-500">
+                                    <p className="mt-0.5 text-xs text-slate-400">
                                         {hit.subtitle}
                                     </p>
                                 </Link>
@@ -426,7 +426,7 @@ export default function EventAnalyticsPage() {
                         ))}
                     </ul>
                 ) : searchQ && !searching ? (
-                    <p className="mt-3 text-sm text-slate-500">No matches</p>
+                    <p className="mt-3 text-sm text-slate-400">No matches</p>
                 ) : null}
             </SectionCard>
 
@@ -434,14 +434,14 @@ export default function EventAnalyticsPage() {
                 {attendance ? (
                     <div className="space-y-6">
                         <div>
-                            <div className="mb-2 flex justify-between text-sm text-slate-600">
+                            <div className="mb-2 flex justify-between text-sm text-slate-400">
                                 <span>
                                     {attendance.checkedIn} /{" "}
                                     {attendance.registered} checked in
                                 </span>
                                 <span>{attendance.attendancePercent}%</span>
                             </div>
-                            <div className="h-3 overflow-hidden rounded-full bg-slate-100">
+                            <div className="h-3 overflow-hidden rounded-full bg-white/[0.06]">
                                 <div
                                     className="h-full rounded-full bg-emerald-500 transition-all"
                                     style={{ width: `${progress}%` }}
@@ -449,26 +449,26 @@ export default function EventAnalyticsPage() {
                             </div>
                         </div>
                         <div className="grid gap-4 sm:grid-cols-2">
-                            <div className="rounded-lg border border-slate-100 bg-slate-50 p-4">
-                                <p className="text-xs font-medium uppercase tracking-wide text-slate-500">
+                            <div className="rounded-lg border border-white/[0.06] bg-white/[0.03] p-4">
+                                <p className="text-xs font-medium uppercase tracking-wide text-slate-400">
                                     Peak entry time
                                 </p>
-                                <p className="mt-1 text-lg font-semibold text-slate-900">
+                                <p className="mt-1 text-lg font-semibold text-white">
                                     {attendance.peakEntryTime || "—"}
                                 </p>
                             </div>
-                            <div className="rounded-lg border border-slate-100 bg-slate-50 p-4">
-                                <p className="text-xs font-medium uppercase tracking-wide text-slate-500">
+                            <div className="rounded-lg border border-white/[0.06] bg-white/[0.03] p-4">
+                                <p className="text-xs font-medium uppercase tracking-wide text-slate-400">
                                     Avg entry rate
                                 </p>
-                                <p className="mt-1 text-lg font-semibold text-slate-900">
+                                <p className="mt-1 text-lg font-semibold text-white">
                                     {attendance.averageEntryRatePerHour} / hour
                                 </p>
                             </div>
                         </div>
                         <div className="h-64 w-full">
                             {attendance.hourly.length === 0 ? (
-                                <p className="flex h-full items-center justify-center text-sm text-slate-500">
+                                <p className="flex h-full items-center justify-center text-sm text-slate-400">
                                     No check-ins yet
                                 </p>
                             ) : (
@@ -476,20 +476,22 @@ export default function EventAnalyticsPage() {
                                     <AreaChart data={attendance.hourly}>
                                         <CartesianGrid
                                             strokeDasharray="3 3"
-                                            stroke="#e2e8f0"
+                                            stroke="rgba(255,255,255,0.06)"
                                         />
                                         <XAxis
                                             dataKey="label"
-                                            tick={{ fontSize: 11 }}
+                                            tick={{ fontSize: 11, fill: "#94a3b8" }}
                                             interval="preserveStartEnd"
                                         />
-                                        <YAxis allowDecimals={false} tick={{ fontSize: 11 }} />
-                                        <Tooltip />
+                                        <YAxis allowDecimals={false} tick={{ fontSize: 11, fill: "#94a3b8" }} />
+                                        <Tooltip
+                                            contentStyle={{ backgroundColor: "#1e293b", border: "1px solid rgba(255,255,255,0.08)", borderRadius: "0.5rem", color: "#f8fafc" }}
+                                        />
                                         <Area
                                             type="monotone"
                                             dataKey="count"
-                                            stroke="#4f46e5"
-                                            fill="#c7d2fe"
+                                            stroke="#818cf8"
+                                            fill="#4f46e5"
                                             name="Check-ins"
                                         />
                                     </AreaChart>
@@ -498,20 +500,20 @@ export default function EventAnalyticsPage() {
                         </div>
                     </div>
                 ) : (
-                    <p className="text-sm text-slate-500">No attendance data</p>
+                    <p className="text-sm text-slate-400">No attendance data</p>
                 )}
             </SectionCard>
 
             <SectionCard title="Scanner monitoring">
                 {!scanners || scanners.length === 0 ? (
-                    <p className="text-sm text-slate-500">
+                    <p className="text-sm text-slate-400">
                         No paired scanners yet. Pair devices from Scanner
                         devices.
                     </p>
                 ) : (
                     <div className="overflow-x-auto">
                         <table className="min-w-full text-left text-sm">
-                            <thead className="border-b border-slate-100 text-xs uppercase text-slate-500">
+                            <thead className="border-b border-white/[0.06] text-xs uppercase text-slate-400">
                                 <tr>
                                     <th className="px-3 py-2 font-medium">Device</th>
                                     <th className="px-3 py-2 font-medium">Gate</th>
@@ -522,40 +524,40 @@ export default function EventAnalyticsPage() {
                                     <th className="px-3 py-2 font-medium">Operator</th>
                                 </tr>
                             </thead>
-                            <tbody className="divide-y divide-slate-50">
+                            <tbody className="divide-y divide-white/[0.04]">
                                 {scanners.map((s) => (
                                     <tr
                                         key={s.id}
                                         className={cn(
                                             s.highlight === "offline" &&
-                                                "bg-amber-50/80",
+                                                "bg-amber-500/10",
                                             s.highlight === "inactive" &&
-                                                "bg-slate-50",
+                                                "bg-white/[0.03]",
                                             s.highlight === "disabled" &&
-                                                "bg-red-50/60"
+                                                "bg-red-500/10"
                                         )}
                                     >
-                                        <td className="px-3 py-2.5 font-medium text-slate-900">
+                                        <td className="px-3 py-2.5 font-medium text-white">
                                             {s.name}
                                         </td>
-                                        <td className="px-3 py-2.5 text-slate-600">
+                                        <td className="px-3 py-2.5 text-slate-400">
                                             {s.gate}
                                         </td>
                                         <td className="px-3 py-2.5">
-                                            <span className="rounded-full bg-white px-2 py-0.5 text-xs font-medium ring-1 ring-slate-200">
+                                            <span className="rounded-full bg-white/[0.06] px-2 py-0.5 text-xs font-medium ring-1 ring-white/[0.08]">
                                                 {s.status}
                                             </span>
                                         </td>
-                                        <td className="px-3 py-2.5 text-slate-600">
+                                        <td className="px-3 py-2.5 text-slate-400">
                                             {formatWhen(s.lastSeen)}
                                         </td>
-                                        <td className="px-3 py-2.5 text-slate-600">
+                                        <td className="px-3 py-2.5 text-slate-400">
                                             {formatWhen(s.lastScanAt)}
                                         </td>
-                                        <td className="px-3 py-2.5 text-slate-900">
+                                        <td className="px-3 py-2.5 text-white">
                                             {s.totalScans}
                                         </td>
-                                        <td className="px-3 py-2.5 text-slate-600">
+                                        <td className="px-3 py-2.5 text-slate-400">
                                             {s.operator?.name ||
                                                 s.operator?.email ||
                                                 "—"}
@@ -570,11 +572,11 @@ export default function EventAnalyticsPage() {
 
             <SectionCard title="Gate performance">
                 {!gates || gates.length === 0 ? (
-                    <p className="text-sm text-slate-500">No gate activity yet</p>
+                    <p className="text-sm text-slate-400">No gate activity yet</p>
                 ) : (
                     <div className="overflow-x-auto">
                         <table className="min-w-full text-left text-sm">
-                            <thead className="border-b border-slate-100 text-xs uppercase text-slate-500">
+                            <thead className="border-b border-white/[0.06] text-xs uppercase text-slate-400">
                                 <tr>
                                     <th className="px-3 py-2 font-medium">Gate</th>
                                     <th className="px-3 py-2 font-medium">Entries</th>
@@ -589,29 +591,29 @@ export default function EventAnalyticsPage() {
                                     </th>
                                 </tr>
                             </thead>
-                            <tbody className="divide-y divide-slate-50">
+                            <tbody className="divide-y divide-white/[0.04]">
                                 {gates.map((g) => (
                                     <tr key={g.gate}>
-                                        <td className="px-3 py-2.5 font-medium">
+                                        <td className="px-3 py-2.5 font-medium text-white">
                                             {g.gate}
                                         </td>
-                                        <td className="px-3 py-2.5">{g.entries}</td>
-                                        <td className="px-3 py-2.5">
+                                        <td className="px-3 py-2.5 text-slate-300">{g.entries}</td>
+                                        <td className="px-3 py-2.5 text-slate-300">
                                             {g.deniedAttempts}
                                         </td>
-                                        <td className="px-3 py-2.5 text-slate-600">
+                                        <td className="px-3 py-2.5 text-slate-400">
                                             {g.averageIntervalSeconds != null
                                                 ? `${g.averageIntervalSeconds}s`
                                                 : "—"}
                                         </td>
-                                        <td className="px-3 py-2.5 text-slate-600">
+                                        <td className="px-3 py-2.5 text-slate-400">
                                             {formatWhen(g.lastScanAt)}
                                         </td>
                                     </tr>
                                 ))}
                             </tbody>
                         </table>
-                        <p className="mt-2 text-xs text-slate-400">
+                        <p className="mt-2 text-xs text-slate-500">
                             Avg. interval is the average time between successful
                             entries at that gate (throughput proxy).
                         </p>
@@ -633,19 +635,19 @@ export default function EventAnalyticsPage() {
                             ].map(([label, value]) => (
                                 <div
                                     key={String(label)}
-                                    className="rounded-lg border border-slate-100 px-3 py-2"
+                                    className="rounded-lg border border-white/[0.06] px-3 py-2"
                                 >
-                                    <dt className="text-xs text-slate-500">
+                                    <dt className="text-xs text-slate-400">
                                         {label}
                                     </dt>
-                                    <dd className="mt-0.5 text-lg font-semibold text-slate-900">
+                                    <dd className="mt-0.5 text-lg font-semibold text-white">
                                         {value}
                                     </dd>
                                 </div>
                             ))}
                         </dl>
                     ) : (
-                        <p className="text-sm text-slate-500">No credential data</p>
+                        <p className="text-sm text-slate-400">No credential data</p>
                     )}
                 </SectionCard>
 
@@ -675,44 +677,44 @@ export default function EventAnalyticsPage() {
                             ].map(([label, value]) => (
                                 <div
                                     key={String(label)}
-                                    className="rounded-lg border border-slate-100 px-3 py-2"
+                                    className="rounded-lg border border-white/[0.06] px-3 py-2"
                                 >
-                                    <dt className="text-xs text-slate-500">
+                                    <dt className="text-xs text-slate-400">
                                         {label}
                                     </dt>
-                                    <dd className="mt-0.5 text-lg font-semibold text-slate-900">
+                                    <dd className="mt-0.5 text-lg font-semibold text-white">
                                         {value}
                                     </dd>
                                 </div>
                             ))}
                         </dl>
                     ) : (
-                        <p className="text-sm text-slate-500">No access data</p>
+                        <p className="text-sm text-slate-400">No access data</p>
                     )}
                 </SectionCard>
             </div>
 
             <SectionCard title="Recent activity">
                 {activity.length === 0 ? (
-                    <p className="text-sm text-slate-500">No activity yet</p>
+                    <p className="text-sm text-slate-400">No activity yet</p>
                 ) : (
                     <>
                         <ol className="space-y-3">
                             {activity.map((item) => (
                                 <li
                                     key={item.id}
-                                    className="flex gap-3 border-b border-slate-50 pb-3 last:border-0"
+                                    className="flex gap-3 border-b border-white/[0.04] pb-3 last:border-0"
                                 >
                                     <div className="mt-1 h-2 w-2 shrink-0 rounded-full bg-indigo-500" />
                                     <div className="min-w-0 flex-1">
-                                        <p className="text-sm font-medium text-slate-900">
+                                        <p className="text-sm font-medium text-white">
                                             {item.title}
                                         </p>
-                                        <p className="truncate text-xs text-slate-500">
+                                        <p className="truncate text-xs text-slate-400">
                                             {item.detail}
                                         </p>
                                     </div>
-                                    <time className="shrink-0 text-xs text-slate-400">
+                                    <time className="shrink-0 text-xs text-slate-500">
                                         {formatWhen(item.occurredAt)}
                                     </time>
                                 </li>
@@ -723,18 +725,18 @@ export default function EventAnalyticsPage() {
                                 type="button"
                                 disabled={activityPage <= 1}
                                 onClick={() => loadActivity(activityPage - 1)}
-                                className="rounded-md border border-slate-200 px-3 py-1.5 text-sm disabled:opacity-40"
+                                className="rounded-md border border-white/[0.08] px-3 py-1.5 text-sm text-slate-300 hover:bg-white/[0.04] disabled:opacity-40"
                             >
                                 Previous
                             </button>
-                            <span className="text-xs text-slate-500">
+                            <span className="text-xs text-slate-400">
                                 Page {activityPage} of {activityTotalPages}
                             </span>
                             <button
                                 type="button"
                                 disabled={activityPage >= activityTotalPages}
                                 onClick={() => loadActivity(activityPage + 1)}
-                                className="rounded-md border border-slate-200 px-3 py-1.5 text-sm disabled:opacity-40"
+                                className="rounded-md border border-white/[0.08] px-3 py-1.5 text-sm text-slate-300 hover:bg-white/[0.04] disabled:opacity-40"
                             >
                                 Next
                             </button>

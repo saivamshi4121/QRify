@@ -42,7 +42,6 @@ type SmartPageOption = {
     isPublished: boolean;
 };
 
-// Simple internal modal component
 function EditLinkModal({
     isOpen,
     onClose,
@@ -133,24 +132,24 @@ function EditLinkModal({
     };
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
-            <div className="bg-white rounded-xl shadow-xl w-full max-w-md overflow-hidden animate-in zoom-in duration-200">
-                <div className="px-6 py-4 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
-                    <h3 className="font-semibold text-slate-900">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+            <div className="bg-[#0d1117] border border-white/[0.08] rounded-xl shadow-xl w-full max-w-md overflow-hidden animate-in zoom-in duration-200">
+                <div className="px-6 py-4 border-b border-white/[0.08] flex justify-between items-center bg-white/[0.03]">
+                    <h3 className="font-semibold text-white">
                         Edit Destination
                     </h3>
                     <button type="button" onClick={onClose}>
-                        <X className="h-5 w-5 text-slate-400 hover:text-slate-600" />
+                        <X className="h-5 w-5 text-slate-400 hover:text-slate-300" />
                     </button>
                 </div>
                 <form onSubmit={handleSubmit} className="p-6 space-y-4">
-                    <div className="flex gap-2 rounded-lg bg-slate-100 p-1">
+                    <div className="flex gap-2 rounded-lg bg-white/[0.06] p-1">
                         <button
                             type="button"
                             onClick={() => setMode("url")}
                             className={`flex-1 rounded-md px-3 py-1.5 text-sm font-medium ${
                                 mode === "url"
-                                    ? "bg-white text-slate-900 shadow-sm"
+                                    ? "bg-white/[0.04] text-white shadow-sm"
                                     : "text-slate-500"
                             }`}
                         >
@@ -161,7 +160,7 @@ function EditLinkModal({
                             onClick={() => setMode("smartpage")}
                             className={`flex-1 rounded-md px-3 py-1.5 text-sm font-medium ${
                                 mode === "smartpage"
-                                    ? "bg-white text-slate-900 shadow-sm"
+                                    ? "bg-white/[0.04] text-white shadow-sm"
                                     : "text-slate-500"
                             }`}
                         >
@@ -171,7 +170,7 @@ function EditLinkModal({
 
                     {mode === "url" ? (
                         <div>
-                            <label className="block text-sm font-medium text-slate-700 mb-1">
+                            <label className="block text-sm font-medium text-slate-300 mb-1">
                                 Destination URL
                             </label>
                             <input
@@ -179,7 +178,7 @@ function EditLinkModal({
                                 required
                                 value={url}
                                 onChange={(e) => setUrl(e.target.value)}
-                                className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:ring-indigo-500 focus:border-indigo-500 outline-none"
+                                className="w-full rounded-md border border-white/[0.08] bg-white/[0.04] text-white px-3 py-2 text-sm focus:border-indigo-500/50 outline-none"
                             />
                             <p className="mt-1 text-xs text-slate-400">
                                 Unlinks any Review Page and redirects to this URL.
@@ -188,7 +187,7 @@ function EditLinkModal({
                     ) : (
                         <div className="space-y-3">
                             <div>
-                                <label className="block text-sm font-medium text-slate-700 mb-1">
+                                <label className="block text-sm font-medium text-slate-300 mb-1">
                                     Review Page
                                 </label>
                                 {loadingPages ? (
@@ -203,7 +202,7 @@ function EditLinkModal({
                                         onChange={(e) =>
                                             setSmartPageId(e.target.value)
                                         }
-                                        className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm outline-none"
+                                        className="w-full rounded-md border border-white/[0.08] bg-white/[0.04] text-white px-3 py-2 text-sm outline-none"
                                     >
                                         <option value="">Select a page…</option>
                                         {pages.map((p) => (
@@ -218,21 +217,21 @@ function EditLinkModal({
                                     </select>
                                 )}
                                 {pages.length === 0 && !loadingPages ? (
-                                    <p className="mt-1 text-xs text-amber-600">
+                                    <p className="mt-1 text-xs text-amber-400">
                                         No Review Pages yet. Create one under
                                         Review Pages.
                                     </p>
                                 ) : null}
                             </div>
                             <div>
-                                <label className="block text-sm font-medium text-slate-700 mb-1">
+                                <label className="block text-sm font-medium text-slate-300 mb-1">
                                     Fallback URL (optional)
                                 </label>
                                 <input
                                     type="text"
                                     value={url}
                                     onChange={(e) => setUrl(e.target.value)}
-                                    className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm outline-none"
+                                    className="w-full rounded-md border border-white/[0.08] bg-white/[0.04] text-white px-3 py-2 text-sm outline-none"
                                     placeholder="Used if page is unpublished"
                                 />
                             </div>
@@ -243,14 +242,15 @@ function EditLinkModal({
                         <button
                             type="button"
                             onClick={onClose}
-                            className="px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-100 rounded-md"
+                            className="px-4 py-2 text-sm font-medium text-slate-300 border border-white/[0.08] bg-white/[0.03] hover:bg-white/[0.06] rounded-md"
                         >
                             Cancel
                         </button>
                         <button
                             type="submit"
                             disabled={loading}
-                            className="px-4 py-2 text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 rounded-md flex items-center gap-2"
+                            className="px-4 py-2 text-sm font-medium text-white rounded-md flex items-center gap-2"
+                            style={{ background: "linear-gradient(135deg, #4f46e5, #6366f1)", border: "1px solid rgba(99,102,241,0.3)" }}
                         >
                             {loading ? (
                                 <Loader2 className="h-4 w-4 animate-spin" />
@@ -266,7 +266,6 @@ function EditLinkModal({
     );
 }
 
-// View QR Modal with Integration Options
 function ViewQRModal({ isOpen, onClose, qr }: any) {
     const [activeTab, setActiveTab] = useState<"preview" | "embed">("preview");
     const [copied, setCopied] = useState<string | null>(null);
@@ -285,21 +284,20 @@ function ViewQRModal({ isOpen, onClose, qr }: any) {
     };
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
-            <div className="bg-white rounded-xl shadow-xl max-w-2xl w-full overflow-hidden animate-in zoom-in duration-200 max-h-[90vh] flex flex-col">
-                <div className="px-6 py-4 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
-                    <h3 className="font-semibold text-slate-900">{qr.qrName}</h3>
-                    <button onClick={onClose}><X className="h-5 w-5 text-slate-400 hover:text-slate-600" /></button>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+            <div className="bg-[#0d1117] border border-white/[0.08] rounded-xl shadow-xl max-w-2xl w-full overflow-hidden animate-in zoom-in duration-200 max-h-[90vh] flex flex-col">
+                <div className="px-6 py-4 border-b border-white/[0.08] flex justify-between items-center bg-white/[0.03]">
+                    <h3 className="font-semibold text-white">{qr.qrName}</h3>
+                    <button onClick={onClose}><X className="h-5 w-5 text-slate-400 hover:text-slate-300" /></button>
                 </div>
 
-                {/* Tabs */}
-                <div className="flex border-b border-slate-200">
+                <div className="flex border-b border-white/[0.08]">
                     <button
                         onClick={() => setActiveTab("preview")}
                         className={`flex-1 px-4 py-3 text-sm font-medium transition-colors ${
                             activeTab === "preview"
-                                ? "text-indigo-600 border-b-2 border-indigo-600"
-                                : "text-slate-600 hover:text-slate-900"
+                                ? "text-indigo-400 border-b-2 border-indigo-400"
+                                : "text-slate-400 hover:text-slate-300"
                         }`}
                     >
                         Preview
@@ -308,8 +306,8 @@ function ViewQRModal({ isOpen, onClose, qr }: any) {
                         onClick={() => setActiveTab("embed")}
                         className={`flex-1 px-4 py-3 text-sm font-medium transition-colors ${
                             activeTab === "embed"
-                                ? "text-indigo-600 border-b-2 border-indigo-600"
-                                : "text-slate-600 hover:text-slate-900"
+                                ? "text-indigo-400 border-b-2 border-indigo-400"
+                                : "text-slate-400 hover:text-slate-300"
                         }`}
                     >
                         Website Integration
@@ -319,7 +317,7 @@ function ViewQRModal({ isOpen, onClose, qr }: any) {
                 <div className="flex-1 overflow-y-auto p-6">
                     {activeTab === "preview" ? (
                         <div className="flex flex-col items-center gap-4">
-                            <div className="p-2 border border-slate-200 rounded-lg bg-white shadow-sm">
+                            <div className="p-2 border border-white/[0.08] rounded-lg bg-white/[0.04]">
                                 <Image 
                                     src={qr.qrImageUrl} 
                                     alt={qr.qrName || "QR Code"} 
@@ -330,89 +328,90 @@ function ViewQRModal({ isOpen, onClose, qr }: any) {
                                     unoptimized={!qr.qrImageUrl.includes("cloudinary.com")}
                                 />
                             </div>
-                            <a href={qr.qrImageUrl} download="qr-code.png" className="text-sm font-medium text-indigo-600 hover:underline">
+                            <a href={qr.qrImageUrl} download="qr-code.png" className="text-sm font-medium text-indigo-400 hover:underline">
                                 Download High Res
                             </a>
                         </div>
                     ) : (
                         <div className="space-y-6">
-                            {/* iframe Embed */}
                             <div>
-                                <h4 className="text-sm font-semibold text-slate-900 mb-2">1. iframe Embed</h4>
+                                <h4 className="text-sm font-semibold text-white mb-2">1. iframe Embed</h4>
                                 <p className="text-xs text-slate-500 mb-3">Copy and paste this code into your HTML:</p>
                                 <div className="relative">
-                                    <pre className="bg-slate-50 border border-slate-200 rounded-lg p-3 text-xs overflow-x-auto">
+                                    <pre className="bg-white/[0.03] border border-white/[0.08] rounded-lg p-3 text-xs overflow-x-auto text-white">
                                         <code>{iframeCode}</code>
                                     </pre>
                                     <button
                                         onClick={() => copyToClipboard(iframeCode, "iframe")}
-                                        className="absolute top-2 right-2 px-3 py-1.5 text-xs font-medium bg-indigo-600 text-white rounded hover:bg-indigo-700 transition-colors"
+                                        className="absolute top-2 right-2 px-3 py-1.5 text-xs font-medium text-white rounded hover:opacity-90 transition-colors"
+                                        style={{ background: "linear-gradient(135deg, #4f46e5, #6366f1)", border: "1px solid rgba(99,102,241,0.3)" }}
                                     >
                                         {copied === "iframe" ? "Copied!" : "Copy"}
                                     </button>
                                 </div>
                             </div>
 
-                            {/* Script Embed */}
                             <div>
-                                <h4 className="text-sm font-semibold text-slate-900 mb-2">2. Script Embed</h4>
+                                <h4 className="text-sm font-semibold text-white mb-2">2. Script Embed</h4>
                                 <p className="text-xs text-slate-500 mb-3">Add this to your HTML page:</p>
                                 <div className="relative">
-                                    <pre className="bg-slate-50 border border-slate-200 rounded-lg p-3 text-xs overflow-x-auto">
+                                    <pre className="bg-white/[0.03] border border-white/[0.08] rounded-lg p-3 text-xs overflow-x-auto text-white">
                                         <code>{scriptCode}</code>
                                     </pre>
                                     <button
                                         onClick={() => copyToClipboard(scriptCode, "script")}
-                                        className="absolute top-2 right-2 px-3 py-1.5 text-xs font-medium bg-indigo-600 text-white rounded hover:bg-indigo-700 transition-colors"
+                                        className="absolute top-2 right-2 px-3 py-1.5 text-xs font-medium text-white rounded hover:opacity-90 transition-colors"
+                                        style={{ background: "linear-gradient(135deg, #4f46e5, #6366f1)", border: "1px solid rgba(99,102,241,0.3)" }}
                                     >
                                         {copied === "script" ? "Copied!" : "Copy"}
                                     </button>
                                 </div>
                             </div>
 
-                            {/* Direct Image URL */}
                             <div>
-                                <h4 className="text-sm font-semibold text-slate-900 mb-2">3. Direct Image URL</h4>
+                                <h4 className="text-sm font-semibold text-white mb-2">3. Direct Image URL</h4>
                                 <p className="text-xs text-slate-500 mb-3">Use this URL directly in an img tag:</p>
                                 <div className="relative">
                                     <input
                                         type="text"
                                         readOnly
                                         value={qr.qrImageUrl}
-                                        className="w-full bg-slate-50 border border-slate-200 rounded-lg p-3 text-xs pr-20"
+                                        className="w-full bg-white/[0.03] border border-white/[0.08] rounded-lg p-3 text-xs pr-20 text-white"
                                     />
                                     <button
                                         onClick={() => copyToClipboard(qr.qrImageUrl, "image")}
-                                        className="absolute top-2 right-2 px-3 py-1.5 text-xs font-medium bg-indigo-600 text-white rounded hover:bg-indigo-700 transition-colors"
+                                        className="absolute top-2 right-2 px-3 py-1.5 text-xs font-medium text-white rounded hover:opacity-90 transition-colors"
+                                        style={{ background: "linear-gradient(135deg, #4f46e5, #6366f1)", border: "1px solid rgba(99,102,241,0.3)" }}
                                     >
                                         {copied === "image" ? "Copied!" : "Copy"}
                                     </button>
                                 </div>
                             </div>
 
-                            {/* React/Next.js Component */}
                             <div>
-                                <h4 className="text-sm font-semibold text-slate-900 mb-2">4. React / Next.js Component</h4>
+                                <h4 className="text-sm font-semibold text-white mb-2">4. React / Next.js Component</h4>
                                 <p className="text-xs text-slate-500 mb-3">Install and use our React component:</p>
                                 <div className="space-y-3">
                                     <div className="relative">
-                                        <pre className="bg-slate-50 border border-slate-200 rounded-lg p-3 text-xs overflow-x-auto">
+                                        <pre className="bg-white/[0.03] border border-white/[0.08] rounded-lg p-3 text-xs overflow-x-auto text-white">
                                             <code>{`npm install @smartqr/react`}</code>
                                         </pre>
                                         <button
                                             onClick={() => copyToClipboard("npm install @smartqr/react", "npm")}
-                                            className="absolute top-2 right-2 px-3 py-1.5 text-xs font-medium bg-indigo-600 text-white rounded hover:bg-indigo-700 transition-colors"
+                                            className="absolute top-2 right-2 px-3 py-1.5 text-xs font-medium text-white rounded hover:opacity-90 transition-colors"
+                                            style={{ background: "linear-gradient(135deg, #4f46e5, #6366f1)", border: "1px solid rgba(99,102,241,0.3)" }}
                                         >
                                             {copied === "npm" ? "Copied!" : "Copy"}
                                         </button>
                                     </div>
                                     <div className="relative">
-                                        <pre className="bg-slate-50 border border-slate-200 rounded-lg p-3 text-xs overflow-x-auto">
+                                        <pre className="bg-white/[0.03] border border-white/[0.08] rounded-lg p-3 text-xs overflow-x-auto text-white">
                                             <code>{`import { SmartQR } from '@smartqr/react';\n\n<SmartQR shortUrl="${qr.shortUrl}" />`}</code>
                                         </pre>
                                         <button
                                             onClick={() => copyToClipboard(`import { SmartQR } from '@smartqr/react';\n\n<SmartQR shortUrl="${qr.shortUrl}" />`, "react")}
-                                            className="absolute top-2 right-2 px-3 py-1.5 text-xs font-medium bg-indigo-600 text-white rounded hover:bg-indigo-700 transition-colors"
+                                            className="absolute top-2 right-2 px-3 py-1.5 text-xs font-medium text-white rounded hover:opacity-90 transition-colors"
+                                            style={{ background: "linear-gradient(135deg, #4f46e5, #6366f1)", border: "1px solid rgba(99,102,241,0.3)" }}
                                         >
                                             {copied === "react" ? "Copied!" : "Copy"}
                                         </button>
@@ -433,7 +432,6 @@ export default function MyQRsPage() {
     const [qrs, setQrs] = useState<QRCodeType[]>([]);
     const [loading, setLoading] = useState(true);
 
-    // Modal State
     const [isEditOpen, setIsEditOpen] = useState(false);
     const [isViewOpen, setIsViewOpen] = useState(false);
     const [isDeleteOpen, setIsDeleteOpen] = useState(false);
@@ -486,7 +484,7 @@ export default function MyQRsPage() {
             toast.success("QR Code deleted successfully!");
             setIsDeleteOpen(false);
             setSelectedQR(null);
-            fetchQRs(); // Refresh the list
+            fetchQRs();
         } catch (e: any) {
             toast.error(e.message || "Failed to delete QR");
         } finally {
@@ -494,19 +492,20 @@ export default function MyQRsPage() {
         }
     };
 
-    if (loading) return <div className="p-12 flex justify-center"><Loader2 className="animate-spin h-8 w-8 text-indigo-500" /></div>;
+    if (loading) return <div className="p-12 flex justify-center"><Loader2 className="animate-spin h-8 w-8 text-indigo-400" /></div>;
 
     return (
         <div className="space-y-8">
             <Toaster richColors position="top-right" />
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                 <div>
-                    <h1 className="text-3xl font-bold text-slate-900">My QR Codes</h1>
+                    <h1 className="text-3xl font-bold text-white">My QR Codes</h1>
                     <p className="mt-2 text-slate-500">Manage and track your dynamic QR codes.</p>
                 </div>
                 <Link
                     href="/create"
-                    className="inline-flex items-center justify-center gap-2 rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-700 transition-all"
+                    className="inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2 text-sm font-semibold text-white shadow-sm hover:opacity-90 transition-all"
+                    style={{ background: "linear-gradient(135deg, #4f46e5, #6366f1)", border: "1px solid rgba(99,102,241,0.3)" }}
                 >
                     <Plus className="h-4 w-4" />
                     Create New QR
@@ -517,12 +516,12 @@ export default function MyQRsPage() {
                 {qrs.length === 0 ? (
                     <div className="py-12 text-center">
                         <p className="text-slate-500">You haven't created any QR codes yet.</p>
-                        <Link href="/create" className="text-indigo-600 font-medium hover:underline mt-2 inline-block">Create your first one</Link>
+                        <Link href="/create" className="text-indigo-400 font-medium hover:underline mt-2 inline-block">Create your first one</Link>
                     </div>
                 ) : (
                     <div className="overflow-x-auto">
                         <table className="w-full text-left text-sm text-slate-500">
-                            <thead className="bg-slate-50 text-xs uppercase text-slate-700">
+                            <thead className="bg-white/[0.03] text-xs uppercase text-slate-500">
                                 <tr>
                                     <th className="px-6 py-3 font-semibold">Name</th>
                                     <th className="px-6 py-3 font-semibold">Destination</th>
@@ -531,13 +530,13 @@ export default function MyQRsPage() {
                                     <th className="px-6 py-3 font-semibold text-right">Actions</th>
                                 </tr>
                             </thead>
-                            <tbody className="divide-y divide-slate-200 bg-white">
+                            <tbody className="divide-y divide-white/[0.06]">
                                 {qrs.map((qr) => (
-                                    <tr key={qr._id} className="hover:bg-slate-50/50 transition-colors">
+                                    <tr key={qr._id} className="hover:bg-white/[0.04] transition-colors">
                                         <td className="whitespace-nowrap px-6 py-4">
                                             <div className="flex items-center gap-3">
                                                 <div
-                                                    className="h-12 w-12 shrink-0 rounded border border-slate-200 bg-white p-1 cursor-pointer hover:border-indigo-300"
+                                                    className="h-12 w-12 shrink-0 rounded border border-white/[0.08] bg-white/[0.04] p-1 cursor-pointer hover:border-indigo-400/50"
                                                     onClick={() => openViewModal(qr)}
                                                 >
                                                     <Image
@@ -551,17 +550,17 @@ export default function MyQRsPage() {
                                                     />
                                                 </div>
                                                 <div>
-                                                    <div className="font-medium text-slate-900">{qr.qrName}</div>
+                                                    <div className="font-medium text-white">{qr.qrName}</div>
                                                     <div className="text-xs text-slate-400">/{qr.shortUrl}</div>
                                                 </div>
                                             </div>
                                         </td>
                                         <td className="whitespace-nowrap px-6 py-4 max-w-[200px]">
-                                            <div className="truncate text-slate-600 flex items-center gap-2">
+                                            <div className="truncate text-slate-400 flex items-center gap-2">
                                                 <span className="truncate max-w-[150px] block" title={qr.originalData}>{qr.originalData}</span>
                                                 <button
                                                     onClick={() => openEditModal(qr)}
-                                                    className="p-1 hover:bg-slate-200 rounded text-indigo-600 shrink-0"
+                                                    className="p-1 hover:bg-white/[0.06] rounded text-indigo-400 shrink-0"
                                                     title="Edit Destination Link"
                                                 >
                                                     <Edit className="h-3.5 w-3.5" />
@@ -569,7 +568,7 @@ export default function MyQRsPage() {
                                             </div>
                                         </td>
                                         <td className="whitespace-nowrap px-6 py-4">
-                                            <div className="flex items-center gap-1.5 font-medium text-slate-700">
+                                            <div className="flex items-center gap-1.5 font-medium text-white">
                                                 <MousePointer2 className="h-3.5 w-3.5 text-slate-400" />
                                                 {qr.scanCount.toLocaleString()}
                                             </div>
@@ -581,21 +580,21 @@ export default function MyQRsPage() {
                                             <div className="flex items-center justify-end gap-3">
                                                 <button
                                                     onClick={() => router.push(`/qrs/${qr._id}`)}
-                                                    className="text-indigo-600 hover:text-indigo-900 font-medium text-sm"
+                                                    className="text-indigo-400 hover:text-indigo-300 font-medium text-sm"
                                                 >
                                                     Analytics
                                                 </button>
                                                 <a
                                                     href={`${process.env.NEXT_PUBLIC_APP_URL || (typeof window !== "undefined" ? window.location.origin : "")}/api/qr/redirect/${qr.shortUrl}`}
                                                     target="_blank"
-                                                    className="text-slate-400 hover:text-slate-600"
+                                                    className="text-slate-400 hover:text-slate-300"
                                                     title="Test Redirect"
                                                 >
                                                     <ExternalLink className="h-4 w-4" />
                                                 </a>
                                                 <button
                                                     onClick={() => openDeleteModal(qr)}
-                                                    className="text-red-600 hover:text-red-700 p-1 hover:bg-red-50 rounded transition-colors"
+                                                    className="text-red-400 hover:text-red-300 p-1 hover:bg-red-500/10 rounded transition-colors"
                                                     title="Delete QR Code"
                                                 >
                                                     <Trash2 className="h-4 w-4" />
@@ -623,22 +622,21 @@ export default function MyQRsPage() {
                 qr={selectedQR}
             />
 
-            {/* Delete Confirmation Modal */}
             {isDeleteOpen && selectedQR && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
-                    <div className="bg-white rounded-xl shadow-xl w-full max-w-md overflow-hidden animate-in zoom-in duration-200">
-                        <div className="px-6 py-4 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
-                            <h3 className="font-semibold text-slate-900">Delete QR Code</h3>
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+                    <div className="bg-[#0d1117] border border-white/[0.08] rounded-xl shadow-xl w-full max-w-md overflow-hidden animate-in zoom-in duration-200">
+                        <div className="px-6 py-4 border-b border-white/[0.08] flex justify-between items-center bg-white/[0.03]">
+                            <h3 className="font-semibold text-white">Delete QR Code</h3>
                             <button 
                                 onClick={() => setIsDeleteOpen(false)}
                                 disabled={deleting}
                             >
-                                <X className="h-5 w-5 text-slate-400 hover:text-slate-600" />
+                                <X className="h-5 w-5 text-slate-400 hover:text-slate-300" />
                             </button>
                         </div>
                         <div className="p-6 space-y-4">
-                            <p className="text-slate-700">
-                                Are you sure you want to delete <span className="font-semibold">"{selectedQR.qrName}"</span>? 
+                            <p className="text-slate-300">
+                                Are you sure you want to delete <span className="font-semibold text-white">"{selectedQR.qrName}"</span>? 
                                 This action cannot be undone and will also delete all associated scan analytics.
                             </p>
                             <div className="flex justify-end gap-2 pt-2">
@@ -646,7 +644,7 @@ export default function MyQRsPage() {
                                     type="button"
                                     onClick={() => setIsDeleteOpen(false)}
                                     disabled={deleting}
-                                    className="px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-100 rounded-md disabled:opacity-50"
+                                    className="px-4 py-2 text-sm font-medium text-slate-300 border border-white/[0.08] bg-white/[0.03] hover:bg-white/[0.06] rounded-md disabled:opacity-50"
                                 >
                                     Cancel
                                 </button>

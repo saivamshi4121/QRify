@@ -110,7 +110,7 @@ export default function AttendeeDetailPage() {
     if (loading || !values) {
         return (
             <div className="flex h-96 items-center justify-center">
-                <Loader2 className="h-8 w-8 animate-spin text-indigo-500" />
+                <Loader2 className="h-8 w-8 animate-spin text-indigo-400" />
             </div>
         );
     }
@@ -122,12 +122,12 @@ export default function AttendeeDetailPage() {
                 <div className="flex items-center gap-3">
                     <Link
                         href={`/events/${eventId}/attendees`}
-                        className="rounded-md p-2 text-slate-500 hover:bg-slate-100"
+                        className="rounded-md p-2 text-slate-500 hover:bg-white/[0.06]"
                     >
                         <ArrowLeft className="h-5 w-5" />
                     </Link>
                     <div>
-                        <h1 className="text-2xl font-bold text-slate-900">
+                        <h1 className="text-2xl font-bold text-white">
                             {values.firstName} {values.lastName}
                         </h1>
                         <p className="text-sm text-slate-500">

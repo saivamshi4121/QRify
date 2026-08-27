@@ -20,12 +20,12 @@ export default function NotificationDocsPage() {
             <div className="flex items-start gap-3">
                 <Link
                     href="/docs/developer"
-                    className="rounded-md p-2 text-slate-500 hover:bg-slate-100"
+                    className="rounded-md p-2 text-slate-500 hover:bg-white/[0.06]"
                 >
                     <ArrowLeft className="h-5 w-5" />
                 </Link>
                 <div>
-                    <h1 className="text-3xl font-bold text-slate-900">
+                    <h1 className="text-3xl font-bold text-white">
                         Notifications
                     </h1>
                     <p className="mt-2 text-slate-500">
@@ -40,7 +40,7 @@ export default function NotificationDocsPage() {
                     <a
                         key={s.id}
                         href={`#${s.id}`}
-                        className="rounded-full border border-slate-200 px-3 py-1 text-sm text-slate-600 hover:bg-slate-50"
+                        className="rounded-full border border-white/[0.08] px-3 py-1 text-sm text-slate-400 hover:bg-white/[0.03]"
                     >
                         {s.title}
                     </a>
@@ -48,19 +48,19 @@ export default function NotificationDocsPage() {
             </nav>
 
             <section id="overview" className="space-y-3">
-                <h2 className="text-xl font-semibold text-slate-900">
+                <h2 className="text-xl font-semibold text-white">
                     Overview
                 </h2>
-                <p className="text-sm text-slate-700">
+                <p className="text-sm text-slate-300">
                     Manage templates under{" "}
                     <Link
                         href="/settings/notifications"
-                        className="text-indigo-600 hover:underline"
+                        className="text-indigo-400 hover:underline"
                     >
                         Settings → Notifications
                     </Link>
                     . Business services only call{" "}
-                    <code className="rounded bg-slate-100 px-1">
+                    <code className="rounded bg-white/[0.06] px-1">
                         publishDomainEvent()
                     </code>
                     ; notification infrastructure renders templates and delivers
@@ -69,10 +69,10 @@ export default function NotificationDocsPage() {
             </section>
 
             <section id="architecture" className="space-y-3">
-                <h2 className="text-xl font-semibold text-slate-900">
+                <h2 className="text-xl font-semibold text-white">
                     Architecture
                 </h2>
-                <pre className="overflow-auto rounded-lg bg-slate-50 p-4 text-xs text-slate-800">{`Business Event
+                <pre className="overflow-auto rounded-lg bg-white/[0.06] p-4 text-xs text-slate-200">{`Business Event
   → publishDomainEvent()
   → Notification Module (match templates)
   → Render variables
@@ -82,16 +82,16 @@ export default function NotificationDocsPage() {
             </section>
 
             <section id="providers" className="space-y-3">
-                <h2 className="text-xl font-semibold text-slate-900">
+                <h2 className="text-xl font-semibold text-white">
                     Providers
                 </h2>
-                <p className="text-sm text-slate-700">
+                <p className="text-sm text-slate-300">
                     Default provider is{" "}
-                    <code className="rounded bg-slate-100 px-1">
+                    <code className="rounded bg-white/[0.06] px-1">
                         ConsoleProvider
                     </code>{" "}
                     (logs to the server console). Swap via{" "}
-                    <code className="rounded bg-slate-100 px-1">
+                    <code className="rounded bg-white/[0.06] px-1">
                         setNotificationProvider()
                     </code>{" "}
                     without changing business services. Channels: email, sms,
@@ -100,10 +100,10 @@ export default function NotificationDocsPage() {
             </section>
 
             <section id="templates" className="space-y-3">
-                <h2 className="text-xl font-semibold text-slate-900">
+                <h2 className="text-xl font-semibold text-white">
                     Templates
                 </h2>
-                <p className="text-sm text-slate-700">
+                <p className="text-sm text-slate-300">
                     Starter templates are seeded per workspace (disabled by
                     default): Registration Confirmation, Credential Ready,
                     Credential Regenerated, Check-in Successful, Event Updated.
@@ -111,23 +111,23 @@ export default function NotificationDocsPage() {
             </section>
 
             <section id="variables" className="space-y-3">
-                <h2 className="text-xl font-semibold text-slate-900">
+                <h2 className="text-xl font-semibold text-white">
                     Variables
                 </h2>
-                <pre className="overflow-auto rounded-lg bg-slate-50 p-4 text-xs text-slate-800">{`{{firstName}} {{lastName}} {{email}} {{phone}}
+                <pre className="overflow-auto rounded-lg bg-white/[0.06] p-4 text-xs text-slate-200">{`{{firstName}} {{lastName}} {{email}} {{phone}}
 {{eventName}} {{eventDate}} {{venue}} {{ticketType}}
 {{credentialUrl}} {{qrUrl}} {{checkInTime}}`}</pre>
-                <p className="text-sm text-slate-600">
+                <p className="text-sm text-slate-400">
                     Missing variables render as empty strings.
                 </p>
             </section>
 
             <section id="retry" className="space-y-3">
-                <h2 className="text-xl font-semibold text-slate-900">Retry</h2>
-                <p className="text-sm text-slate-700">
+                <h2 className="text-xl font-semibold text-white">Retry</h2>
+                <p className="text-sm text-slate-300">
                     Same schedule as webhooks: 1m → 5m → 15m → 1h → 6h (max 6
                     attempts). Cron:{" "}
-                    <code className="rounded bg-slate-100 px-1">
+                    <code className="rounded bg-white/[0.06] px-1">
                         /api/v2/cron/notifications/retries
                     </code>
                     .
@@ -135,10 +135,10 @@ export default function NotificationDocsPage() {
             </section>
 
             <section id="events" className="space-y-3">
-                <h2 className="text-xl font-semibold text-slate-900">
+                <h2 className="text-xl font-semibold text-white">
                     Supported Events
                 </h2>
-                <pre className="overflow-auto rounded-lg bg-slate-50 p-4 text-xs text-slate-800">{`attendee.created
+                <pre className="overflow-auto rounded-lg bg-white/[0.06] p-4 text-xs text-slate-200">{`attendee.created
 credential.generated
 credential.regenerated
 access.granted
@@ -147,7 +147,7 @@ scanner.paired`}</pre>
             </section>
 
             <section id="api" className="space-y-3">
-                <h2 className="text-xl font-semibold text-slate-900">
+                <h2 className="text-xl font-semibold text-white">
                     API / SDK Examples
                 </h2>
                 <pre className="overflow-auto rounded-lg bg-slate-950 p-4 text-xs text-slate-100">{`import { Qrezo } from "@qrezo/sdk";
@@ -166,13 +166,13 @@ await client.notifications.sendTest({
 const deliveries = await client.notifications.listDeliveries({
   status: "FAILED",
 });`}</pre>
-                <p className="text-sm text-slate-600">
+                <p className="text-sm text-slate-400">
                     Scopes:{" "}
-                    <code className="rounded bg-slate-100 px-1">
+                    <code className="rounded bg-white/[0.06] px-1">
                         notifications:read
                     </code>
                     ,{" "}
-                    <code className="rounded bg-slate-100 px-1">
+                    <code className="rounded bg-white/[0.06] px-1">
                         notifications:write
                     </code>
                     .

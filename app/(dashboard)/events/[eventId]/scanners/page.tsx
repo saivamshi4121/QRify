@@ -79,16 +79,15 @@ function DeviceCard({
     onRevoke: (d: Device) => void;
 }) {
     return (
-        <div className="flex flex-col gap-4 rounded-xl border border-slate-200 bg-white p-5 shadow-sm sm:flex-row sm:items-start sm:justify-between">
+        <div className="flex flex-col gap-4 rounded-xl border border-white/[0.08] bg-white/[0.04] p-5 sm:flex-row sm:items-start sm:justify-between">
             <div className="flex items-start gap-4">
-                {/* Status indicator */}
-                <div className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-slate-50">
+                <div className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white/[0.03]">
                     <DeviceStatusIcon status={device.status} />
                 </div>
 
                 <div>
                     <div className="flex flex-wrap items-center gap-2">
-                        <h3 className="font-semibold text-slate-900">{device.name}</h3>
+                        <h3 className="font-semibold text-white">{device.name}</h3>
                         <StatusBadge status={device.status} />
                     </div>
 
@@ -118,12 +117,11 @@ function DeviceCard({
                 </div>
             </div>
 
-            {/* Actions */}
             <div className="flex shrink-0 flex-wrap gap-2">
                 <button
                     type="button"
                     onClick={() => onRename(device)}
-                    className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 px-3 py-1.5 text-sm text-slate-700 hover:bg-slate-50 transition-colors"
+                    className="inline-flex items-center gap-1.5 rounded-lg border border-white/[0.08] bg-white/[0.04] px-3 py-1.5 text-sm text-slate-300 hover:bg-white/[0.08] transition-colors"
                 >
                     <Pencil className="h-3.5 w-3.5" />
                     Rename
@@ -132,7 +130,7 @@ function DeviceCard({
                     <button
                         type="button"
                         onClick={() => onRevoke(device)}
-                        className="inline-flex items-center gap-1.5 rounded-lg border border-red-200 px-3 py-1.5 text-sm text-red-600 hover:bg-red-50 transition-colors"
+                        className="inline-flex items-center gap-1.5 rounded-lg border border-red-500/20 px-3 py-1.5 text-sm text-red-400 hover:bg-red-500/10 transition-colors"
                     >
                         <ShieldOff className="h-3.5 w-3.5" />
                         Revoke
@@ -265,18 +263,17 @@ export default function ScannerDevicesPage() {
         <div className="mx-auto max-w-4xl space-y-6">
             <Toaster richColors position="top-right" />
 
-            {/* Header */}
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <div className="flex items-start gap-3">
                     <Link
                         href={`/events/${eventId}`}
-                        className="mt-0.5 rounded-lg border border-slate-200 p-2 text-slate-500 shadow-sm hover:bg-slate-50"
+                        className="mt-0.5 rounded-lg border border-white/[0.08] bg-white/[0.04] p-2 text-slate-500 hover:bg-white/[0.08]"
                         aria-label="Back to event"
                     >
                         <ArrowLeft className="h-4 w-4" />
                     </Link>
                     <div>
-                        <h1 className="text-2xl font-semibold tracking-tight text-slate-900">
+                        <h1 className="text-2xl font-semibold tracking-tight text-white">
                             Scanner Devices
                         </h1>
                         <p className="mt-1 text-sm text-slate-500">
@@ -287,24 +284,23 @@ export default function ScannerDevicesPage() {
                 <button
                     type="button"
                     onClick={() => load()}
-                    className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3.5 py-2 text-sm text-slate-700 shadow-sm hover:bg-slate-50"
+                    className="inline-flex items-center gap-1.5 rounded-lg border border-white/[0.08] bg-white/[0.04] px-3.5 py-2 text-sm text-slate-300 hover:bg-white/[0.08]"
                 >
                     <RefreshCw className="h-4 w-4" />
                     Refresh
                 </button>
             </div>
 
-            {/* Stats strip */}
             {devices.length > 0 && (
                 <div className="grid grid-cols-3 gap-3">
                     {[
-                        { label: "Total devices", value: devices.length, color: "text-slate-900" },
-                        { label: "Online", value: onlineCount, color: "text-emerald-600" },
+                        { label: "Total devices", value: devices.length, color: "text-white" },
+                        { label: "Online", value: onlineCount, color: "text-emerald-400" },
                         { label: "Offline", value: offlineCount, color: "text-slate-500" },
                     ].map((stat) => (
                         <div
                             key={stat.label}
-                            className="rounded-lg border border-slate-200 bg-white px-4 py-3 text-center shadow-sm"
+                            className="rounded-lg border border-white/[0.08] bg-white/[0.04] px-4 py-3 text-center"
                         >
                             <p className={`text-2xl font-semibold ${stat.color}`}>
                                 {stat.value}
@@ -315,30 +311,29 @@ export default function ScannerDevicesPage() {
                 </div>
             )}
 
-            {/* Pair new scanner card */}
-            <section className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+            <section className="rounded-xl border border-white/[0.08] bg-white/[0.04] p-5">
                 <div className="flex items-center gap-2 mb-1">
-                    <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-50">
-                        <Plus className="h-4 w-4 text-indigo-600" />
+                    <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-500/10">
+                        <Plus className="h-4 w-4 text-indigo-400" />
                     </div>
-                    <h2 className="text-base font-semibold text-slate-900">
+                    <h2 className="text-base font-semibold text-white">
                         Pair new scanner
                     </h2>
                 </div>
                 <p className="ml-10 text-sm text-slate-500">
                     Generate a 6-digit code (expires in 5 minutes). Volunteers enter it on{" "}
-                    <span className="font-mono text-xs text-slate-700">scanner.qrezo.com</span>.
+                    <span className="font-mono text-xs text-slate-300">scanner.qrezo.com</span>.
                 </p>
 
                 <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-end">
                     <div className="flex-1">
-                        <label className="mb-1.5 block text-sm font-medium text-slate-700">
+                        <label className="mb-1.5 block text-sm font-medium text-slate-300">
                             Device name
                         </label>
                         <input
                             value={deviceName}
                             onChange={(e) => setDeviceName(e.target.value)}
-                            className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100"
+                            className="w-full rounded-lg border border-white/[0.08] bg-white/[0.04] px-3 py-2 text-sm text-white placeholder:text-slate-400 outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-500/20"
                             placeholder="Gate Scanner"
                         />
                     </div>
@@ -346,7 +341,7 @@ export default function ScannerDevicesPage() {
                         type="button"
                         disabled={busy}
                         onClick={startPairing}
-                        className="inline-flex items-center justify-center gap-2 rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-medium text-white hover:bg-indigo-700 disabled:opacity-60"
+                        className="inline-flex items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-indigo-500 to-indigo-600 px-4 py-2.5 text-sm font-medium text-white shadow-lg shadow-indigo-500/25 hover:from-indigo-400 hover:to-indigo-500 disabled:opacity-60"
                     >
                         {busy ? (
                             <Loader2 className="h-4 w-4 animate-spin" />
@@ -357,9 +352,8 @@ export default function ScannerDevicesPage() {
                     </button>
                 </div>
 
-                {/* Pairing result */}
                 {pairing && (
-                    <div className="mt-5 grid gap-5 rounded-xl border border-indigo-100 bg-indigo-50 p-5 sm:grid-cols-[auto_1fr]">
+                    <div className="mt-5 grid gap-5 rounded-xl border border-indigo-500/20 bg-indigo-500/10 p-5 sm:grid-cols-[auto_1fr]">
                         {qrDataUrl ? (
                             // eslint-disable-next-line @next/next/no-img-element
                             <img
@@ -371,20 +365,20 @@ export default function ScannerDevicesPage() {
                             <Skeleton className="h-40 w-40 rounded-lg" />
                         )}
                         <div className="flex flex-col justify-center">
-                            <p className="text-xs font-semibold uppercase tracking-widest text-indigo-500">
+                            <p className="text-xs font-semibold uppercase tracking-widest text-indigo-400">
                                 Pairing code
                             </p>
-                            <p className="mt-2 font-mono text-5xl font-bold tracking-[0.25em] text-slate-900">
+                            <p className="mt-2 font-mono text-5xl font-bold tracking-[0.25em] text-white">
                                 {pairing.pairingCode}
                             </p>
-                            <p className="mt-2 text-sm text-slate-600">
+                            <p className="mt-2 text-sm text-slate-400">
                                 Expires in{" "}
-                                <span className="font-medium text-slate-900">{expiresIn}</span>{" "}
+                                <span className="font-medium text-white">{expiresIn}</span>{" "}
                                 · single use
                             </p>
                             <button
                                 type="button"
-                                className="mt-3 w-fit text-sm text-indigo-600 hover:underline"
+                                className="mt-3 w-fit text-sm text-indigo-400 hover:underline"
                                 onClick={() => setPairing(null)}
                             >
                                 Dismiss
@@ -394,10 +388,9 @@ export default function ScannerDevicesPage() {
                 )}
             </section>
 
-            {/* Device list */}
             <section>
                 <div className="mb-3 flex items-center justify-between">
-                    <h2 className="text-base font-semibold text-slate-900">
+                    <h2 className="text-base font-semibold text-white">
                         Paired devices
                     </h2>
                     <span className="text-sm text-slate-500">
@@ -410,7 +403,7 @@ export default function ScannerDevicesPage() {
                         {[1, 2].map((i) => (
                             <div
                                 key={i}
-                                className="flex items-center gap-4 rounded-xl border border-slate-200 bg-white p-5"
+                                className="flex items-center gap-4 rounded-xl border border-white/[0.08] bg-white/[0.04] p-5"
                             >
                                 <Skeleton className="h-10 w-10 rounded-xl" />
                                 <div className="flex flex-col gap-2 flex-1">

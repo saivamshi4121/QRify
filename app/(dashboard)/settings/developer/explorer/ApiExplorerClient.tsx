@@ -129,15 +129,15 @@ export default function ApiExplorerPage() {
             <div className="flex items-start gap-3">
                 <Link
                     href="/settings/developer"
-                    className="rounded-md p-2 text-slate-500 hover:bg-slate-100"
+                    className="rounded-lg p-2 text-slate-400 hover:bg-white/[0.06] hover:text-white transition-colors"
                 >
                     <ArrowLeft className="h-5 w-5" />
                 </Link>
                 <div>
-                    <h1 className="text-2xl font-bold text-slate-900">
+                    <h1 className="text-2xl font-bold text-white">
                         API Explorer
                     </h1>
-                    <p className="mt-1 text-sm text-slate-500">
+                    <p className="mt-1 text-sm text-slate-400">
                         Execute public API calls with your key. Keys never use
                         session cookies.
                     </p>
@@ -146,16 +146,16 @@ export default function ApiExplorerPage() {
 
             <SectionCard title="Request">
                 <div className="space-y-3">
-                    <label className="block text-sm text-slate-600">
+                    <label className="block text-sm font-medium text-slate-300">
                         API key
                         <input
                             value={apiKey}
                             onChange={(e) => setApiKey(e.target.value)}
                             placeholder="qz_test_…"
-                            className="mt-1 w-full rounded-md border border-slate-200 px-3 py-2 font-mono text-sm"
+                            className="mt-1 w-full rounded-lg border border-white/[0.08] bg-white/[0.04] px-3 py-2.5 font-mono text-sm text-white placeholder:text-slate-500 focus:border-indigo-500/50 focus:outline-none"
                         />
                     </label>
-                    <label className="block text-sm text-slate-600">
+                    <label className="block text-sm font-medium text-slate-300">
                         Endpoint
                         <select
                             value={endpointId}
@@ -166,7 +166,7 @@ export default function ApiExplorerPage() {
                                 setEndpointId(next.id);
                                 setBody(next.body || "");
                             }}
-                            className="mt-1 w-full rounded-md border border-slate-200 px-3 py-2"
+                            className="mt-1 w-full rounded-lg border border-white/[0.08] bg-white/[0.04] px-3 py-2.5 text-white focus:border-indigo-500/50 focus:outline-none"
                         >
                             {ENDPOINTS.map((e) => (
                                 <option key={e.id} value={e.id}>
@@ -176,34 +176,34 @@ export default function ApiExplorerPage() {
                         </select>
                     </label>
                     <div className="grid gap-3 sm:grid-cols-2">
-                        <label className="block text-sm text-slate-600">
+                        <label className="block text-sm font-medium text-slate-300">
                             eventId
                             <input
                                 value={eventId}
                                 onChange={(e) => setEventId(e.target.value)}
-                                className="mt-1 w-full rounded-md border border-slate-200 px-3 py-2 font-mono text-sm"
+                                className="mt-1 w-full rounded-lg border border-white/[0.08] bg-white/[0.04] px-3 py-2.5 font-mono text-sm text-white placeholder:text-slate-500 focus:border-indigo-500/50 focus:outline-none"
                             />
                         </label>
-                        <label className="block text-sm text-slate-600">
+                        <label className="block text-sm font-medium text-slate-300">
                             attendeeId
                             <input
                                 value={attendeeId}
                                 onChange={(e) => setAttendeeId(e.target.value)}
-                                className="mt-1 w-full rounded-md border border-slate-200 px-3 py-2 font-mono text-sm"
+                                className="mt-1 w-full rounded-lg border border-white/[0.08] bg-white/[0.04] px-3 py-2.5 font-mono text-sm text-white placeholder:text-slate-500 focus:border-indigo-500/50 focus:outline-none"
                             />
                         </label>
                     </div>
-                    <p className="rounded-md bg-slate-50 px-3 py-2 font-mono text-xs text-slate-600">
+                    <p className="rounded-lg border border-white/[0.06] bg-white/[0.03] px-3 py-2.5 font-mono text-xs text-slate-300">
                         {endpoint.method} {resolvedPath()}
                     </p>
                     {endpoint.method !== "GET" ? (
-                        <label className="block text-sm text-slate-600">
+                        <label className="block text-sm font-medium text-slate-300">
                             Body
                             <textarea
                                 value={body}
                                 onChange={(e) => setBody(e.target.value)}
                                 rows={8}
-                                className="mt-1 w-full rounded-md border border-slate-200 px-3 py-2 font-mono text-xs"
+                                className="mt-1 w-full rounded-lg border border-white/[0.08] bg-white/[0.04] px-3 py-2.5 font-mono text-xs text-white placeholder:text-slate-500 focus:border-indigo-500/50 focus:outline-none"
                             />
                         </label>
                     ) : null}
@@ -211,7 +211,11 @@ export default function ApiExplorerPage() {
                         type="button"
                         disabled={busy}
                         onClick={run}
-                        className="inline-flex items-center gap-1.5 rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white disabled:opacity-60"
+                        className="inline-flex items-center gap-1.5 rounded-lg px-4 py-2.5 text-sm font-semibold text-white disabled:opacity-60 transition-all hover:shadow-lg hover:shadow-indigo-500/20"
+                        style={{
+                            background: "linear-gradient(135deg, #4f46e5, #6366f1)",
+                            border: "1px solid rgba(99,102,241,0.3)",
+                        }}
                     >
                         {busy ? (
                             <Loader2 className="h-4 w-4 animate-spin" />
@@ -224,18 +228,18 @@ export default function ApiExplorerPage() {
             </SectionCard>
 
             <SectionCard title="Response">
-                <pre className="max-h-96 overflow-auto rounded-lg bg-slate-950 p-4 text-xs text-slate-100">
+                <pre className="max-h-96 overflow-auto rounded-xl border border-white/[0.06] bg-white/[0.03] p-4 text-xs font-mono text-slate-200">
                     {response || "// Run a request to see the response"}
                 </pre>
             </SectionCard>
 
             <SectionCard title="cURL">
-                <pre className="overflow-auto rounded-lg bg-slate-50 p-4 text-xs text-slate-700">
+                <pre className="overflow-auto rounded-xl border border-white/[0.06] bg-white/[0.03] p-4 text-xs font-mono text-slate-300">
                     {curl}
                 </pre>
                 <button
                     type="button"
-                    className="mt-2 text-sm text-indigo-600 hover:underline"
+                    className="mt-2 text-sm font-medium text-indigo-400 hover:text-indigo-300 transition-colors"
                     onClick={() => {
                         void navigator.clipboard.writeText(curl);
                         toast.success("Copied cURL");

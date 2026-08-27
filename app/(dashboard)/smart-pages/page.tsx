@@ -130,7 +130,7 @@ export default function ReviewPagesListPage() {
     if (loading) {
         return (
             <div className="flex h-96 items-center justify-center">
-                <Loader2 className="h-8 w-8 animate-spin text-indigo-500" />
+                <Loader2 className="h-8 w-8 animate-spin text-indigo-400" />
             </div>
         );
     }
@@ -139,14 +139,14 @@ export default function ReviewPagesListPage() {
         return (
             <div className="space-y-6">
                 <Toaster richColors position="top-right" />
-                <div className="flex min-h-[420px] flex-col items-center justify-center rounded-2xl border border-dashed border-slate-200 bg-white px-6 py-16 text-center">
-                    <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-indigo-50">
-                        <FileText className="h-7 w-7 text-indigo-600" />
+                <div className="flex min-h-[420px] flex-col items-center justify-center rounded-2xl border border-dashed border-white/[0.08] px-6 py-16 text-center">
+                    <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-indigo-500/10">
+                        <FileText className="h-7 w-7 text-indigo-400" />
                     </div>
-                    <h1 className="text-2xl font-bold text-slate-900">
+                    <h1 className="text-2xl font-bold text-white">
                         Let&apos;s create your restaurant review page.
                     </h1>
-                    <p className="mt-3 max-w-md text-sm leading-relaxed text-slate-500">
+                    <p className="mt-3 max-w-md text-sm leading-relaxed text-slate-400">
                         Set up your name, Google link, and private feedback in a
                         few minutes — guests scan a QR and leave a rating.
                     </p>
@@ -154,7 +154,7 @@ export default function ReviewPagesListPage() {
                         type="button"
                         onClick={handleCreate}
                         disabled={creating}
-                        className="mt-8 inline-flex items-center gap-2 rounded-lg bg-indigo-600 px-5 py-2.5 text-sm font-medium text-white hover:bg-indigo-700 disabled:opacity-60"
+                        className="mt-8 inline-flex items-center gap-2 rounded-lg bg-indigo-600 px-5 py-2.5 text-sm font-medium text-white hover:bg-indigo-500 disabled:opacity-60"
                     >
                         {creating ? (
                             <Loader2 className="h-4 w-4 animate-spin" />
@@ -173,10 +173,10 @@ export default function ReviewPagesListPage() {
             <Toaster richColors position="top-right" />
             <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
                 <div>
-                    <h1 className="text-3xl font-bold text-slate-900">
+                    <h1 className="text-3xl font-bold text-white">
                         Review Pages
                     </h1>
-                    <p className="mt-2 text-slate-500">
+                    <p className="mt-2 text-slate-400">
                         Pages guests see when they scan your QR codes.
                     </p>
                 </div>
@@ -184,7 +184,7 @@ export default function ReviewPagesListPage() {
                     type="button"
                     onClick={handleCreate}
                     disabled={creating}
-                    className="inline-flex items-center gap-2 rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-medium text-white hover:bg-indigo-700 disabled:opacity-60"
+                    className="inline-flex items-center gap-2 rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-medium text-white hover:bg-indigo-500 disabled:opacity-60"
                 >
                     {creating ? (
                         <Loader2 className="h-4 w-4 animate-spin" />
@@ -202,7 +202,7 @@ export default function ReviewPagesListPage() {
             >
                 <div className="overflow-x-auto">
                     <table className="min-w-full text-left text-sm">
-                        <thead className="border-b border-slate-100 text-xs uppercase text-slate-500">
+                        <thead className="border-b border-white/[0.08] text-xs uppercase text-slate-500">
                             <tr>
                                 <th className="px-3 py-2 font-medium">Name</th>
                                 <th className="px-3 py-2 font-medium">
@@ -213,27 +213,27 @@ export default function ReviewPagesListPage() {
                                 <th className="px-3 py-2 font-medium">Actions</th>
                             </tr>
                         </thead>
-                        <tbody className="divide-y divide-slate-50">
+                        <tbody className="divide-y divide-white/[0.06]">
                             {pages.map((page) => (
                                 <tr key={page._id}>
-                                    <td className="px-3 py-3 font-medium text-slate-900">
+                                    <td className="px-3 py-3 font-medium text-white">
                                         {page.title}
                                     </td>
-                                    <td className="px-3 py-3 text-slate-500">
+                                    <td className="px-3 py-3 text-slate-400">
                                         /p/{page.slug}
                                     </td>
                                     <td className="px-3 py-3">
                                         <span
                                             className={`inline-flex rounded-full px-2 py-0.5 text-xs font-medium ${
                                                 page.isPublished
-                                                    ? "bg-emerald-50 text-emerald-700"
-                                                    : "bg-slate-100 text-slate-600"
+                                                    ? "bg-emerald-500/10 text-emerald-400"
+                                                    : "bg-white/[0.06] text-slate-400"
                                             }`}
                                         >
                                             {page.isPublished ? "Live" : "Draft"}
                                         </span>
                                     </td>
-                                    <td className="px-3 py-3 text-xs whitespace-nowrap text-slate-400">
+                                    <td className="px-3 py-3 text-xs whitespace-nowrap text-slate-500">
                                         {new Date(
                                             page.updatedAt
                                         ).toLocaleString()}
@@ -242,7 +242,7 @@ export default function ReviewPagesListPage() {
                                         <div className="flex flex-wrap items-center gap-1">
                                             <Link
                                                 href={`/smart-pages/${page._id}`}
-                                                className="rounded p-1.5 text-slate-500 hover:bg-slate-100"
+                                                className="rounded p-1.5 text-slate-400 hover:bg-white/[0.06]"
                                                 title="Edit"
                                             >
                                                 <Pencil className="h-4 w-4" />
@@ -255,7 +255,7 @@ export default function ReviewPagesListPage() {
                                                         : "Go Live"
                                                 }
                                                 onClick={() => toggleLive(page)}
-                                                className="rounded px-2 py-1 text-xs font-medium text-indigo-600 hover:bg-indigo-50"
+                                                className="rounded px-2 py-1 text-xs font-medium text-indigo-400 hover:bg-indigo-500/10"
                                             >
                                                 {page.isPublished
                                                     ? "Set Draft"
@@ -267,7 +267,7 @@ export default function ReviewPagesListPage() {
                                                 onClick={() =>
                                                     handleDuplicate(page)
                                                 }
-                                                className="rounded p-1.5 text-slate-500 hover:bg-slate-100"
+                                                className="rounded p-1.5 text-slate-400 hover:bg-white/[0.06]"
                                             >
                                                 <Copy className="h-4 w-4" />
                                             </button>
@@ -276,7 +276,7 @@ export default function ReviewPagesListPage() {
                                                     href={`/p/${page.slug}`}
                                                     target="_blank"
                                                     rel="noopener noreferrer"
-                                                    className="rounded p-1.5 text-slate-500 hover:bg-slate-100"
+                                                    className="rounded p-1.5 text-slate-400 hover:bg-white/[0.06]"
                                                     title="Open public page"
                                                 >
                                                     <ExternalLink className="h-4 w-4" />
@@ -288,7 +288,7 @@ export default function ReviewPagesListPage() {
                                                 onClick={() =>
                                                     handleDelete(page)
                                                 }
-                                                className="rounded p-1.5 text-red-500 hover:bg-red-50"
+                                                className="rounded p-1.5 text-red-400 hover:bg-red-500/10"
                                             >
                                                 <Trash2 className="h-4 w-4" />
                                             </button>

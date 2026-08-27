@@ -165,15 +165,15 @@ export default function ImportAttendeesPage() {
             <div className="flex items-center gap-3">
                 <Link
                     href={`/events/${eventId}/attendees`}
-                    className="rounded-md p-2 text-slate-500 hover:bg-slate-100"
+                    className="rounded-md p-2 text-slate-400 hover:bg-white/[0.06]"
                 >
                     <ArrowLeft className="h-5 w-5" />
                 </Link>
                 <div>
-                    <h1 className="text-2xl font-bold text-slate-900">
+                    <h1 className="text-2xl font-bold text-white">
                         Import attendees
                     </h1>
-                    <p className="text-sm text-slate-500">
+                    <p className="text-sm text-slate-400">
                         Upload a CSV — no QR codes are generated.
                     </p>
                 </div>
@@ -192,8 +192,8 @@ export default function ImportAttendeesPage() {
                             step === s.n
                                 ? "bg-indigo-600 text-white"
                                 : step > s.n
-                                  ? "bg-indigo-50 text-indigo-700"
-                                  : "bg-slate-100 text-slate-500"
+                                  ? "bg-indigo-500/15 text-indigo-400"
+                                  : "bg-white/[0.06] text-slate-400"
                         }`}
                     >
                         {s.n}. {s.label}
@@ -202,12 +202,12 @@ export default function ImportAttendeesPage() {
             </ol>
 
             {step === 1 ? (
-                <div className="rounded-xl border border-dashed border-slate-300 bg-white p-10 text-center">
-                    <p className="text-sm text-slate-600">
+                <div className="rounded-xl border border-dashed border-white/[0.08] bg-white/[0.04] p-10 text-center">
+                    <p className="text-sm text-slate-400">
                         CSV columns can include Name, Email, Phone, Company,
                         Designation, Ticket.
                     </p>
-                    <label className="mt-6 inline-flex cursor-pointer rounded-lg bg-indigo-600 px-5 py-2.5 text-sm font-medium text-white hover:bg-indigo-700">
+                    <label className="mt-6 inline-flex cursor-pointer rounded-lg bg-indigo-600 px-5 py-2.5 text-sm font-medium text-white hover:bg-indigo-500">
                         Choose CSV file
                         <input
                             type="file"
@@ -223,13 +223,13 @@ export default function ImportAttendeesPage() {
             ) : null}
 
             {step === 2 ? (
-                <div className="space-y-4 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-                    <p className="text-sm text-slate-600">
+                <div className="space-y-4 rounded-xl border border-white/[0.08] bg-white/[0.04] p-6">
+                    <p className="text-sm text-slate-400">
                         {rows.length} rows · {headers.length} columns
                     </p>
                     <div className="overflow-x-auto">
                         <table className="min-w-full text-left text-xs">
-                            <thead className="border-b text-slate-500">
+                            <thead className="border-b border-white/[0.08] text-slate-400">
                                 <tr>
                                     {headers.map((h) => (
                                         <th key={h} className="px-2 py-2 font-medium">
@@ -240,11 +240,11 @@ export default function ImportAttendeesPage() {
                             </thead>
                             <tbody>
                                 {sampleRows.map((row, i) => (
-                                    <tr key={i} className="border-b border-slate-50">
+                                    <tr key={i} className="border-b border-white/[0.06]">
                                         {row.map((cell, j) => (
                                             <td
                                                 key={j}
-                                                className="max-w-[140px] truncate px-2 py-2 text-slate-700"
+                                                className="max-w-[140px] truncate px-2 py-2 text-slate-300"
                                             >
                                                 {cell}
                                             </td>
@@ -258,14 +258,14 @@ export default function ImportAttendeesPage() {
                         <button
                             type="button"
                             onClick={() => setStep(1)}
-                            className="rounded-md border border-slate-200 px-4 py-2 text-sm"
+                            className="rounded-md border border-white/[0.08] px-4 py-2 text-sm text-slate-300 hover:bg-white/[0.06]"
                         >
                             Back
                         </button>
                         <button
                             type="button"
                             onClick={() => setStep(3)}
-                            className="rounded-md bg-indigo-600 px-4 py-2 text-sm text-white"
+                            className="rounded-md bg-indigo-600 px-4 py-2 text-sm text-white hover:bg-indigo-500"
                         >
                             Map columns
                         </button>
@@ -274,8 +274,8 @@ export default function ImportAttendeesPage() {
             ) : null}
 
             {step === 3 ? (
-                <div className="space-y-4 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-                    <p className="text-sm text-slate-600">
+                <div className="space-y-4 rounded-xl border border-white/[0.08] bg-white/[0.04] p-6">
+                    <p className="text-sm text-slate-400">
                         Match your CSV headers to attendee fields. Email is
                         required. Use Full Name <em>or</em> First + Last.
                     </p>
@@ -285,12 +285,12 @@ export default function ImportAttendeesPage() {
                                 key={field.key}
                                 className="flex flex-col gap-1 text-sm sm:flex-row sm:items-center sm:justify-between"
                             >
-                                <span className="font-medium text-slate-700">
+                                <span className="font-medium text-slate-300">
                                     {field.label}
                                     {field.required ? " *" : ""}
                                 </span>
                                 <select
-                                    className="rounded-md border border-slate-200 px-3 py-2 text-sm sm:w-56"
+                                    className="rounded-md border border-white/[0.08] bg-white/[0.06] px-3 py-2 text-sm text-white sm:w-56"
                                     value={columnMap[field.key] || ""}
                                     onChange={(e) =>
                                         setColumnMap((prev) => ({
@@ -313,7 +313,7 @@ export default function ImportAttendeesPage() {
                         <button
                             type="button"
                             onClick={() => setStep(2)}
-                            className="rounded-md border border-slate-200 px-4 py-2 text-sm"
+                            className="rounded-md border border-white/[0.08] px-4 py-2 text-sm text-slate-300 hover:bg-white/[0.06]"
                         >
                             Back
                         </button>
@@ -321,7 +321,7 @@ export default function ImportAttendeesPage() {
                             type="button"
                             disabled={busy}
                             onClick={runPreview}
-                            className="inline-flex items-center gap-2 rounded-md bg-indigo-600 px-4 py-2 text-sm text-white disabled:opacity-60"
+                            className="inline-flex items-center gap-2 rounded-md bg-indigo-600 px-4 py-2 text-sm text-white hover:bg-indigo-500 disabled:opacity-60"
                         >
                             {busy ? (
                                 <Loader2 className="h-4 w-4 animate-spin" />
@@ -333,21 +333,21 @@ export default function ImportAttendeesPage() {
             ) : null}
 
             {step === 4 && preview ? (
-                <div className="space-y-4 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+                <div className="space-y-4 rounded-xl border border-white/[0.08] bg-white/[0.04] p-6">
                     <div className="flex flex-wrap gap-4 text-sm">
-                        <span>
+                        <span className="text-white">
                             Total: <strong>{preview.total}</strong>
                         </span>
-                        <span className="text-emerald-700">
+                        <span className="text-emerald-400">
                             Valid: <strong>{preview.valid}</strong>
                         </span>
-                        <span className="text-rose-600">
+                        <span className="text-rose-400">
                             Invalid: <strong>{preview.invalid}</strong>
                         </span>
                     </div>
 
                     {preview.invalid > 0 ? (
-                        <div className="max-h-40 overflow-y-auto rounded-lg border border-rose-100 bg-rose-50 p-3 text-xs text-rose-800">
+                        <div className="max-h-40 overflow-y-auto rounded-lg border border-rose-500/20 bg-rose-500/10 p-3 text-xs text-rose-300">
                             {preview.rows
                                 .filter((r) => !r.valid)
                                 .slice(0, 20)
@@ -361,7 +361,7 @@ export default function ImportAttendeesPage() {
 
                     <div className="overflow-x-auto">
                         <table className="min-w-full text-left text-xs">
-                            <thead className="border-b text-slate-500">
+                            <thead className="border-b border-white/[0.08] text-slate-400">
                                 <tr>
                                     <th className="px-2 py-2">Name</th>
                                     <th className="px-2 py-2">Email</th>
@@ -373,20 +373,20 @@ export default function ImportAttendeesPage() {
                                 {preview.rows.slice(0, 10).map((r) => (
                                     <tr
                                         key={r.index}
-                                        className="border-b border-slate-50"
+                                        className="border-b border-white/[0.06]"
                                     >
-                                        <td className="px-2 py-2">
+                                        <td className="px-2 py-2 text-slate-300">
                                             {r.data
                                                 ? `${r.data.firstName} ${r.data.lastName}`
                                                 : "—"}
                                         </td>
-                                        <td className="px-2 py-2">
+                                        <td className="px-2 py-2 text-slate-300">
                                             {r.data?.email || "—"}
                                         </td>
-                                        <td className="px-2 py-2">
+                                        <td className="px-2 py-2 text-slate-300">
                                             {r.data?.ticketType || "—"}
                                         </td>
-                                        <td className="px-2 py-2">
+                                        <td className="px-2 py-2 text-slate-300">
                                             {r.valid ? "Yes" : r.error}
                                         </td>
                                     </tr>
@@ -396,7 +396,7 @@ export default function ImportAttendeesPage() {
                     </div>
 
                     {importResult ? (
-                        <div className="rounded-lg bg-emerald-50 px-4 py-3 text-sm text-emerald-800">
+                        <div className="rounded-lg bg-emerald-500/10 px-4 py-3 text-sm text-emerald-400">
                             Imported {importResult.created} attendee(s)
                             {importResult.failed
                                 ? ` · ${importResult.failed} failed`
@@ -414,7 +414,7 @@ export default function ImportAttendeesPage() {
                             <button
                                 type="button"
                                 onClick={() => setStep(3)}
-                                className="rounded-md border border-slate-200 px-4 py-2 text-sm"
+                                className="rounded-md border border-white/[0.08] px-4 py-2 text-sm text-slate-300 hover:bg-white/[0.06]"
                             >
                                 Back
                             </button>
@@ -422,7 +422,7 @@ export default function ImportAttendeesPage() {
                                 type="button"
                                 disabled={busy || preview.valid === 0}
                                 onClick={runImport}
-                                className="inline-flex items-center gap-2 rounded-md bg-indigo-600 px-4 py-2 text-sm text-white disabled:opacity-60"
+                                className="inline-flex items-center gap-2 rounded-md bg-indigo-600 px-4 py-2 text-sm text-white hover:bg-indigo-500 disabled:opacity-60"
                             >
                                 {busy ? (
                                     <Loader2 className="h-4 w-4 animate-spin" />

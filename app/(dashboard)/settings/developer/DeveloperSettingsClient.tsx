@@ -170,15 +170,15 @@ export default function DeveloperSettingsPage() {
             <div className="flex items-start gap-3">
                 <Link
                     href="/settings"
-                    className="rounded-md p-2 text-slate-500 hover:bg-slate-100"
+                    className="rounded-md p-2 text-slate-400 hover:bg-white/[0.08]"
                 >
                     <ArrowLeft className="h-5 w-5" />
                 </Link>
                 <div>
-                    <h1 className="text-2xl font-bold text-slate-900">
+                    <h1 className="text-2xl font-bold text-white">
                         Developer
                     </h1>
-                    <p className="mt-1 text-sm text-slate-500">
+                    <p className="mt-1 text-sm text-slate-400">
                         API keys, webhooks, request logs, and the public REST
                         API explorer.
                     </p>
@@ -188,26 +188,26 @@ export default function DeveloperSettingsPage() {
             <div className="flex flex-wrap gap-2">
                 <Link
                     href="/settings/developer/explorer"
-                    className="rounded-md border border-indigo-200 bg-indigo-50 px-3 py-1.5 text-sm font-medium text-indigo-700 hover:bg-indigo-100"
+                    className="rounded-lg border border-indigo-500/30 bg-indigo-500/10 px-3 py-1.5 text-sm font-medium text-indigo-300 hover:bg-indigo-500/20"
                 >
                     API Explorer
                 </Link>
                 <Link
                     href="/settings/developer/webhooks"
-                    className="rounded-md border border-indigo-200 bg-indigo-50 px-3 py-1.5 text-sm font-medium text-indigo-700 hover:bg-indigo-100"
+                    className="rounded-lg border border-indigo-500/30 bg-indigo-500/10 px-3 py-1.5 text-sm font-medium text-indigo-300 hover:bg-indigo-500/20"
                 >
                     Webhooks
                 </Link>
                 <Link
                     href="/docs/developer"
-                    className="rounded-md border border-slate-200 px-3 py-1.5 text-sm text-slate-700 hover:bg-slate-50"
+                    className="rounded-lg border border-white/[0.08] bg-white/[0.03] px-3 py-1.5 text-sm text-slate-300 hover:bg-white/[0.08]"
                 >
                     Documentation
                 </Link>
                 <button
                     type="button"
                     onClick={() => load()}
-                    className="inline-flex items-center gap-1 rounded-md border border-slate-200 px-3 py-1.5 text-sm text-slate-700 hover:bg-slate-50"
+                    className="inline-flex items-center gap-1 rounded-lg border border-white/[0.08] bg-white/[0.03] px-3 py-1.5 text-sm text-slate-300 hover:bg-white/[0.08]"
                 >
                     <RefreshCw className="h-3.5 w-3.5" />
                     Refresh
@@ -215,17 +215,17 @@ export default function DeveloperSettingsPage() {
             </div>
 
             {freshKey ? (
-                <div className="rounded-xl border border-amber-200 bg-amber-50 p-4">
-                    <p className="text-sm font-semibold text-amber-900">
+                <div className="rounded-xl border border-amber-500/20 bg-amber-500/10 p-4">
+                    <p className="text-sm font-semibold text-amber-300">
                         Copy your API key now — it won&apos;t be shown again.
                     </p>
                     <div className="mt-2 flex flex-col gap-2 sm:flex-row sm:items-center">
-                        <code className="flex-1 break-all rounded-md bg-white px-3 py-2 text-sm text-slate-900 ring-1 ring-amber-200">
+                        <code className="flex-1 break-all rounded-lg bg-white/[0.04] px-3 py-2 text-sm text-white ring-1 ring-amber-500/20">
                             {freshKey.apiKey}
                         </code>
                         <button
                             type="button"
-                            className="inline-flex items-center gap-1 rounded-md bg-amber-700 px-3 py-2 text-sm text-white"
+                            className="inline-flex items-center gap-1 rounded-lg bg-amber-600 px-3 py-2 text-sm text-white hover:bg-amber-500"
                             onClick={() => {
                                 void navigator.clipboard.writeText(
                                     freshKey.apiKey
@@ -239,7 +239,7 @@ export default function DeveloperSettingsPage() {
                     </div>
                     <button
                         type="button"
-                        className="mt-3 text-sm text-amber-800 underline"
+                        className="mt-3 text-sm text-amber-400 underline hover:text-amber-300"
                         onClick={() => setFreshKey(null)}
                     >
                         Dismiss
@@ -249,34 +249,34 @@ export default function DeveloperSettingsPage() {
 
             <SectionCard title="Create API key" icon={<Plus className="h-5 w-5" />}>
                 <div className="space-y-4">
-                    <label className="block text-sm text-slate-600">
+                    <label className="block text-sm text-slate-400">
                         Name
                         <input
                             value={name}
                             onChange={(e) => setName(e.target.value)}
-                            className="mt-1 w-full rounded-md border border-slate-200 px-3 py-2 text-slate-900"
+                            className="mt-1 w-full rounded-lg border border-white/[0.08] bg-white/[0.04] px-3 py-2 text-white focus:border-indigo-500/50 focus:outline-none"
                         />
                     </label>
-                    <label className="block text-sm text-slate-600">
+                    <label className="block text-sm text-slate-400">
                         Environment
                         <select
                             value={environment}
                             onChange={(e) =>
                                 setEnvironment(e.target.value as "TEST" | "LIVE")
                             }
-                            className="mt-1 w-full rounded-md border border-slate-200 px-3 py-2"
+                            className="mt-1 w-full rounded-lg border border-white/[0.08] bg-white/[0.04] px-3 py-2 text-white focus:border-indigo-500/50 focus:outline-none"
                         >
                             <option value="TEST">TEST (qz_test_…)</option>
                             <option value="LIVE">LIVE (qz_live_…)</option>
                         </select>
                     </label>
                     <div>
-                        <p className="text-sm text-slate-600">Permissions</p>
+                        <p className="text-sm text-slate-400">Permissions</p>
                         <div className="mt-2 flex flex-wrap gap-2">
                             {API_KEY_SCOPE_VALUES.map((scope) => (
                                 <label
                                     key={scope}
-                                    className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 px-2.5 py-1 text-xs"
+                                    className="inline-flex items-center gap-1.5 rounded-full border border-white/[0.08] bg-white/[0.03] px-2.5 py-1 text-xs text-slate-300"
                                 >
                                     <input
                                         type="checkbox"
@@ -292,7 +292,8 @@ export default function DeveloperSettingsPage() {
                         type="button"
                         disabled={creating || permissions.length === 0}
                         onClick={createKey}
-                        className="inline-flex items-center gap-1.5 rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 disabled:opacity-60"
+                        className="inline-flex items-center gap-1.5 rounded-lg px-4 py-2 text-sm font-medium text-white disabled:opacity-60"
+                        style={{ background: "linear-gradient(135deg, #4f46e5, #6366f1)", border: "1px solid rgba(99,102,241,0.3)" }}
                     >
                         {creating ? (
                             <Loader2 className="h-4 w-4 animate-spin" />
@@ -307,25 +308,25 @@ export default function DeveloperSettingsPage() {
             <SectionCard title="API keys">
                 {loading ? (
                     <div className="flex justify-center py-8">
-                        <Loader2 className="h-6 w-6 animate-spin text-indigo-500" />
+                        <Loader2 className="h-6 w-6 animate-spin text-indigo-400" />
                     </div>
                 ) : keys.length === 0 ? (
-                    <p className="text-sm text-slate-500">No API keys yet.</p>
+                    <p className="text-sm text-slate-400">No API keys yet.</p>
                 ) : (
-                    <ul className="divide-y divide-slate-100">
+                    <ul className="divide-y divide-white/[0.06]">
                         {keys.map((key) => (
                             <li
                                 key={key.publicId}
                                 className="flex flex-col gap-2 py-4 sm:flex-row sm:items-center sm:justify-between"
                             >
                                 <div>
-                                    <p className="font-medium text-slate-900">
+                                    <p className="font-medium text-white">
                                         {key.name}{" "}
                                         <span className="text-xs font-normal text-slate-400">
                                             {key.keyPrefix}…
                                         </span>
                                     </p>
-                                    <p className="text-xs text-slate-500">
+                                    <p className="text-xs text-slate-400">
                                         {key.environment}
                                         {key.revokedAt ? " · REVOKED" : ""} · Last
                                         used{" "}
@@ -349,21 +350,21 @@ export default function DeveloperSettingsPage() {
                                         <button
                                             type="button"
                                             onClick={() => rename(key)}
-                                            className="rounded-md border border-slate-200 px-2.5 py-1 text-xs"
+                                            className="rounded-lg border border-white/[0.08] bg-white/[0.03] px-2.5 py-1 text-xs text-slate-300 hover:bg-white/[0.08]"
                                         >
                                             Rename
                                         </button>
                                         <button
                                             type="button"
                                             onClick={() => rotate(key)}
-                                            className="rounded-md border border-slate-200 px-2.5 py-1 text-xs"
+                                            className="rounded-lg border border-white/[0.08] bg-white/[0.03] px-2.5 py-1 text-xs text-slate-300 hover:bg-white/[0.08]"
                                         >
                                             Rotate
                                         </button>
                                         <button
                                             type="button"
                                             onClick={() => revoke(key)}
-                                            className="inline-flex items-center gap-1 rounded-md border border-red-200 px-2.5 py-1 text-xs text-red-700"
+                                            className="inline-flex items-center gap-1 rounded-lg border border-red-500/20 bg-red-500/10 px-2.5 py-1 text-xs text-red-400 hover:bg-red-500/20"
                                         >
                                             <ShieldOff className="h-3 w-3" />
                                             Revoke
@@ -378,13 +379,13 @@ export default function DeveloperSettingsPage() {
 
             <SectionCard title="Recent API requests">
                 {logs.length === 0 ? (
-                    <p className="text-sm text-slate-500">
+                    <p className="text-sm text-slate-400">
                         No public API requests logged yet.
                     </p>
                 ) : (
                     <div className="overflow-x-auto">
                         <table className="min-w-full text-left text-sm">
-                            <thead className="text-xs uppercase text-slate-500">
+                            <thead className="text-xs uppercase text-slate-400">
                                 <tr>
                                     <th className="py-2 pr-3">Time</th>
                                     <th className="py-2 pr-3">Key</th>
@@ -394,10 +395,10 @@ export default function DeveloperSettingsPage() {
                                     <th className="py-2">Latency</th>
                                 </tr>
                             </thead>
-                            <tbody className="divide-y divide-slate-50">
+                            <tbody className="divide-y divide-white/[0.06]">
                                 {logs.map((log) => (
                                     <tr key={log.id}>
-                                        <td className="py-2 pr-3 text-xs text-slate-500">
+                                        <td className="py-2 pr-3 text-xs text-slate-400">
                                             {new Date(
                                                 log.createdAt
                                             ).toLocaleString()}

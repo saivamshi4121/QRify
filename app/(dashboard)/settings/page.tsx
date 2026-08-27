@@ -179,8 +179,8 @@ export default function SettingsPage() {
             <Toaster richColors position="top-right" />
 
             <div>
-                <h1 className="text-3xl font-bold text-slate-900">Settings</h1>
-                <p className="mt-2 text-slate-500">Manage your account settings and preferences</p>
+                <h1 className="text-3xl font-bold text-white">Settings</h1>
+                <p className="mt-2 text-slate-400">Manage your account settings and preferences</p>
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -188,23 +188,23 @@ export default function SettingsPage() {
                 <SectionCard title="Profile Information" icon={<User className="h-5 w-5" />}>
                     <form onSubmit={handleUpdateProfile} className="space-y-4">
                         <div>
-                            <label className="block text-sm font-medium text-slate-700 mb-1.5">Name</label>
+                            <label className="block text-sm font-medium text-slate-300 mb-1.5">Name</label>
                             <input
                                 type="text"
                                 value={name}
                                 onChange={(e) => setName(e.target.value)}
-                                className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:ring-indigo-500 focus:border-indigo-500 outline-none"
+                                className="w-full rounded-lg border border-white/[0.08] bg-white/[0.04] px-3 py-2 text-sm text-white placeholder:text-slate-500 focus:border-indigo-500/50 outline-none"
                                 placeholder="Your name"
                             />
                         </div>
 
                         <div>
-                            <label className="block text-sm font-medium text-slate-700 mb-1.5">Email</label>
+                            <label className="block text-sm font-medium text-slate-300 mb-1.5">Email</label>
                             <input
                                 type="email"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
-                                className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:ring-indigo-500 focus:border-indigo-500 outline-none"
+                                className="w-full rounded-lg border border-white/[0.08] bg-white/[0.04] px-3 py-2 text-sm text-white placeholder:text-slate-500 focus:border-indigo-500/50 outline-none"
                                 placeholder="your@email.com"
                             />
                         </div>
@@ -213,6 +213,7 @@ export default function SettingsPage() {
                             type="submit"
                             disabled={loading}
                             className="w-full flex items-center justify-center gap-2 rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                            style={{ background: "linear-gradient(135deg, #4f46e5, #6366f1)", border: "1px solid rgba(99,102,241,0.3)" }}
                         >
                             {loading ? <Loader2 className="animate-spin h-4 w-4" /> : <><Save className="h-4 w-4" /> Save Changes</>}
                         </button>
@@ -224,19 +225,19 @@ export default function SettingsPage() {
                     <SectionCard title="Change Password" icon={<Lock className="h-5 w-5" />}>
                         <form onSubmit={handleChangePassword} className="space-y-4">
                             <div>
-                                <label className="block text-sm font-medium text-slate-700 mb-1.5">Current Password</label>
+                                <label className="block text-sm font-medium text-slate-300 mb-1.5">Current Password</label>
                                 <div className="relative">
                                     <input
                                         type={showPassword ? "text" : "password"}
                                         value={currentPassword}
                                         onChange={(e) => setCurrentPassword(e.target.value)}
-                                        className="w-full rounded-md border border-slate-300 px-3 py-2 pr-10 text-sm focus:ring-indigo-500 focus:border-indigo-500 outline-none"
+                                        className="w-full rounded-lg border border-white/[0.08] bg-white/[0.04] px-3 py-2 pr-10 text-sm text-white placeholder:text-slate-500 focus:border-indigo-500/50 outline-none"
                                         placeholder="Enter current password"
                                     />
                                     <button
                                         type="button"
                                         onClick={() => setShowPassword(!showPassword)}
-                                        className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                                        className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white"
                                     >
                                         {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                                     </button>
@@ -244,19 +245,19 @@ export default function SettingsPage() {
                             </div>
 
                             <div>
-                                <label className="block text-sm font-medium text-slate-700 mb-1.5">New Password</label>
+                                <label className="block text-sm font-medium text-slate-300 mb-1.5">New Password</label>
                                 <div className="relative">
                                     <input
                                         type={showConfirmPassword ? "text" : "password"}
                                         value={newPassword}
                                         onChange={(e) => setNewPassword(e.target.value)}
-                                        className="w-full rounded-md border border-slate-300 px-3 py-2 pr-10 text-sm focus:ring-indigo-500 focus:border-indigo-500 outline-none"
+                                        className="w-full rounded-lg border border-white/[0.08] bg-white/[0.04] px-3 py-2 pr-10 text-sm text-white placeholder:text-slate-500 focus:border-indigo-500/50 outline-none"
                                         placeholder="Enter new password"
                                     />
                                     <button
                                         type="button"
                                         onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                                        className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                                        className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white"
                                     >
                                         {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                                     </button>
@@ -264,12 +265,12 @@ export default function SettingsPage() {
                             </div>
 
                             <div>
-                                <label className="block text-sm font-medium text-slate-700 mb-1.5">Confirm New Password</label>
+                                <label className="block text-sm font-medium text-slate-300 mb-1.5">Confirm New Password</label>
                                 <input
                                     type="password"
                                     value={confirmPassword}
                                     onChange={(e) => setConfirmPassword(e.target.value)}
-                                    className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:ring-indigo-500 focus:border-indigo-500 outline-none"
+                                    className="w-full rounded-lg border border-white/[0.08] bg-white/[0.04] px-3 py-2 text-sm text-white placeholder:text-slate-500 focus:border-indigo-500/50 outline-none"
                                     placeholder="Confirm new password"
                                 />
                             </div>
@@ -278,6 +279,7 @@ export default function SettingsPage() {
                                 type="submit"
                                 disabled={passwordLoading}
                                 className="w-full flex items-center justify-center gap-2 rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                                style={{ background: "linear-gradient(135deg, #4f46e5, #6366f1)", border: "1px solid rgba(99,102,241,0.3)" }}
                             >
                                 {passwordLoading ? <Loader2 className="animate-spin h-4 w-4" /> : <><Lock className="h-4 w-4" /> Update Password</>}
                             </button>
@@ -288,13 +290,13 @@ export default function SettingsPage() {
                 {/* Notifications */}
                 <SectionCard title="Notifications" icon={<Bell className="h-5 w-5" />}>
                     <div className="space-y-3">
-                        <p className="text-sm text-slate-700">
+                        <p className="text-sm text-slate-300">
                             Automate Email, SMS, and WhatsApp messages from
                             attendee and access events.
                         </p>
                         <Link
                             href="/settings/notifications"
-                            className="inline-flex items-center gap-1 text-sm font-medium text-indigo-600 hover:text-indigo-700"
+                            className="inline-flex items-center gap-1 text-sm font-medium text-indigo-400 hover:text-indigo-400"
                         >
                             Manage notifications →
                         </Link>
@@ -304,13 +306,13 @@ export default function SettingsPage() {
                 {/* Developer Platform */}
                 <SectionCard title="Developer" icon={<Code2 className="h-5 w-5" />}>
                     <div className="space-y-3">
-                        <p className="text-sm text-slate-700">
+                        <p className="text-sm text-slate-300">
                             Create API keys, explore the public REST API, and
                             integrate Qrezo into your own registration apps.
                         </p>
                         <Link
                             href="/settings/developer"
-                            className="inline-flex items-center gap-1 text-sm font-medium text-indigo-600 hover:text-indigo-700"
+                            className="inline-flex items-center gap-1 text-sm font-medium text-indigo-400 hover:text-indigo-400"
                         >
                             Manage API Keys →
                         </Link>
@@ -322,31 +324,31 @@ export default function SettingsPage() {
                     <div className="space-y-4">
                         <div>
                             <label className="block text-xs font-medium text-slate-500 mb-1">Subscription Plan</label>
-                            <p className="text-sm font-semibold text-slate-900 capitalize">
+                            <p className="text-sm font-semibold text-white capitalize">
                                 {session?.user?.subscriptionPlan || "Free"} Plan
                             </p>
                         </div>
 
                         <div>
                             <label className="block text-xs font-medium text-slate-500 mb-1">Account Type</label>
-                            <p className="text-sm font-semibold text-slate-900 capitalize">
+                            <p className="text-sm font-semibold text-white capitalize">
                                 {session?.user?.provider === "google" ? "Google Account" : "Email Account"}
                             </p>
                         </div>
 
                         <div>
                             <label className="block text-xs font-medium text-slate-500 mb-1">User ID</label>
-                            <p className="text-sm text-slate-700 font-mono text-xs">
+                            <p className="text-sm text-slate-300 font-mono text-xs">
                                 {session?.user?.id?.substring(0, 8) || "N/A"}...
                             </p>
                         </div>
 
                         {session?.user?.subscriptionPlan === "free" && (
-                            <div className="pt-2 border-t border-slate-200">
+                            <div className="pt-2 border-t border-white/[0.06]">
                                 <p className="text-xs text-slate-500 mb-2">Want more features?</p>
                                 <a
                                     href="/"
-                                    className="text-sm text-indigo-600 hover:text-indigo-700 font-medium inline-flex items-center gap-1"
+                                    className="text-sm text-indigo-400 hover:text-indigo-400 font-medium inline-flex items-center gap-1"
                                 >
                                     View Plans →
                                 </a>
@@ -359,24 +361,24 @@ export default function SettingsPage() {
                 <SectionCard title="Data Management" icon={<Download className="h-5 w-5" />}>
                     <div className="space-y-4">
                         <div>
-                            <p className="text-sm text-slate-700 mb-3">
+                            <p className="text-sm text-slate-300 mb-3">
                                 Export all your QR codes and analytics data in JSON format.
                             </p>
                             <button
                                 onClick={handleExportData}
-                                className="w-full flex items-center justify-center gap-2 rounded-lg bg-white border border-slate-300 px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition-all"
+                                className="w-full flex items-center justify-center gap-2 rounded-lg border border-white/[0.08] bg-white/[0.03] px-4 py-2.5 text-sm font-semibold text-slate-300 hover:bg-white/[0.06] transition-all"
                             >
                                 <Download className="h-4 w-4" /> Export My Data
                             </button>
                         </div>
 
-                        <div className="pt-4 border-t border-slate-200">
-                            <p className="text-sm text-slate-700 mb-3 text-red-600">
+                        <div className="pt-4 border-t border-white/[0.06]">
+                            <p className="text-sm text-red-400 mb-3">
                                 Deleting your account will permanently remove all your QR codes and data. This action cannot be undone.
                             </p>
                             <button
                                 onClick={handleDeleteAccount}
-                                className="w-full flex items-center justify-center gap-2 rounded-lg bg-red-50 border border-red-200 px-4 py-2.5 text-sm font-semibold text-red-600 hover:bg-red-100 transition-all"
+                                className="w-full flex items-center justify-center gap-2 rounded-lg bg-red-500/10 border border-red-500/20 px-4 py-2.5 text-sm font-semibold text-red-400 hover:bg-red-500/20 transition-all"
                             >
                                 <Trash2 className="h-4 w-4" /> Delete Account
                             </button>
@@ -387,4 +389,3 @@ export default function SettingsPage() {
         </div>
     );
 }
-

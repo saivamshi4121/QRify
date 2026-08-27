@@ -34,13 +34,13 @@ type Pagination = {
 };
 
 const resultStyles: Record<string, string> = {
-    SUCCESS: "bg-emerald-50 text-emerald-700",
-    ALREADY_ENTERED: "bg-amber-50 text-amber-800",
-    DENIED: "bg-rose-50 text-rose-700",
-    INVALID_CREDENTIAL: "bg-rose-50 text-rose-700",
-    REVOKED_CREDENTIAL: "bg-rose-50 text-rose-700",
-    EXPIRED_CREDENTIAL: "bg-rose-50 text-rose-700",
-    EVENT_NOT_OPEN: "bg-slate-100 text-slate-600",
+    SUCCESS: "bg-emerald-500/10 text-emerald-400",
+    ALREADY_ENTERED: "bg-amber-500/10 text-amber-400",
+    DENIED: "bg-rose-500/10 text-rose-400",
+    INVALID_CREDENTIAL: "bg-rose-500/10 text-rose-400",
+    REVOKED_CREDENTIAL: "bg-rose-500/10 text-rose-400",
+    EXPIRED_CREDENTIAL: "bg-rose-500/10 text-rose-400",
+    EVENT_NOT_OPEN: "bg-white/[0.06] text-slate-400",
 };
 
 export default function EventAccessPage() {
@@ -115,21 +115,21 @@ export default function EventAccessPage() {
             <div className="flex items-start gap-3">
                 <Link
                     href={`/events/${eventId}`}
-                    className="rounded-md p-2 text-slate-500 hover:bg-slate-100"
+                    className="rounded-md p-2 text-slate-400 hover:bg-white/[0.06]"
                 >
                     <ArrowLeft className="h-5 w-5" />
                 </Link>
                 <div>
-                    <h1 className="text-3xl font-bold text-slate-900">
+                    <h1 className="text-3xl font-bold text-white">
                         Access log
                     </h1>
-                    <p className="mt-1 text-sm text-slate-500">
+                    <p className="mt-1 text-sm text-slate-400">
                         {eventName || "Event"} · {pagination.total} events
                     </p>
                 </div>
             </div>
 
-            <div className="flex flex-col gap-3 rounded-xl border border-slate-200 bg-white p-4 shadow-sm lg:flex-row lg:items-center">
+            <div className="flex flex-col gap-3 rounded-xl border border-white/[0.08] bg-white/[0.03] p-4 shadow-sm lg:flex-row lg:items-center">
                 <input
                     type="search"
                     placeholder="Search attendee…"
@@ -138,7 +138,7 @@ export default function EventAccessPage() {
                         setPage(1);
                         setQ(e.target.value);
                     }}
-                    className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm outline-none focus:border-indigo-400 lg:max-w-xs"
+                    className="w-full rounded-md border border-white/[0.08] bg-white/[0.06] px-3 py-2 text-sm text-white outline-none placeholder:text-slate-500 focus:border-indigo-400 lg:max-w-xs"
                 />
                 <input
                     type="text"
@@ -148,7 +148,7 @@ export default function EventAccessPage() {
                         setPage(1);
                         setGateFilter(e.target.value);
                     }}
-                    className="rounded-md border border-slate-200 px-3 py-2 text-sm lg:w-36"
+                    className="rounded-md border border-white/[0.08] bg-white/[0.06] px-3 py-2 text-sm text-white placeholder:text-slate-500 lg:w-36"
                 />
                 <select
                     value={typeFilter}
@@ -156,7 +156,7 @@ export default function EventAccessPage() {
                         setPage(1);
                         setTypeFilter(e.target.value);
                     }}
-                    className="rounded-md border border-slate-200 px-3 py-2 text-sm"
+                    className="rounded-md border border-white/[0.08] bg-white/[0.06] px-3 py-2 text-sm text-white"
                 >
                     <option value="">All types</option>
                     {ACCESS_TYPE_VALUES.map((t) => (
@@ -171,7 +171,7 @@ export default function EventAccessPage() {
                         setPage(1);
                         setResultFilter(e.target.value);
                     }}
-                    className="rounded-md border border-slate-200 px-3 py-2 text-sm"
+                    className="rounded-md border border-white/[0.08] bg-white/[0.06] px-3 py-2 text-sm text-white"
                 >
                     <option value="">All results</option>
                     {ACCESS_RESULT_VALUES.map((r) => (
@@ -184,18 +184,18 @@ export default function EventAccessPage() {
 
             {loading ? (
                 <div className="flex h-64 items-center justify-center">
-                    <Loader2 className="h-8 w-8 animate-spin text-indigo-500" />
+                    <Loader2 className="h-8 w-8 animate-spin text-indigo-400" />
                 </div>
             ) : items.length === 0 ? (
-                <div className="flex min-h-[240px] items-center justify-center rounded-2xl border border-dashed border-slate-200 bg-white text-sm text-slate-500">
+                <div className="flex min-h-[240px] items-center justify-center rounded-2xl border border-dashed border-white/[0.08] bg-white/[0.03] text-sm text-slate-400">
                     No access events yet. Use Manual Check-in on an attendee, or
                     validate a credential token.
                 </div>
             ) : (
-                <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
+                <div className="overflow-hidden rounded-xl border border-white/[0.08] bg-white/[0.03] shadow-sm">
                     <div className="overflow-x-auto">
                         <table className="min-w-full text-left text-sm">
-                            <thead className="border-b border-slate-100 bg-slate-50 text-xs uppercase text-slate-500">
+                            <thead className="border-b border-white/[0.08] bg-white/[0.06] text-xs uppercase text-slate-400">
                                 <tr>
                                     <th className="px-4 py-3 font-medium">
                                         Time
@@ -217,10 +217,10 @@ export default function EventAccessPage() {
                                     </th>
                                 </tr>
                             </thead>
-                            <tbody className="divide-y divide-slate-50">
+                            <tbody className="divide-y divide-white/[0.06]">
                                 {items.map((row) => (
                                     <tr key={row.id}>
-                                        <td className="whitespace-nowrap px-4 py-3 text-xs text-slate-500">
+                                        <td className="whitespace-nowrap px-4 py-3 text-xs text-slate-400">
                                             {new Date(
                                                 row.occurredAt
                                             ).toLocaleString()}
@@ -229,37 +229,37 @@ export default function EventAccessPage() {
                                             {row.attendee ? (
                                                 <Link
                                                     href={`/events/${eventId}/attendees/${row.attendee.id}`}
-                                                    className="font-medium text-slate-900 hover:text-indigo-600"
+                                                    className="font-medium text-white hover:text-indigo-400"
                                                 >
                                                     {row.attendee.firstName}{" "}
                                                     {row.attendee.lastName}
-                                                    <span className="mt-0.5 block text-xs font-normal text-slate-400">
+                                                    <span className="mt-0.5 block text-xs font-normal text-slate-500">
                                                         {row.attendee.email}
                                                     </span>
                                                 </Link>
                                             ) : (
-                                                <span className="text-slate-400">
+                                                <span className="text-slate-500">
                                                     —
                                                 </span>
                                             )}
                                         </td>
-                                        <td className="px-4 py-3 text-slate-700">
+                                        <td className="px-4 py-3 text-slate-300">
                                             {row.gate}
                                         </td>
-                                        <td className="px-4 py-3 text-slate-700">
+                                        <td className="px-4 py-3 text-slate-300">
                                             {row.type}
                                         </td>
                                         <td className="px-4 py-3">
                                             <span
                                                 className={`inline-flex rounded-full px-2 py-0.5 text-xs font-medium ${
                                                     resultStyles[row.result] ||
-                                                    "bg-slate-100 text-slate-600"
+                                                    "bg-white/[0.06] text-slate-400"
                                                 }`}
                                             >
                                                 {row.result}
                                             </span>
                                         </td>
-                                        <td className="px-4 py-3 text-slate-500">
+                                        <td className="px-4 py-3 text-slate-400">
                                             {row.operator?.name ||
                                                 row.operator?.email ||
                                                 "—"}
@@ -269,7 +269,7 @@ export default function EventAccessPage() {
                             </tbody>
                         </table>
                     </div>
-                    <div className="flex items-center justify-between border-t border-slate-100 px-4 py-3 text-sm text-slate-500">
+                    <div className="flex items-center justify-between border-t border-white/[0.08] px-4 py-3 text-sm text-slate-400">
                         <span>
                             Page {pagination.page} of {pagination.totalPages}
                         </span>
@@ -278,7 +278,7 @@ export default function EventAccessPage() {
                                 type="button"
                                 disabled={page <= 1}
                                 onClick={() => setPage((p) => p - 1)}
-                                className="rounded-md border border-slate-200 px-3 py-1 disabled:opacity-40"
+                                className="rounded-md border border-white/[0.08] bg-white/[0.06] px-3 py-1 text-white disabled:opacity-40"
                             >
                                 Previous
                             </button>
@@ -286,7 +286,7 @@ export default function EventAccessPage() {
                                 type="button"
                                 disabled={page >= pagination.totalPages}
                                 onClick={() => setPage((p) => p + 1)}
-                                className="rounded-md border border-slate-200 px-3 py-1 disabled:opacity-40"
+                                className="rounded-md border border-white/[0.08] bg-white/[0.06] px-3 py-1 text-white disabled:opacity-40"
                             >
                                 Next
                             </button>

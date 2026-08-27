@@ -87,7 +87,7 @@ export default function FeedbackDashboardPage() {
     if (loading) {
         return (
             <div className="flex h-96 items-center justify-center">
-                <Loader2 className="h-8 w-8 animate-spin text-indigo-500" />
+                <Loader2 className="h-8 w-8 animate-spin text-indigo-400" />
             </div>
         );
     }
@@ -97,7 +97,7 @@ export default function FeedbackDashboardPage() {
             <Toaster richColors position="top-right" />
             <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
                 <div>
-                    <h1 className="text-3xl font-bold text-slate-900">Feedback</h1>
+                    <h1 className="text-3xl font-bold text-white">Feedback</h1>
                     <p className="mt-2 text-slate-500">
                         Ratings and private comments from your Review Pages.
                     </p>
@@ -105,7 +105,7 @@ export default function FeedbackDashboardPage() {
                 <label className="text-sm text-slate-600">
                     Status{" "}
                     <select
-                        className="ml-2 rounded-md border border-slate-200 bg-white px-3 py-2 text-sm"
+                        className="ml-2 rounded-md border border-white/[0.08] px-3 py-2 text-sm"
                         value={statusFilter}
                         onChange={(e) => setStatusFilter(e.target.value)}
                     >
@@ -131,7 +131,7 @@ export default function FeedbackDashboardPage() {
                 ) : (
                     <div className="overflow-x-auto">
                         <table className="min-w-full text-left text-sm">
-                            <thead className="border-b border-slate-100 text-xs uppercase text-slate-500">
+                            <thead className="border-b border-white/[0.08] text-xs uppercase text-slate-500">
                                 <tr>
                                     <th className="px-3 py-2 font-medium">Rating</th>
                                     <th className="px-3 py-2 font-medium">Comment</th>
@@ -141,7 +141,7 @@ export default function FeedbackDashboardPage() {
                                     <th className="px-3 py-2 font-medium">When</th>
                                 </tr>
                             </thead>
-                            <tbody className="divide-y divide-slate-50">
+                            <tbody className="divide-y divide-white/[0.06]">
                                 {rows.map((row) => (
                                     <tr key={row._id} className="align-top">
                                         <td className="px-3 py-3 font-semibold text-amber-500">
@@ -152,11 +152,11 @@ export default function FeedbackDashboardPage() {
                                         </td>
                                         <td className="px-3 py-3 max-w-xs">
                                             {row.category ? (
-                                                <span className="mb-1 inline-block rounded bg-slate-100 px-1.5 py-0.5 text-xs text-slate-600">
+                                                <span className="mb-1 inline-block rounded bg-white/[0.06] px-1.5 py-0.5 text-xs text-slate-300">
                                                     {row.category}
                                                 </span>
                                             ) : null}
-                                            <p className="text-slate-700">
+                                            <p className="text-slate-300">
                                                 {row.commentText || "—"}
                                             </p>
                                             {row.locationTag ? (
@@ -183,7 +183,7 @@ export default function FeedbackDashboardPage() {
                                         </td>
                                         <td className="px-3 py-3">
                                             <select
-                                                className="rounded-md border border-slate-200 bg-white px-2 py-1 text-xs"
+                                                className="rounded-md border border-white/[0.08] px-2 py-1 text-xs"
                                                 value={row.status}
                                                 onChange={(e) =>
                                                     updateStatus(

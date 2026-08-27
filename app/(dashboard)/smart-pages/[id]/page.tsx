@@ -375,7 +375,7 @@ export default function ReviewPageEditorPage() {
     if (loading || !page) {
         return (
             <div className="flex h-96 items-center justify-center">
-                <Loader2 className="h-8 w-8 animate-spin text-indigo-500" />
+                <Loader2 className="h-8 w-8 animate-spin text-indigo-400" />
             </div>
         );
     }
@@ -389,12 +389,12 @@ export default function ReviewPageEditorPage() {
                     <button
                         type="button"
                         onClick={handleBack}
-                        className="rounded-md p-2 text-slate-500 hover:bg-slate-100"
+                        className="rounded-md p-2 text-slate-500 hover:bg-white/[0.06]"
                     >
                         <ArrowLeft className="h-5 w-5" />
                     </button>
                     <div>
-                        <h1 className="text-2xl font-bold text-slate-900">
+                        <h1 className="text-2xl font-bold text-white">
                             Your review page
                         </h1>
                         <p className="text-sm text-slate-500">
@@ -428,7 +428,7 @@ export default function ReviewPageEditorPage() {
                     <div className="hidden items-center gap-2 xl:flex">
                         <span className="text-slate-500">Status</span>
                         <select
-                            className="rounded-md border border-slate-200 px-2 py-1.5 text-sm outline-none"
+                            className="rounded-md border border-white/[0.08] bg-white/[0.06] px-2 py-1.5 text-sm text-white outline-none"
                             value={page.isPublished ? "live" : "draft"}
                             onChange={(e) =>
                                 updateLocalMeta({
@@ -446,7 +446,7 @@ export default function ReviewPageEditorPage() {
                             href={`/p/${page.slug}`}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-flex items-center gap-1.5 rounded-md border border-slate-200 px-3 py-1.5 text-slate-700 hover:bg-slate-50"
+                            className="inline-flex items-center gap-1.5 rounded-md border border-white/[0.08] px-3 py-1.5 text-slate-300 hover:bg-white/[0.03]"
                         >
                             <ExternalLink className="h-4 w-4" />
                             Open live
@@ -457,7 +457,7 @@ export default function ReviewPageEditorPage() {
                         onClick={(e) => {
                             if (!confirmLeave()) e.preventDefault();
                         }}
-                        className="rounded-md border border-slate-200 px-3 py-1.5 text-slate-700 hover:bg-slate-50"
+                        className="rounded-md border border-white/[0.08] px-3 py-1.5 text-slate-300 hover:bg-white/[0.03]"
                     >
                         Done
                     </Link>
